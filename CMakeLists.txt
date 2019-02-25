@@ -9,5 +9,5 @@ include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 include_directories("include")
 link_directories("${LIBOQS_LIB_DIR}")
 
-add_executable(oqs_cpp example.cpp)
+add_executable(oqs_cpp examples/example.cpp)
 target_link_libraries(oqs_cpp -loqs)
