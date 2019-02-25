@@ -3,10 +3,14 @@ project(oqs_cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(LIBOQS_INCLUDE_DIR "$ENV{HOME}/liboqs/include")
-set(LIBOQS_LIB_DIR "$ENV{HOME}/liboqs/.libs")
-include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
+
 include_directories("include")
+# modify as needed
+set(LIBOQS_INCLUDE_DIR "/usr/local/include")
+include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
+
+# modify as needed
+set(LIBOQS_LIB_DIR "/usr/local/lib")
 link_directories("${LIBOQS_LIB_DIR}")
 
 add_executable(oqs_cpp examples/example.cpp)
