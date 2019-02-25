@@ -1,6 +1,6 @@
 #include <iostream>
 
-// libows C++ wrapper
+// liboqs C++ wrapper
 #include "oqs_cpp.h"
 
 int main() {
