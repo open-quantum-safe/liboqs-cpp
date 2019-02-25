@@ -1,5 +1,5 @@
-#ifndef LIBOQS_CPP_H_
-#define LIBOQS_CPP_H_
+#ifndef OQS_CPP_H_
+#define OQS_CPP_H_
 
 // everything in liboqs has C linkage
 extern "C" {
@@ -15,8 +15,9 @@ extern "C" {
 namespace oqs {
 
 namespace details_ {
-// code from
-// https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
+/* code from
+https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
+ */
 template <typename T>
 class Singleton {
   protected:
@@ -108,4 +109,4 @@ class KeyEncapsulation {
 };
 
 } // namespace oqs
-#endif // LIBOQS_CPP_H_
+#endif // OQS_CPP_H_

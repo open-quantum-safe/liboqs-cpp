@@ -1,5 +1,7 @@
 #include <iostream>
-#include "liboqs_cpp.h"
+
+// libows C++ wrapper
+#include "oqs_cpp.h"
 
 int main() {
     std::cout << "Supported KEMs:\n";
