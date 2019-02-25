@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# vim
+*.swp
+
+# Visual Studio
+.vs/
+
+# CLion
+.idea/
+build/
+cmake-build*/
