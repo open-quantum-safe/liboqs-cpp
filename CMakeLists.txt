@@ -13,5 +13,5 @@ include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 set(LIBOQS_LIB_DIR "/usr/local/lib")
 link_directories("${LIBOQS_LIB_DIR}")
 
-add_executable(oqs_cpp examples/example.cpp)
+add_executable(oqs_cpp examples/kems.cpp)
 target_link_libraries(oqs_cpp -loqs)
