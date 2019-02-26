@@ -1,3 +1,8 @@
+/**
+ * \file oqs_cpp.h
+ * \brief Main header file for the liboqs C++ wrapper
+ */
+
 #ifndef OQS_CPP_H_
 #define OQS_CPP_H_
 
@@ -11,18 +16,32 @@ extern "C" {
 #include <cstdlib>
 #include <cstring>
 #include <exception>
+#include <memory>
 #include <ostream>
 #include <string>
 #include <utility>
 #include <vector>
 
+/**
+ * \namespace oqs
+ * \brief Main namespace for the liboqs C++ wrapper
+ */
 namespace oqs {
 
-using bytes = std::vector<std::uint8_t>;
+using byte = std::uint8_t;       ///< byte (unsigned)
+using bytes = std::vector<byte>; ///< vector of bytes (unsigned)
 
+/**
+ * \namespace impl_details
+ * \brief Implementation details
+ */
 namespace impl_details_ {
 /* code from
 https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
+ */
+/**
+ * \brief Singleton class using CRTP pattern
+ * \tparam T Class type of which instance will become a Singleton
  */
 template <typename T>
 class Singleton {
@@ -36,6 +55,12 @@ class Singleton {
     virtual ~Singleton() = default;
 
   public:
+    /**
+     * \brief Singleton instance (thread-safe) via CRTP pattern
+     * \note Code from
+     * https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
+     * \return Singleton instance
+     */
     static T& get_instance() noexcept(std::is_nothrow_constructible<T>::value) {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
@@ -47,24 +72,50 @@ class Singleton {
 }; // class Singleton
 } // namespace impl_details_
 
+/**
+ * \class MechanismNotSupportedError
+ * \brief Cryptographic scheme not supported
+ */
 class MechanismNotSupportedError : public std::runtime_error {
   public:
+    /**
+     * \brief Constructor
+     * \param alg_name Cryptographic algorithm name
+     */
     MechanismNotSupportedError(const std::string& alg_name)
         : std::runtime_error{alg_name + " is not supported by OQS"} {}
 }; // class MechanismNotSupportedError
 
+/**
+ * \class MechanismNotEnabledError
+ * \brief Cryptographic scheme not enabled
+ */
 class MechanismNotEnabledError : public std::runtime_error {
   public:
+    /**
+     * \brief Constructor
+     * \param alg_name Cryptographic algorithm name
+     */
     MechanismNotEnabledError(const std::string& alg_name)
         : std::runtime_error{alg_name + " is not enabled by OQS"} {}
 }; // class MechanismNotEnabledError
 
+/**
+ * \class KEMs
+ * \brief Singleton class, contains details about supported/enabled key exchange
+ * mechanisms (KEMs)
+ */
 class KEMs final : public impl_details_::Singleton<const KEMs> {
-    static std::size_t max_number_KEMs_;
-    static std::vector<std::string> supported_KEMs_;
-    static std::vector<std::string> enabled_KEMs_;
+    friend class impl_details_::Singleton<const KEMs>;
 
-  public:
+    static std::size_t max_number_KEMs_; ///< maximum number of supported KEMs
+    static std::vector<std::string> supported_KEMs_; ///< list of supported KEMs
+    static std::vector<std::string> enabled_KEMs_;   ///< list of enabled KEMs
+
+    /**
+     * \brief Private default constructor, initialization
+     * \note Use oqs::KEMs::get_instance() to create an instance
+     */
     KEMs() {
         for (std::size_t i = 0; i < max_number_KEMs_; ++i) {
             std::string alg_name = ::OQS_KEM_alg_identifier(i);
@@ -74,6 +125,12 @@ class KEMs final : public impl_details_::Singleton<const KEMs> {
         }
     }
 
+  public:
+    /**
+     * \brief KEM algorithm name
+     * \param alg_id Cryptographic algorithm numerical id
+     * \return KEM algorithm name
+     */
     static std::string get_KEM_name(std::size_t alg_id) {
         if (alg_id >= max_number_KEMs_)
             throw std::out_of_range("Algorithm ID out of range");
@@ -81,39 +138,68 @@ class KEMs final : public impl_details_::Singleton<const KEMs> {
         return ::OQS_KEM_alg_identifier(alg_id);
     }
 
+    /**
+     * \brief Checks whether the KEM algorithm \a alg_name is enabled
+     * \param alg_name Cryptographic algorithm name
+     * \return True if the KEM algorithm is enabled, false otherwise
+     */
     static bool is_KEM_enabled(const std::string& alg_name) {
         ::OQS_KEM* kem = ::OQS_KEM_new(alg_name.c_str());
         if (kem) {
-            OQS_KEM_free(kem);
+            ::OQS_KEM_free(kem);
             return true;
         }
 
         return false;
     }
 
+    /**
+     * \brief Checks whether the KEM algorithm \a alg_name is supported
+     * \param alg_name Cryptographic algorithm name
+     * \return True if the KEM algorithm is supported, false otherwise
+     */
     static bool is_KEM_supported(const std::string& alg_name) {
         return std::find(supported_KEMs_.begin(), supported_KEMs_.end(),
                          alg_name) != supported_KEMs_.end();
     }
 
+    /**
+     * \brief List of enabled KEM algorithms
+     * \return List of enabled KEM algorithms
+     */
     static const std::vector<std::string>& get_enabled_KEMs() {
         return enabled_KEMs_;
     }
 
+    /**
+     * \brief List of supported KEM algorithms
+     * \return List of supported KEM algorithms
+     */
     static const std::vector<std::string>& get_supported_KEMs() {
         return supported_KEMs_;
     }
-}; // KEMs
+}; // class KEMs
 
+// initialization oqs::KEMs of static members
 std::size_t KEMs::max_number_KEMs_ = ::OQS_KEM_alg_count();
 std::vector<std::string> KEMs::supported_KEMs_;
 std::vector<std::string> KEMs::enabled_KEMs_;
+// end initialization of static members
 
+/**
+ * \class KeyEncapsulation
+ * \brief Key encapsulation mechanisms
+ */
 class KeyEncapsulation {
-    const std::string alg_name_;
-    ::OQS_KEM* kem_;
-    bytes secret_key_;
+    const std::string alg_name_; ///< cryptographic algorithm name
+    std::shared_ptr<::OQS_KEM> kem_{nullptr, [](::OQS_KEM* p) {
+                                        ::OQS_KEM_free(p);
+                                    }}; ///< liboqs smart pointer to ::OQS_KEM
+    bytes secret_key_{};                ///< secret key
 
+    /**
+     * \brief KEM algorithm details
+     */
     struct alg_details_ {
         std::string name;
         std::string version;
@@ -123,9 +209,14 @@ class KeyEncapsulation {
         std::size_t length_secret_key;
         std::size_t length_ciphertext;
         std::size_t length_shared_secret;
-    } details_;
+    } details_{};
 
   public:
+    /**
+     * \brief Constructs an instance of oqs::KeyEncapsulation
+     * \param alg_name Cryptographic algorithm name
+     * \param secret_key Secret key (optional)
+     */
     KeyEncapsulation(const std::string& alg_name, const bytes& secret_key = {})
         : alg_name_{alg_name} {
         // KEM not enabled
@@ -141,7 +232,7 @@ class KeyEncapsulation {
                 throw MechanismNotSupportedError(alg_name);
         }
 
-        kem_ = ::OQS_KEM_new(alg_name.c_str());
+        kem_.reset(::OQS_KEM_new(alg_name.c_str()));
 
         details_.name = kem_->method_name;
         details_.version = kem_->alg_version;
@@ -157,43 +248,69 @@ class KeyEncapsulation {
         }
     }
 
+    /**
+     * \brief Virtual default destructor
+     */
     virtual ~KeyEncapsulation() {
         if (!secret_key_.empty())
             ::OQS_MEM_cleanse(secret_key_.data(), secret_key_.size());
-        ::OQS_KEM_free(kem_);
     }
 
+    /**
+     * \brief KEM algorithm details
+     * \return KEM algorithm details
+     */
     const alg_details_& get_details() const { return details_; }
 
+    /**
+     * \brief Generate public key
+     * \return Public key
+     */
     bytes generate_keypair() {
         bytes public_key(get_details().length_public_key, 0);
         secret_key_ = bytes(get_details().length_secret_key, 0);
 
-        ::OQS_STATUS rv_ =
-            ::OQS_KEM_keypair(kem_, public_key.data(), secret_key_.data());
+        ::OQS_STATUS rv_ = ::OQS_KEM_keypair(kem_.get(), public_key.data(),
+                                             secret_key_.data());
         if (rv_ != ::OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
 
         return public_key;
     }
 
+    /**
+     * \brief Export secret key
+     * \return Secret key
+     */
     bytes export_secret_key() const { return secret_key_; }
 
+    /**
+     * \brief Encapsulate secret
+     * \param public_key Public key
+     * \return Pair consisting of 1) ciphertext, and 2) shared secret
+     */
     std::pair<bytes, bytes> encap_secret(const bytes& public_key) const {
         bytes ciphertext(get_details().length_ciphertext, 0);
         bytes shared_secret(get_details().length_shared_secret, 0);
-        ::OQS_STATUS rv_ = ::OQS_KEM_encaps(
-            kem_, ciphertext.data(), shared_secret.data(), public_key.data());
+        ::OQS_STATUS rv_ =
+            ::OQS_KEM_encaps(kem_.get(), ciphertext.data(),
+                             shared_secret.data(), public_key.data());
         if (rv_ != ::OQS_SUCCESS)
             throw std::runtime_error("Can not encapsulate secret");
 
         return std::make_pair(ciphertext, shared_secret);
     }
 
+    /**
+     * \brief Decapsulate secret
+     * \param ciphertext Ciphertext
+     * \return Shared secret
+     */
     bytes decap_secret(const bytes& ciphertext) const {
         bytes shared_secret(get_details().length_shared_secret, 0);
-        ::OQS_STATUS rv_ = ::OQS_KEM_decaps(
-            kem_, shared_secret.data(), ciphertext.data(), secret_key_.data());
+        ::OQS_STATUS rv_ =
+            ::OQS_KEM_decaps(kem_.get(), shared_secret.data(),
+                             ciphertext.data(), secret_key_.data());
 
         if (rv_ != ::OQS_SUCCESS)
             throw std::runtime_error("Can not decapsulate secret");
@@ -201,6 +318,12 @@ class KeyEncapsulation {
         return shared_secret;
     }
 
+    /**
+     * \brief std::ostream extraction operator for the KEM algorithm details
+     * \param os Output stream
+     * \param rhs Algorithm details instance
+     * \return Reference to the output stream
+     */
     friend std::ostream& operator<<(std::ostream& os, const alg_details_& rhs) {
         os << "Name: " << rhs.name << '\n';
         os << "Version: " << rhs.version << '\n';
@@ -213,19 +336,36 @@ class KeyEncapsulation {
         return os;
     }
 
+    /**
+     * \brief std::ostream extraction operator for oqs::KeyEncapsulation
+     * \param os Output stream
+     * \param rhs Key encapsulation instance
+     * \return Reference to the output stream
+     */
     friend std::ostream& operator<<(std::ostream& os,
-                                    const KeyEncapsulation& key_encapsulation) {
-        return os << "Key encapsulation mechanism: "
-                  << key_encapsulation.get_details().name;
+                                    const KeyEncapsulation& rhs) {
+        return os << "Key encapsulation mechanism: " << rhs.get_details().name;
     }
-}; // KeyEncapsulation
+}; // class KeyEncapsulation
 
+/**
+ * \class Sigs
+ * \brief Singleton class, contains details about supported/enabled signatures
+ */
 class Sigs final : public impl_details_::Singleton<const Sigs> {
-    static std::size_t max_number_Sigs_;
-    static std::vector<std::string> supported_Sigs_;
-    static std::vector<std::string> enabled_Sigs_;
+    friend class impl_details_::Singleton<const Sigs>;
 
-  public:
+    static std::size_t
+        max_number_Sigs_; ///< maximum number of supported signatures
+    static std::vector<std::string>
+        supported_Sigs_; ///< list of supported signatures
+    static std::vector<std::string>
+        enabled_Sigs_; ///< list of enabled signatures
+
+    /**
+     * \brief Private default constructor, initialization
+     * \note Use oqs::Sigs::get_instance() to create an instance
+     */
     Sigs() {
         for (std::size_t i = 0; i < max_number_Sigs_; ++i) {
             std::string alg_name = ::OQS_SIG_alg_identifier(i);
@@ -235,6 +375,12 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
         }
     }
 
+  public:
+    /**
+     * \brief Signature algorithm name
+     * \param alg_id Cryptographic algorithm numerical id
+     * \return Signature algorithm name
+     */
     static std::string get_Sig_name(std::size_t alg_id) {
         if (alg_id >= max_number_Sigs_)
             throw std::out_of_range("Algorithm ID out of range");
@@ -242,39 +388,68 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
         return ::OQS_SIG_alg_identifier(alg_id);
     }
 
+    /**
+     * \brief Checks whether the signature algorithm \a alg_name is enabled
+     * \param alg_name Cryptographic algorithm name
+     * \return True if the signature algorithm is enabled, false otherwise
+     */
     static bool is_Sig_enabled(const std::string& alg_name) {
         ::OQS_SIG* sig = ::OQS_SIG_new(alg_name.c_str());
         if (sig) {
-            OQS_SIG_free(sig);
+            ::OQS_SIG_free(sig);
             return true;
         }
 
         return false;
     }
 
+    /**
+     * \brief Checks whether the signature algorithm \a alg_name is supported
+     * \param alg_name Cryptographic algorithm name
+     * \return True if the signature algorithm is supported, false otherwise
+     */
     static bool is_Sig_supported(const std::string& alg_name) {
         return std::find(supported_Sigs_.begin(), supported_Sigs_.end(),
                          alg_name) != supported_Sigs_.end();
     }
 
+    /**
+     * \brief List of enabled signature algorithms
+     * \return List of enabled signature algorithms
+     */
     static const std::vector<std::string>& get_enabled_Sigs() {
         return enabled_Sigs_;
     }
 
+    /**
+     * \brief List of supported signature algorithms
+     * \return List of supported signature algorithms
+     */
     static const std::vector<std::string>& get_supported_Sigs() {
         return supported_Sigs_;
     }
-};
+}; // class Sigs
 
+// initialization of oqs::Sigs static members
 std::size_t Sigs::max_number_Sigs_ = ::OQS_SIG_alg_count();
 std::vector<std::string> Sigs::supported_Sigs_;
 std::vector<std::string> Sigs::enabled_Sigs_;
+// end initialization of static members
 
+/**
+ * \class Signature
+ * \brief Signature mechanisms
+ */
 class Signature {
-    const std::string alg_name_;
-    ::OQS_SIG* sig_;
-    bytes secret_key_;
+    const std::string alg_name_; ///< cryptographic algorithm name
+    std::shared_ptr<::OQS_SIG> sig_{nullptr, [](::OQS_SIG* p) {
+                                        ::OQS_SIG_free(p);
+                                    }}; ///< liboqs smart pointer to ::OQS_SIG
+    bytes secret_key_{};                ///< secret key
 
+    /**
+     * \brief Signature algorithm details
+     */
     struct alg_details_ {
         std::string name;
         std::string version;
@@ -283,9 +458,14 @@ class Signature {
         std::size_t length_public_key;
         std::size_t length_secret_key;
         std::size_t length_signature;
-    } details_;
+    } details_{};
 
   public:
+    /**
+     * \brief Constructs an instance of oqs::Signature
+     * \param alg_name Cryptographic algorithm name
+     * \param secret_key Secret key (optional)
+     */
     Signature(const std::string& alg_name, const bytes& secret_key = {})
         : alg_name_{alg_name} {
         // Sig not enabled
@@ -301,7 +481,7 @@ class Signature {
                 throw MechanismNotSupportedError(alg_name);
         }
 
-        sig_ = ::OQS_SIG_new(alg_name.c_str());
+        sig_.reset(::OQS_SIG_new(alg_name.c_str()));
 
         details_.name = sig_->method_name;
         details_.version = sig_->alg_version;
@@ -316,34 +496,53 @@ class Signature {
         }
     }
 
+    /**
+     * \brief Virtual default destructor
+     */
     virtual ~Signature() {
         if (!secret_key_.empty())
             ::OQS_MEM_cleanse(secret_key_.data(), secret_key_.size());
-        ::OQS_SIG_free(sig_);
     }
 
+    /**
+     * \brief Signature algorithm details
+     * \return Signature algorithm details
+     */
     const alg_details_& get_details() const { return details_; }
 
+    /**
+     * \brief Generate public key
+     * \return Public key
+     */
     bytes generate_keypair() {
         bytes public_key(get_details().length_public_key, 0);
         secret_key_ = bytes(get_details().length_secret_key, 0);
 
-        ::OQS_STATUS rv_ =
-            ::OQS_SIG_keypair(sig_, public_key.data(), secret_key_.data());
+        ::OQS_STATUS rv_ = ::OQS_SIG_keypair(sig_.get(), public_key.data(),
+                                             secret_key_.data());
         if (rv_ != ::OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
 
         return public_key;
     }
 
+    /**
+     * \brief Export secret key
+     * \return Secret key
+     */
     bytes export_secret_key() const { return secret_key_; }
 
+    /**
+     * \brief Sign message
+     * \param message Message
+     * \return Message signature
+     */
     bytes sign(const bytes& message) {
         bytes signature(get_details().length_signature, 0);
         std::size_t sig_len = 0;
         ::OQS_STATUS rv_ =
-            ::OQS_SIG_sign(sig_, signature.data(), &sig_len, message.data(),
-                           message.size(), secret_key_.data());
+            ::OQS_SIG_sign(sig_.get(), signature.data(), &sig_len,
+                           message.data(), message.size(), secret_key_.data());
 
         if (rv_ != ::OQS_SUCCESS)
             throw std::runtime_error("Can not sign message");
@@ -353,10 +552,17 @@ class Signature {
         return signature;
     }
 
+    /**
+     * \brief Verify signature
+     * \param message Message
+     * \param signature Signature
+     * \param public_key Public key
+     * \return True if the signature is valid, false otherwise
+     */
     bool verify(const bytes& message, const bytes& signature,
                 const bytes& public_key) {
         ::OQS_STATUS rv_ = ::OQS_SIG_verify(
-            sig_, message.data(), message.size(), signature.data(),
+            sig_.get(), message.data(), message.size(), signature.data(),
             signature.size(), public_key.data());
 
         if (rv_ != ::OQS_SUCCESS)
@@ -365,6 +571,13 @@ class Signature {
         return true;
     }
 
+    /**
+     * \brief std::ostream extraction operator for the signature algorithm
+     * details
+     * \param os Output stream
+     * \param rhs Algorithm details
+     * \return Reference to the output stream
+     */
     friend std::ostream& operator<<(std::ostream& os, const alg_details_& rhs) {
         os << "Name: " << rhs.name << '\n';
         os << "Version: " << rhs.version << '\n';
@@ -376,25 +589,35 @@ class Signature {
         return os;
     }
 
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const Signature& signature) {
-        return os << "Signature mechanism: " << signature.get_details().name;
+    /**
+     * \brief std::ostream extraction operator for oqs::Signature
+     * \param os Output stream
+     * \param rhs Signature instance
+     * \return Reference to the output stream
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Signature& rhs) {
+        return os << "Signature mechanism: " << rhs.get_details().name;
     }
-
-}; // Signature
+}; // class Signature
 
 namespace impl_details_ {
 // initialize the KEMs and Sigs singletons
-static const KEMs& algs_ = KEMs::get_instance();
-static const Sigs& sigs_ = Sigs::get_instance();
+static const KEMs& algs_ =
+    KEMs::get_instance(); ///< initializes the KEMs singleton
+static const Sigs& sigs_ =
+    Sigs::get_instance(); ///< initializes the Sigs singleton
 } // namespace impl_details_
-
 } // namespace oqs
 
-// dump hex strings
-std::ostream& operator<<(std::ostream& os, const oqs::bytes& buf) {
+/**
+ * \std::ostream extraction operator for oqs::bytes
+ * \param os Output stream
+ * \param rhs Signature instance
+ * \return Reference to the output stream
+ */
+std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
     bool first = true;
-    for (auto&& elem : buf) {
+    for (auto&& elem : rhs) {
         if (first) {
             first = false;
             os << std::hex << std::uppercase << static_cast<int>(elem);
@@ -406,10 +629,16 @@ std::ostream& operator<<(std::ostream& os, const oqs::bytes& buf) {
     return os;
 }
 
-// dump vectors of strings
-std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& v) {
+/**
+ * \std::ostream extraction operator for vectors of strings
+ * \param os Output stream
+ * \param rhs Signature instance
+ * \return Reference to the output stream
+ */
+std::ostream& operator<<(std::ostream& os,
+                         const std::vector<std::string>& rhs) {
     bool first = true;
-    for (auto&& elem : v) {
+    for (auto&& elem : rhs) {
         if (first) {
             first = false;
             os << elem;
@@ -421,13 +650,22 @@ std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& v) {
     return os;
 }
 
-// convert C-strings to bytes (null terminator is not included)
-oqs::bytes operator""_bytes(const char* c, std::size_t length) {
+inline namespace oqs_literals {
+/**
+ * \brief User-defined literal operator for converting C-style strings to
+ * oqs::bytes
+ * \note The null terminator is not included
+ * \param c_str C-style string
+ * \param length C-style string length (deduced automatically by the compiler)
+ * \return The byte representation of the input C-style string
+ */
+oqs::bytes operator""_bytes(const char* c_str, std::size_t length) {
     oqs::bytes result(length);
     for (std::size_t i = 0; i < length; ++i)
-        result[i] = static_cast<uint8_t>(c[i]);
+        result[i] = static_cast<uint8_t>(c_str[i]);
 
     return result;
 }
+} // namespace oqs_literals
 
 #endif // OQS_CPP_H_

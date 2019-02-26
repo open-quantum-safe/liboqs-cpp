@@ -3,15 +3,20 @@ project(oqs_cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
+
+# path to liboqs include and lib, modify as needed
+set(LIBOQS_INCLUDE_DIR "/usr/local/include")
+set(LIBOQS_LIB_DIR "/usr/local/lib")
 
 include_directories("include")
-# modify as needed
-set(LIBOQS_INCLUDE_DIR "/usr/local/include")
 include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
-
-# modify as needed
-set(LIBOQS_LIB_DIR "/usr/local/lib")
 link_directories("${LIBOQS_LIB_DIR}")
 
-add_executable(oqs_cpp examples/sigs.cpp)
-target_link_libraries(oqs_cpp -loqs)
+
+
+add_executable(oqs_cpp_sig examples/sigs.cpp)
+add_executable(oqs_cpp_kem examples/kems.cpp)
+target_link_libraries(oqs_cpp_sig -loqs)
+target_link_libraries(oqs_cpp_kem -loqs)
