@@ -6,8 +6,8 @@
 #include "oqs_cpp.h"
 
 int main() {
-    std::cout << "Supported Sigs:\n" << oqs::Sigs::get_supported_Sigs();
-    std::cout << "\n\nEnabled Sigs:\n"<<oqs::Sigs::get_enabled_Sigs();
+    std::cout << "Supported signatures:\n" << oqs::Sigs::get_supported_Sigs();
+    std::cout << "\n\nEnabled signatures:\n"<<oqs::Sigs::get_enabled_Sigs();
 
     oqs::bytes message = "This is the message to sign"_bytes;
 
