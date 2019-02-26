@@ -406,4 +406,28 @@ std::ostream& operator<<(std::ostream& os, const oqs::bytes& buf) {
     return os;
 }
 
+// dump vectors of strings
+std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& v) {
+    bool first = true;
+    for (auto&& elem : v) {
+        if (first) {
+            first = false;
+            os << elem;
+        } else {
+            os << " " << elem;
+        }
+    }
+
+    return os;
+}
+
+// convert C-strings to bytes (null terminator is not included)
+oqs::bytes operator""_bytes(const char* c, std::size_t length) {
+    oqs::bytes result(length);
+    for (std::size_t i = 0; i < length; ++i)
+        result[i] = static_cast<uint8_t>(c[i]);
+
+    return result;
+}
+
 #endif // OQS_CPP_H_

@@ -7,13 +7,8 @@
 #include "oqs_cpp.h"
 
 int main() {
-    std::cout << "Supported KEMs:\n";
-    for (auto&& elem : oqs::KEMs::get_supported_KEMs())
-        std::cout << elem << ' ';
-
-    std::cout << "\n\nEnabled KEMs:\n";
-    for (auto&& elem : oqs::KEMs::get_enabled_KEMs())
-        std::cout << elem << ' ';
+    std::cout << "Supported KEMs:\n" << oqs::KEMs::get_supported_KEMs();
+    std::cout << "\n\nEnabled KEMs:\n" << oqs::KEMs::get_enabled_KEMs();
 
     oqs::KeyEncapsulation client{"DEFAULT"};
     std::cout << "\n\nKEM details: \n" << client.get_details();
