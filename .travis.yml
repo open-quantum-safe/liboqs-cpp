@@ -38,12 +38,14 @@ script:
 
   # Install liboqs
   - git clone https://github.com/open-quantum-safe/liboqs
+  - cd liboqs
   - git checkout master
   - autoreconf -i
   - configure
   - make clean
   - make
   - sudo make install
+  - cd ..
 
   # Build the examples
   - mkdir build
