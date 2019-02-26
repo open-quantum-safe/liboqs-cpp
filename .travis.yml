@@ -40,11 +40,13 @@ script:
   - git clone https://github.com/open-quantum-safe/liboqs
   - cd liboqs
   - git checkout master
-  - autoreconf -i
-  - ./configure
-  - make clean
-  - make
+  - echo Installing liboqs...
+  - autoreconf -i &>/dev/null
+  - ./configure &>/dev/null
+  - make clean &>/dev/null
+  - make -j &>/dev/null
   - sudo make install
+  - echo Done installing liboqs
   - cd ..
 
   # Build the examples
