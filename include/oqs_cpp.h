@@ -616,7 +616,7 @@ static const Sigs& sigs_ =
 } // namespace oqs
 
 /**
- * \std::ostream extraction operator for oqs::bytes
+ * \brief std::ostream extraction operator for oqs::bytes
  * \param os Output stream
  * \param rhs Signature instance
  * \return Reference to the output stream
@@ -636,7 +636,7 @@ inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
 }
 
 /**
- * \std::ostream extraction operator for vectors of strings
+ * \brief std::ostream extraction operator for vectors of strings
  * \param os Output stream
  * \param rhs Signature instance
  * \return Reference to the output stream
