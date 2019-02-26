@@ -32,7 +32,7 @@ using byte = std::uint8_t;       ///< byte (unsigned)
 using bytes = std::vector<byte>; ///< vector of bytes (unsigned)
 
 /**
- * \namespace impl_details
+ * \namespace impl_details_
  * \brief Implementation details
  */
 namespace impl_details_ {

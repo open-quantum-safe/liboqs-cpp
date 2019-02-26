@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['impl_5fdetails',['impl_details',['../namespaceimpl__details.html',1,'']]]
+  ['impl_5fdetails_5f',['impl_details_',['../namespaceimpl__details__.html',1,'']]]
 ];

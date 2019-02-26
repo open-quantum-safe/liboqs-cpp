@@ -55,7 +55,7 @@ var NAVTREEINDEX0 =
 "hierarchy.html":[2,2],
 "index.html":[],
 "md___users_vlad__clion_projects_liboqs-cpp__r_e_a_d_m_e.html":[0],
-"namespaceimpl__details.html":[1,0,0],
+"namespaceimpl__details__.html":[1,0,0],
 "namespacemembers.html":[1,1,0],
 "namespacemembers_func.html":[1,1,1],
 "namespacemembers_type.html":[1,1,2],
