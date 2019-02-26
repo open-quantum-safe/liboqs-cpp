@@ -41,7 +41,7 @@ script:
   - cd liboqs
   - git checkout master
   - autoreconf -i
-  - configure
+  - ./configure
   - make clean
   - make
   - sudo make install
