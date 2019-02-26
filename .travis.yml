@@ -2,28 +2,33 @@ language: cpp
 dist: xenial
 
 matrix:
-    include:
-        # Ubuntu Linux 16.04 gcc5.4
-        - os: linux
-          compiler: gcc
-          before_install:
-              export CXX="g++-5" CC="gcc-5"
+  include:
+    # Ubuntu Linux 16.04 gcc5.4
+    - os: linux
+      compiler: gcc
+      before_install:
+        - export CXX="g++-5" CC="gcc-5"
+        - sudo apt-get install autoconf automake
 
-        # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
-        - os: osx
-          osx_image: xcode10.1
-          compiler: clang
+    # Apple OSX LLVM version 10.0.0 (clang-1000.11.45.5)
+    - os: osx
+      osx_image: xcode10.1
+      compiler: clang
+      before_install:
+        - rm -rf /usr/local/include/c++
+        - brew update
+        - brew install gcc6 autoconf automake
 
-        # OSX gcc6
-        - os: osx
-          osx_image: xcode10.1
-          compiler: gcc
-          before_install:
-              - rm -rf /usr/local/include/c++
-              - brew update
-              - brew install gcc6
-              - export CXX="g++-6" CC="gcc-6"
-              - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
+    # OSX gcc6
+    - os: osx
+      osx_image: xcode10.1
+      compiler: gcc
+      before_install:
+        - rm -rf /usr/local/include/c++
+        - brew update
+        - brew install gcc6 autoconf automake
+        - export CXX="g++-6" CC="gcc-6"
+        - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
 
 notifications:
   email: false
@@ -44,7 +49,7 @@ script:
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=Debug && make
-  
+
   # Build the unit tests
   - cd ../unit_tests
   - mkdir build
