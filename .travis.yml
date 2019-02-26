@@ -31,7 +31,7 @@ notifications:
 script:
   - $CXX --version
   
-  # Build a minimal example
+  # Build the examples
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=Debug && make
