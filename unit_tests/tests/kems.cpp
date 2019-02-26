@@ -8,7 +8,7 @@
 #include "oqs_cpp.h"
 
 TEST(oqs_KeyEncapsulationMechanism, AllTests) {
-    std::cout << "Testing KEMs: ";
+    std::cout << "Testing KEMs:\n";
     for (auto&& kem : oqs::KEMs::get_enabled_KEMs()) {
         std::cout << kem << std::endl;
 

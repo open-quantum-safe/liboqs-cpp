@@ -7,7 +7,7 @@
 #include "oqs_cpp.h"
 
 TEST(oqs_Signature, AllTests) {
-    std::cout << "Testing signatures: ";
+    std::cout << "Testing signatures:\n";
     for (auto&& sig : oqs::Sigs::get_enabled_Sigs()) {
         std::cout << sig << std::endl;
 
