@@ -4,7 +4,7 @@
 
 **Build status:**
 
-[![Build Status](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.org/open-quantum-safe/liboqs-cpp)
+[![Build Status](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
 
 ---
 
