@@ -14,9 +14,7 @@ include_directories("include")
 include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 link_directories("${LIBOQS_LIB_DIR}")
 
-
-
-add_executable(oqs_cpp_sig examples/sigs.cpp)
-add_executable(oqs_cpp_kem examples/kems.cpp)
+add_executable(oqs_cpp_sig examples/sig.cpp)
+add_executable(oqs_cpp_kem examples/kem.cpp)
 target_link_libraries(oqs_cpp_sig oqs)
 target_link_libraries(oqs_cpp_kem oqs)

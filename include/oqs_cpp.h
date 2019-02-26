@@ -180,9 +180,11 @@ class KEMs final : public impl_details_::Singleton<const KEMs> {
      */
     static std::vector<std::string> get_enabled_KEMs() {
         std::vector<std::string> enabled_KEMs;
-        for (std::size_t i = 0;
-             i < max_number_KEMs() && is_KEM_enabled(get_KEM_name(i)); ++i)
-            enabled_KEMs.emplace_back(get_KEM_name(i));
+        for (std::size_t i = 0; i < max_number_KEMs(); ++i) {
+            std::string alg_name = get_KEM_name(i);
+            if (is_KEM_enabled(alg_name))
+                enabled_KEMs.emplace_back(alg_name);
+        }
 
         return enabled_KEMs;
     }
@@ -430,9 +432,11 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
      */
     static std::vector<std::string> get_enabled_Sigs() {
         std::vector<std::string> enabled_Sigs;
-        for (std::size_t i = 0;
-             i < max_number_Sigs() && is_Sig_enabled(get_Sig_name(i)); ++i)
-            enabled_Sigs.emplace_back(get_Sig_name(i));
+        for (std::size_t i = 0; i < max_number_Sigs(); ++i) {
+            std::string alg_name = get_Sig_name(i);
+            if (is_Sig_enabled(alg_name))
+                enabled_Sigs.emplace_back(alg_name);
+        }
 
         return enabled_Sigs;
     }
