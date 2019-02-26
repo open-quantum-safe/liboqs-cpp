@@ -18,5 +18,5 @@ link_directories("${LIBOQS_LIB_DIR}")
 
 add_executable(oqs_cpp_sig examples/sigs.cpp)
 add_executable(oqs_cpp_kem examples/kems.cpp)
-target_link_libraries(oqs_cpp_sig -loqs)
-target_link_libraries(oqs_cpp_kem -loqs)
+target_link_libraries(oqs_cpp_sig oqs)
+target_link_libraries(oqs_cpp_kem oqs)

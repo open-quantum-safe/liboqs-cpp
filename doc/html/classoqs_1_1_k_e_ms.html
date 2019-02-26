@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('classoqs_1_1_k_e_ms.html','');});
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classoqs_1_1_k_e_ms-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -121,21 +120,24 @@ Collaboration diagram for oqs::KEMs:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a319ce3ed2e61be0c43227b4e0b0311e3"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#a319ce3ed2e61be0c43227b4e0b0311e3">get_KEM_name</a> (std::size_t alg_id)</td></tr>
-<tr class="memdesc:a319ce3ed2e61be0c43227b4e0b0311e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">KEM algorithm name.  <a href="#a319ce3ed2e61be0c43227b4e0b0311e3">More...</a><br /></td></tr>
-<tr class="separator:a319ce3ed2e61be0c43227b4e0b0311e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1250a69e41f1edcdb64d0a69f1c2d7b6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#a1250a69e41f1edcdb64d0a69f1c2d7b6">is_KEM_enabled</a> (const std::string &amp;alg_name)</td></tr>
-<tr class="memdesc:a1250a69e41f1edcdb64d0a69f1c2d7b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the KEM algorithm <em>alg_name</em> is enabled.  <a href="#a1250a69e41f1edcdb64d0a69f1c2d7b6">More...</a><br /></td></tr>
-<tr class="separator:a1250a69e41f1edcdb64d0a69f1c2d7b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d68a984e906be0ac144e3dc2510fd1c"><td class="memItemLeft" align="right" valign="top">static std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#a8d68a984e906be0ac144e3dc2510fd1c">max_number_KEMs</a> ()</td></tr>
+<tr class="memdesc:a8d68a984e906be0ac144e3dc2510fd1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of supported <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a>.  <a href="#a8d68a984e906be0ac144e3dc2510fd1c">More...</a><br /></td></tr>
+<tr class="separator:a8d68a984e906be0ac144e3dc2510fd1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aada9239c5e9d6b382384400e20b034c1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#aada9239c5e9d6b382384400e20b034c1">is_KEM_supported</a> (const std::string &amp;alg_name)</td></tr>
 <tr class="memdesc:aada9239c5e9d6b382384400e20b034c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the KEM algorithm <em>alg_name</em> is supported.  <a href="#aada9239c5e9d6b382384400e20b034c1">More...</a><br /></td></tr>
 <tr class="separator:aada9239c5e9d6b382384400e20b034c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1504f48ebfdebb3e76bd17803573279"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#ab1504f48ebfdebb3e76bd17803573279">get_enabled_KEMs</a> ()</td></tr>
-<tr class="memdesc:ab1504f48ebfdebb3e76bd17803573279"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of enabled KEM algorithms.  <a href="#ab1504f48ebfdebb3e76bd17803573279">More...</a><br /></td></tr>
-<tr class="separator:ab1504f48ebfdebb3e76bd17803573279"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac806e93a58d17d79ab6356a39a207f12"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#ac806e93a58d17d79ab6356a39a207f12">get_supported_KEMs</a> ()</td></tr>
-<tr class="memdesc:ac806e93a58d17d79ab6356a39a207f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of supported KEM algorithms.  <a href="#ac806e93a58d17d79ab6356a39a207f12">More...</a><br /></td></tr>
-<tr class="separator:ac806e93a58d17d79ab6356a39a207f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1250a69e41f1edcdb64d0a69f1c2d7b6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#a1250a69e41f1edcdb64d0a69f1c2d7b6">is_KEM_enabled</a> (const std::string &amp;alg_name)</td></tr>
+<tr class="memdesc:a1250a69e41f1edcdb64d0a69f1c2d7b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the KEM algorithm <em>alg_name</em> is enabled.  <a href="#a1250a69e41f1edcdb64d0a69f1c2d7b6">More...</a><br /></td></tr>
+<tr class="separator:a1250a69e41f1edcdb64d0a69f1c2d7b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a319ce3ed2e61be0c43227b4e0b0311e3"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#a319ce3ed2e61be0c43227b4e0b0311e3">get_KEM_name</a> (std::size_t alg_id)</td></tr>
+<tr class="memdesc:a319ce3ed2e61be0c43227b4e0b0311e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">KEM algorithm name.  <a href="#a319ce3ed2e61be0c43227b4e0b0311e3">More...</a><br /></td></tr>
+<tr class="separator:a319ce3ed2e61be0c43227b4e0b0311e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa731cc7c39150e8033c9fb580b6a7f6e"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#aa731cc7c39150e8033c9fb580b6a7f6e">get_supported_KEMs</a> ()</td></tr>
+<tr class="memdesc:aa731cc7c39150e8033c9fb580b6a7f6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of supported KEM algorithms.  <a href="#aa731cc7c39150e8033c9fb580b6a7f6e">More...</a><br /></td></tr>
+<tr class="separator:aa731cc7c39150e8033c9fb580b6a7f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee72ec82771eb5092b2bc0331280a766"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#aee72ec82771eb5092b2bc0331280a766">get_enabled_KEMs</a> ()</td></tr>
+<tr class="memdesc:aee72ec82771eb5092b2bc0331280a766"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of enabled KEM algorithms.  <a href="#aee72ec82771eb5092b2bc0331280a766">More...</a><br /></td></tr>
+<tr class="separator:aee72ec82771eb5092b2bc0331280a766"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classoqs_1_1impl__details___1_1_singleton"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classoqs_1_1impl__details___1_1_singleton')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classoqs_1_1impl__details___1_1_singleton.html">oqs::impl_details_::Singleton&lt; T &gt;</a></td></tr>
 <tr class="memitem:a202bbc820501eb5527d8e960e8b59479 inherit pub_static_methods_classoqs_1_1impl__details___1_1_singleton"><td class="memItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1impl__details___1_1_singleton.html#a202bbc820501eb5527d8e960e8b59479">get_instance</a> () noexcept(std::is_nothrow_constructible&lt; T &gt;::value)</td></tr>
 <tr class="memdesc:a202bbc820501eb5527d8e960e8b59479 inherit pub_static_methods_classoqs_1_1impl__details___1_1_singleton"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classoqs_1_1impl__details___1_1_singleton.html" title="Singleton class using CRTP pattern. ">Singleton</a> instance (thread-safe) via CRTP pattern.  <a href="classoqs_1_1impl__details___1_1_singleton.html#a202bbc820501eb5527d8e960e8b59479">More...</a><br /></td></tr>
@@ -143,21 +145,9 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:abd8ad0aa7f56c4002fdd9edb829a294b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#abd8ad0aa7f56c4002fdd9edb829a294b">KEMs</a> ()</td></tr>
-<tr class="memdesc:abd8ad0aa7f56c4002fdd9edb829a294b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private default constructor, initialization.  <a href="#abd8ad0aa7f56c4002fdd9edb829a294b">More...</a><br /></td></tr>
-<tr class="separator:abd8ad0aa7f56c4002fdd9edb829a294b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:ab9229ed6cf6b477472a1382d7dac8b7c"><td class="memItemLeft" align="right" valign="top">static std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#ab9229ed6cf6b477472a1382d7dac8b7c">max_number_KEMs_</a> = ::OQS_KEM_alg_count()</td></tr>
-<tr class="memdesc:ab9229ed6cf6b477472a1382d7dac8b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">maximum number of supported <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a>  <a href="#ab9229ed6cf6b477472a1382d7dac8b7c">More...</a><br /></td></tr>
-<tr class="separator:ab9229ed6cf6b477472a1382d7dac8b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac80ec65604921833ec6fc30afe6871d0"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#ac80ec65604921833ec6fc30afe6871d0">supported_KEMs_</a></td></tr>
-<tr class="memdesc:ac80ec65604921833ec6fc30afe6871d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of supported <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a>  <a href="#ac80ec65604921833ec6fc30afe6871d0">More...</a><br /></td></tr>
-<tr class="separator:ac80ec65604921833ec6fc30afe6871d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb19c17f22045de879770bc0e824b9d5"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#abb19c17f22045de879770bc0e824b9d5">enabled_KEMs_</a></td></tr>
-<tr class="memdesc:abb19c17f22045de879770bc0e824b9d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of enabled <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a>  <a href="#abb19c17f22045de879770bc0e824b9d5">More...</a><br /></td></tr>
-<tr class="separator:abb19c17f22045de879770bc0e824b9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92e877a21629089e23de85ae56c525d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html#a92e877a21629089e23de85ae56c525d7">KEMs</a> ()=default</td></tr>
+<tr class="memdesc:a92e877a21629089e23de85ae56c525d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private default constructor.  <a href="#a92e877a21629089e23de85ae56c525d7">More...</a><br /></td></tr>
+<tr class="separator:a92e877a21629089e23de85ae56c525d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -179,8 +169,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Singleton class, contains details about supported/enabled key exchange mechanisms (<a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a>) </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abd8ad0aa7f56c4002fdd9edb829a294b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd8ad0aa7f56c4002fdd9edb829a294b">&#9670;&nbsp;</a></span>KEMs()</h2>
+<a id="a92e877a21629089e23de85ae56c525d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92e877a21629089e23de85ae56c525d7">&#9670;&nbsp;</a></span>KEMs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,19 +187,19 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Private default constructor, initialization. </p>
+<p>Private default constructor. </p>
 <dl class="section note"><dt>Note</dt><dd>Use <a class="el" href="classoqs_1_1impl__details___1_1_singleton.html#a202bbc820501eb5527d8e960e8b59479" title="Singleton instance (thread-safe) via CRTP pattern. ">oqs::KEMs::get_instance()</a> to create an instance </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1504f48ebfdebb3e76bd17803573279"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1504f48ebfdebb3e76bd17803573279">&#9670;&nbsp;</a></span>get_enabled_KEMs()</h2>
+<a id="aee72ec82771eb5092b2bc0331280a766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee72ec82771eb5092b2bc0331280a766">&#9670;&nbsp;</a></span>get_enabled_KEMs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +208,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static const std::vector&lt;std::string&gt;&amp; oqs::KEMs::get_enabled_KEMs </td>
+          <td class="memname">static std::vector&lt;std::string&gt; oqs::KEMs::get_enabled_KEMs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -271,8 +261,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ac806e93a58d17d79ab6356a39a207f12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac806e93a58d17d79ab6356a39a207f12">&#9670;&nbsp;</a></span>get_supported_KEMs()</h2>
+<a id="aa731cc7c39150e8033c9fb580b6a7f6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa731cc7c39150e8033c9fb580b6a7f6e">&#9670;&nbsp;</a></span>get_supported_KEMs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +271,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static const std::vector&lt;std::string&gt;&amp; oqs::KEMs::get_supported_KEMs </td>
+          <td class="memname">static std::vector&lt;std::string&gt; oqs::KEMs::get_supported_KEMs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -369,6 +359,34 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a8d68a984e906be0ac144e3dc2510fd1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d68a984e906be0ac144e3dc2510fd1c">&#9670;&nbsp;</a></span>max_number_KEMs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::size_t oqs::KEMs::max_number_KEMs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum number of supported <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Maximum number of supported <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a> </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="ae2ef71358e0247c694160031bc251d77"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2ef71358e0247c694160031bc251d77">&#9670;&nbsp;</a></span>impl_details_::Singleton&lt; const KEMs &gt;</h2>
@@ -389,79 +407,6 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="abb19c17f22045de879770bc0e824b9d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb19c17f22045de879770bc0e824b9d5">&#9670;&nbsp;</a></span>enabled_KEMs_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; std::string &gt; oqs::KEMs::enabled_KEMs_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>list of enabled <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a> </p>
-
-</div>
-</div>
-<a id="ab9229ed6cf6b477472a1382d7dac8b7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9229ed6cf6b477472a1382d7dac8b7c">&#9670;&nbsp;</a></span>max_number_KEMs_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t oqs::KEMs::max_number_KEMs_ = ::OQS_KEM_alg_count()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>maximum number of supported <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a> </p>
-
-</div>
-</div>
-<a id="ac80ec65604921833ec6fc30afe6871d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac80ec65604921833ec6fc30afe6871d0">&#9670;&nbsp;</a></span>supported_KEMs_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; std::string &gt; oqs::KEMs::supported_KEMs_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>list of supported <a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a> </p>
 
 </div>
 </div>

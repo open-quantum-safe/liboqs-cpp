@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['enabled_5fkems_5f',['enabled_KEMs_',['../classoqs_1_1_k_e_ms.html#abb19c17f22045de879770bc0e824b9d5',1,'oqs::KEMs']]],
-  ['enabled_5fsigs_5f',['enabled_Sigs_',['../classoqs_1_1_sigs.html#ad9275146b16c8c5088c1666e814d7bb8',1,'oqs::Sigs']]]
+  ['is_5feuf_5fcma',['is_euf_cma',['../structoqs_1_1_signature_1_1alg__details__.html#a872ed7c2d32ba7d2843ae9424e734925',1,'oqs::Signature::alg_details_']]],
+  ['is_5find_5fcca',['is_ind_cca',['../structoqs_1_1_key_encapsulation_1_1alg__details__.html#a3967ad4e2b7197222b0da7c2acb69e82',1,'oqs::KeyEncapsulation::alg_details_']]]
 ];

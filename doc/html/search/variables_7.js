@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['max_5fnumber_5fkems_5f',['max_number_KEMs_',['../classoqs_1_1_k_e_ms.html#ab9229ed6cf6b477472a1382d7dac8b7c',1,'oqs::KEMs']]],
-  ['max_5fnumber_5fsigs_5f',['max_number_Sigs_',['../classoqs_1_1_sigs.html#aaa2640fdcf83b7d050dcbb4785c356a0',1,'oqs::Sigs']]]
+  ['secret_5fkey_5f',['secret_key_',['../classoqs_1_1_key_encapsulation.html#a2e69496111c05f1f3404045b2354b240',1,'oqs::KeyEncapsulation::secret_key_()'],['../classoqs_1_1_signature.html#af448d670eba1f51c8a4f868cc12d5805',1,'oqs::Signature::secret_key_()']]],
+  ['sig_5f',['sig_',['../classoqs_1_1_signature.html#a277776e2de2c207a2130c15c06a96f0c',1,'oqs::Signature']]]
 ];

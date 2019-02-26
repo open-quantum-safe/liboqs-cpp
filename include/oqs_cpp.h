@@ -107,35 +107,32 @@ class MechanismNotEnabledError : public std::runtime_error {
  */
 class KEMs final : public impl_details_::Singleton<const KEMs> {
     friend class impl_details_::Singleton<const KEMs>;
-
-    static std::size_t max_number_KEMs_; ///< maximum number of supported KEMs
-    static std::vector<std::string> supported_KEMs_; ///< list of supported KEMs
-    static std::vector<std::string> enabled_KEMs_;   ///< list of enabled KEMs
-
     /**
-     * \brief Private default constructor, initialization
+     * \brief Private default constructor
      * \note Use oqs::KEMs::get_instance() to create an instance
      */
-    KEMs() {
-        for (std::size_t i = 0; i < max_number_KEMs_; ++i) {
-            std::string alg_name = ::OQS_KEM_alg_identifier(i);
-            supported_KEMs_.emplace_back(alg_name);
-            if (is_KEM_enabled(get_KEM_name(i)))
-                enabled_KEMs_.emplace_back(alg_name);
-        }
-    }
+    KEMs() = default;
 
   public:
     /**
-     * \brief KEM algorithm name
-     * \param alg_id Cryptographic algorithm numerical id
-     * \return KEM algorithm name
+     * \brief Maximum number of supported KEMs
+     * \return Maximum number of supported KEMs
      */
-    static std::string get_KEM_name(std::size_t alg_id) {
-        if (alg_id >= max_number_KEMs_)
-            throw std::out_of_range("Algorithm ID out of range");
+    static std::size_t max_number_KEMs() {
+        static std::size_t max_number_KEMs_ = ::OQS_KEM_alg_count();
+        return max_number_KEMs_;
+    }
 
-        return ::OQS_KEM_alg_identifier(alg_id);
+    /**
+     * \brief Checks whether the KEM algorithm \a alg_name is supported
+     * \param alg_name Cryptographic algorithm name
+     * \return True if the KEM algorithm is supported, false otherwise
+     */
+    static bool is_KEM_supported(const std::string& alg_name) {
+        auto supported_KEMs = get_supported_KEMs();
+
+        return std::find(supported_KEMs.begin(), supported_KEMs.end(),
+                         alg_name) != supported_KEMs.end();
     }
 
     /**
@@ -154,37 +151,42 @@ class KEMs final : public impl_details_::Singleton<const KEMs> {
     }
 
     /**
-     * \brief Checks whether the KEM algorithm \a alg_name is supported
-     * \param alg_name Cryptographic algorithm name
-     * \return True if the KEM algorithm is supported, false otherwise
+     * \brief KEM algorithm name
+     * \param alg_id Cryptographic algorithm numerical id
+     * \return KEM algorithm name
      */
-    static bool is_KEM_supported(const std::string& alg_name) {
-        return std::find(supported_KEMs_.begin(), supported_KEMs_.end(),
-                         alg_name) != supported_KEMs_.end();
-    }
+    static std::string get_KEM_name(std::size_t alg_id) {
+        if (alg_id >= max_number_KEMs())
+            throw std::out_of_range("Algorithm ID out of range");
 
-    /**
-     * \brief List of enabled KEM algorithms
-     * \return List of enabled KEM algorithms
-     */
-    static const std::vector<std::string>& get_enabled_KEMs() {
-        return enabled_KEMs_;
+        return ::OQS_KEM_alg_identifier(alg_id);
     }
 
     /**
      * \brief List of supported KEM algorithms
      * \return List of supported KEM algorithms
      */
-    static const std::vector<std::string>& get_supported_KEMs() {
-        return supported_KEMs_;
+    static std::vector<std::string> get_supported_KEMs() {
+        std::vector<std::string> supported_KEMs;
+        for (std::size_t i = 0; i < max_number_KEMs(); ++i)
+            supported_KEMs.emplace_back(get_KEM_name(i));
+
+        return supported_KEMs;
+    }
+
+    /**
+     * \brief List of enabled KEM algorithms
+     * \return List of enabled KEM algorithms
+     */
+    static std::vector<std::string> get_enabled_KEMs() {
+        std::vector<std::string> enabled_KEMs;
+        for (std::size_t i = 0;
+             i < max_number_KEMs() && is_KEM_enabled(get_KEM_name(i)); ++i)
+            enabled_KEMs.emplace_back(get_KEM_name(i));
+
+        return enabled_KEMs;
     }
 }; // class KEMs
-
-// initialization oqs::KEMs of static members
-std::size_t KEMs::max_number_KEMs_ = ::OQS_KEM_alg_count();
-std::vector<std::string> KEMs::supported_KEMs_;
-std::vector<std::string> KEMs::enabled_KEMs_;
-// end initialization of static members
 
 /**
  * \class KeyEncapsulation
@@ -350,42 +352,37 @@ class KeyEncapsulation {
 
 /**
  * \class Sigs
- * \brief Singleton class, contains details about supported/enabled signatures
+ * \brief Singleton class, contains details about supported/enabled signature
+ * mechanisms
  */
 class Sigs final : public impl_details_::Singleton<const Sigs> {
     friend class impl_details_::Singleton<const Sigs>;
-
-    static std::size_t
-        max_number_Sigs_; ///< maximum number of supported signatures
-    static std::vector<std::string>
-        supported_Sigs_; ///< list of supported signatures
-    static std::vector<std::string>
-        enabled_Sigs_; ///< list of enabled signatures
-
     /**
-     * \brief Private default constructor, initialization
+     * \brief Private default constructor
      * \note Use oqs::Sigs::get_instance() to create an instance
      */
-    Sigs() {
-        for (std::size_t i = 0; i < max_number_Sigs_; ++i) {
-            std::string alg_name = ::OQS_SIG_alg_identifier(i);
-            supported_Sigs_.emplace_back(alg_name);
-            if (is_Sig_enabled(get_Sig_name(i)))
-                enabled_Sigs_.emplace_back(alg_name);
-        }
-    }
+    Sigs() = default;
 
   public:
     /**
-     * \brief Signature algorithm name
-     * \param alg_id Cryptographic algorithm numerical id
-     * \return Signature algorithm name
+     * \brief Maximum number of supported signatures
+     * \return Maximum number of supported signatures
      */
-    static std::string get_Sig_name(std::size_t alg_id) {
-        if (alg_id >= max_number_Sigs_)
-            throw std::out_of_range("Algorithm ID out of range");
+    static std::size_t max_number_Sigs() {
+        static std::size_t max_number_Sigs_ = ::OQS_SIG_alg_count();
+        return max_number_Sigs_;
+    }
 
-        return ::OQS_SIG_alg_identifier(alg_id);
+    /**
+     * \brief Checks whether the signature algorithm \a alg_name is supported
+     * \param alg_name Cryptographic algorithm name
+     * \return True if the signature algorithm is supported, false otherwise
+     */
+    static bool is_Sig_supported(const std::string& alg_name) {
+        auto supported_Sigs = get_supported_Sigs();
+
+        return std::find(supported_Sigs.begin(), supported_Sigs.end(),
+                         alg_name) != supported_Sigs.end();
     }
 
     /**
@@ -404,37 +401,42 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
     }
 
     /**
-     * \brief Checks whether the signature algorithm \a alg_name is supported
-     * \param alg_name Cryptographic algorithm name
-     * \return True if the signature algorithm is supported, false otherwise
+     * \brief Signature algorithm name
+     * \param alg_id Cryptographic algorithm numerical id
+     * \return Signature algorithm name
      */
-    static bool is_Sig_supported(const std::string& alg_name) {
-        return std::find(supported_Sigs_.begin(), supported_Sigs_.end(),
-                         alg_name) != supported_Sigs_.end();
-    }
+    static std::string get_Sig_name(std::size_t alg_id) {
+        if (alg_id >= max_number_Sigs())
+            throw std::out_of_range("Algorithm ID out of range");
 
-    /**
-     * \brief List of enabled signature algorithms
-     * \return List of enabled signature algorithms
-     */
-    static const std::vector<std::string>& get_enabled_Sigs() {
-        return enabled_Sigs_;
+        return ::OQS_SIG_alg_identifier(alg_id);
     }
 
     /**
      * \brief List of supported signature algorithms
      * \return List of supported signature algorithms
      */
-    static const std::vector<std::string>& get_supported_Sigs() {
-        return supported_Sigs_;
+    static std::vector<std::string> get_supported_Sigs() {
+        std::vector<std::string> supported_Sigs;
+        for (std::size_t i = 0; i < max_number_Sigs(); ++i)
+            supported_Sigs.emplace_back(get_Sig_name(i));
+
+        return supported_Sigs;
+    }
+
+    /**
+     * \brief List of enabled KEM algorithms
+     * \return List of enabled KEM algorithms
+     */
+    static std::vector<std::string> get_enabled_Sigs() {
+        std::vector<std::string> enabled_Sigs;
+        for (std::size_t i = 0;
+             i < max_number_Sigs() && is_Sig_enabled(get_Sig_name(i)); ++i)
+            enabled_Sigs.emplace_back(get_Sig_name(i));
+
+        return enabled_Sigs;
     }
 }; // class Sigs
-
-// initialization of oqs::Sigs static members
-std::size_t Sigs::max_number_Sigs_ = ::OQS_SIG_alg_count();
-std::vector<std::string> Sigs::supported_Sigs_;
-std::vector<std::string> Sigs::enabled_Sigs_;
-// end initialization of static members
 
 /**
  * \class Signature
@@ -615,7 +617,7 @@ static const Sigs& sigs_ =
  * \param rhs Signature instance
  * \return Reference to the output stream
  */
-std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
+inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
     bool first = true;
     for (auto&& elem : rhs) {
         if (first) {
@@ -635,8 +637,8 @@ std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
  * \param rhs Signature instance
  * \return Reference to the output stream
  */
-std::ostream& operator<<(std::ostream& os,
-                         const std::vector<std::string>& rhs) {
+inline std::ostream& operator<<(std::ostream& os,
+                                const std::vector<std::string>& rhs) {
     bool first = true;
     for (auto&& elem : rhs) {
         if (first) {
@@ -659,7 +661,7 @@ inline namespace oqs_literals {
  * \param length C-style string length (deduced automatically by the compiler)
  * \return The byte representation of the input C-style string
  */
-oqs::bytes operator""_bytes(const char* c_str, std::size_t length) {
+inline oqs::bytes operator""_bytes(const char* c_str, std::size_t length) {
     oqs::bytes result(length);
     for (std::size_t i = 0; i < length; ++i)
         result[i] = static_cast<uint8_t>(c_str[i]);
