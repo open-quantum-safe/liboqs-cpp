@@ -17,7 +17,7 @@ matrix:
       before_install:
         - rm -rf /usr/local/include/c++
         - brew update
-        - brew install gcc6 autoconf automake
+        - brew install gcc6
 
     # OSX gcc6
     - os: osx
@@ -26,7 +26,7 @@ matrix:
       before_install:
         - rm -rf /usr/local/include/c++
         - brew update
-        - brew install gcc6 autoconf automake
+        - brew install gcc6
         - export CXX="g++-6" CC="gcc-6"
         - sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
 
@@ -37,17 +37,7 @@ script:
   - $CXX --version
 
   # Install liboqs
-  - git clone https://github.com/open-quantum-safe/liboqs
-  - cd liboqs
-  - git checkout master
-  - echo Installing liboqs...
-  - autoreconf -i &>/dev/null
-  - ./configure &>/dev/null
-  - make clean &>/dev/null
-  - make -j &>/dev/null
-  - sudo make install
-  - echo Done installing liboqs
-  - cd ..
+  - sh ./travis/install_liboqs.sh &>/dev/null
 
   # Build the examples
   - mkdir build
