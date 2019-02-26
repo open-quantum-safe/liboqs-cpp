@@ -30,7 +30,16 @@ notifications:
 
 script:
   - $CXX --version
-  
+
+  # Install liboqs
+  - git clone https://github.com/open-quantum-safe/liboqs
+  - git checkout master
+  - autoreconf -i
+  - configure
+  - make clean
+  - make
+  - sudo make install
+
   # Build the examples
   - mkdir build
   - cd build
