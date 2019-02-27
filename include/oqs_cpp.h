@@ -624,6 +624,7 @@ static const Sigs& sigs_ =
  * \return Reference to the output stream
  */
 inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
+    std::ios_base::fmtflags saved{os.flags()}; // save the ostream flags
     bool first = true;
     for (auto&& elem : rhs) {
         if (first) {
@@ -633,7 +634,7 @@ inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
             os << " " << std::hex << std::uppercase << static_cast<int>(elem);
         }
     }
-    os << std::dec;
+    os.flags(saved); // restore the ostream flags
 
     return os;
 }
