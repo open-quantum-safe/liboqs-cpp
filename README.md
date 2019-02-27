@@ -86,8 +86,4 @@ Team
 
 The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
-### Contributors
-
-Contributors to the liboqs-cpp wrapper include:
-
-- [Vlad Gheorghiu](http://vsoftco.github.io) (evolutionQ, University of Waterloo)
+liboqs-cpp was developed by [Vlad Gheorghiu](http://vsoftco.github.io) at evolutionQ and University of Waterloo.
