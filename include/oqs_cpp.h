@@ -269,7 +269,7 @@ class KeyEncapsulation {
     const alg_details_& get_details() const { return details_; }
 
     /**
-     * \brief Generate public key
+     * \brief Generate public key/secret key pair
      * \return Public key
      */
     bytes generate_keypair() {
@@ -519,7 +519,7 @@ class Signature {
     const alg_details_& get_details() const { return details_; }
 
     /**
-     * \brief Generate public key
+     * \brief Generate public key/secret key pair
      * \return Public key
      */
     bytes generate_keypair() {
