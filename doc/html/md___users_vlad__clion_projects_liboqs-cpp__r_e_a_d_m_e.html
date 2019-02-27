@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__clion_projects_liboqs
 <div class="textblock"><h2>C++ bindings for liboqs</h2>
 <p><b>Build status:</b></p>
 <p><a href="https://travis-ci.com/open-quantum-safe/liboqs-cpp"></a> </p><hr/>
-<p><b>liboqs-cpp</b> offers a C++ wrapper for the <a href="https://openquantumsafe.org/">Open Quantum Safe</a> <a href="https://github.com/open-quantum-safe/liboqs/">liboqs</a> C library.</p>
+<p><b>liboqs-cpp</b> offers a C++ wrapper for the <a href="https://openquantumsafe.org/">Open Quantum Safe</a> <a href="https://github.com/open-quantum-safe/liboqs/">liboqs</a> C library. The wrapper is written in standard C++11.</p>
 <h2>Contents </h2>
 <p>liboqs-cpp is a header-only wrapper. The project contains the following files:</p>
 <ul>
@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__clion_projects_liboqs
 <h2>liboqs installation </h2>
 <p>liboqs-cpp depends on the <a href="https://github.com/open-quantum-safe/liboqs">liboqs</a> C library; liboqs must be compiled as a Linux/macOS static library or as a Windows DLL, and be visible to the wrapper, e.g. installed in a system-wide folder.</p>
 <h2>Compiling on UNIX-like platforms </h2>
-<p>To use the wrapper, the user must simply <code>#include "oqs_cpp.h"</code>. The wrapper contains a CMake build system for both examples and unit tests. To compile and run the examples, create a <code>build</code> folder inside the root folder of the project, change directory to it, then type</p>
+<p>To use the wrapper, the user must have access to a C++11 compliant compiler, then simply <code>#include "oqs_cpp.h"</code> in her/his program. The wrapper contains a CMake build system for both examples and unit tests. To compile and run the examples, create a <code>build</code> folder inside the root folder of the project, change directory to it, then type</p>
 <p><code>cmake ..; make -j;</code></p>
 <p>The above commands build <code>oqs_cpp_kem</code> and <code>oqs_cpp_sig</code> examples, assuming the CMake build system is available on the user's platform.</p>
 <p>To compile and run the unit tests, first <code>cd unit_tests</code>, then create a <code>build</code> folder inside <code>unit_tests</code>, change directory to it, and finally type</p>
@@ -129,11 +129,7 @@ $(document).ready(function(){initNavTree('md___users_vlad__clion_projects_liboqs
 <p>liboqs-cpp is licensed under the MIT License; see <a href="https://github.com/open-quantum-safe/liboqs-cpp/blob/master/LICENSE">LICENSE</a> for details.</p>
 <h2>Team </h2>
 <p>The Open Quantum Safe project is led by <a href="https://www.douglas.stebila.ca/research/">Douglas Stebila</a> and <a href="http://faculty.iqc.uwaterloo.ca/mmosca/">Michele Mosca</a> at the University of Waterloo.</p>
-<h3>Contributors</h3>
-<p>Contributors to the liboqs-cpp wrapper include:</p>
-<ul>
-<li><a href="http://vsoftco.github.io">Vlad Gheorghiu</a> (evolutionQ, University of Waterloo) </li>
-</ul>
+<p>liboqs-cpp was developed by <a href="http://vsoftco.github.io">Vlad Gheorghiu</a> at evolutionQ and University of Waterloo. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
