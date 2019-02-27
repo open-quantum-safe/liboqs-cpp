@@ -25,4 +25,6 @@ int main() {
     std::cout << std::boolalpha;
     std::cout << "\n\nValid signature? " << is_valid << '\n';
     std::cout << std::noboolalpha;
+
+    std::cout << oqs::OQS_STATUS::OQS_ERROR << ' ';
 }

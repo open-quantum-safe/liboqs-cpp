@@ -31,6 +31,8 @@ namespace oqs {
 using byte = std::uint8_t;       ///< byte (unsigned)
 using bytes = std::vector<byte>; ///< vector of bytes (unsigned)
 
+using ::OQS_STATUS; ///< inject the ::OQS_STATUS into the OQS namespace
+
 /**
  * \namespace impl_details_
  * \brief Implementation details
@@ -631,6 +633,7 @@ inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
             os << " " << std::hex << std::uppercase << static_cast<int>(elem);
         }
     }
+    os << std::dec;
 
     return os;
 }
