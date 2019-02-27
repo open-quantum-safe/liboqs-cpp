@@ -8,7 +8,7 @@
 
 ---
 
-**liboqs-cpp** offers a C++ wrapper for the [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library.
+**liboqs-cpp** offers a C++ wrapper for the [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library. The wrapper is written in standard C++11.
 
 Contents
 --------
@@ -39,7 +39,8 @@ liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) 
 Compiling on UNIX-like platforms
 --------------------------------------------
 
-To use the wrapper, the user must simply `#include "oqs_cpp.h"`. The wrapper contains
+To use the wrapper, the user must have access to a C++11 compliant compiler, 
+then simply `#include "oqs_cpp.h"` in her/his program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
 directory to it, then type 
 
