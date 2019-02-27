@@ -15,10 +15,11 @@ Contents
 
 liboqs-cpp is a header-only wrapper. The project contains the following files:
  
- - `./include/oqs_cpp.h`: the main header filed
- - `./examples/kem.cpp`: key encapsulation example
- - `./examples/sig.cpp`: signature example
- - `./unit_tests`: unit tests written using Google Test (included)
+ - `include/oqs_cpp.h`: the main header filed
+ - `examples/kem.cpp`: key encapsulation example
+ - `examples/sig.cpp`: signature example
+ - `unit_tests`: unit tests written using Google Test (included)
+ - `doc`: Doxygen-generated detailed documentation
 
 Usage
 -----
@@ -28,7 +29,7 @@ To avoid name collisions, liboqs-cpp includes all its code inside the namespace 
 
 `oqs::KeyEncapsulation` and/or `oqs::Signature` must be instantiated with a string identifying one of mechanisms supported by liboqs; these can be enumerated using the `oqs::KEMs::get_enabled_KEM_mechanisms()` and `oqs::Sigs::get_enabled_sig_mechanisms()` member functions. 
 
-The examples in `./examples` file details the wrapper's API.
+The examples in `examples` file details the wrapper's API.
 
 liboqs installation
 -------------------
@@ -39,19 +40,19 @@ Compiling on UNIX-like platforms
 --------------------------------------------
 
 To use the wrapper, the user must simply `#include "oqs_cpp.h"`. The wrapper contains
-a CMake build system for both examples and unit tests. To compile and run the examples, create a `./build` folder inside the root folder of the project, change
+a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
 directory to it, then type 
 
 `cmake ..; make -j;`
 
-The above commands build `./oqs_cpp_kem` and `./oqs_cpp_sig` examples, assuming
+The above commands build `oqs_cpp_kem` and `oqs_cpp_sig` examples, assuming
 the CMake build system is available on the user's platform.
 
-To compile and run the unit tests, first `cd ./unit_tests`, then create a `./build` folder inside `./unit_tests`, change directory to it, and finally type
+To compile and run the unit tests, first `cd unit_tests`, then create a `build` folder inside `unit_tests`, change directory to it, and finally type
 
 `cmake ..; make -j;`
 
-The above commands build `./oqs_cpp_testing` suite of unit tests.
+The above commands build `oqs_cpp_testing` suite of unit tests.
 
 liboqs-cpp has been extensively tested on Linux and macOS systems. Continuous
 integration is provided via Travis CI.
