@@ -34,7 +34,7 @@ The examples in `examples` file details the wrapper's API.
 liboqs installation
 -------------------
 
-liboqs-cpp depends on the [**liboqs**](https://github.com/open-quantum-safe/liboqs) C library; liboqs must be compiled as a Linux/macOS static library or as a Windows DLL, and be visible to the wrapper, e.g. installed in a system-wide folder.
+liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) C library; liboqs must be compiled as a Linux/macOS static library or as a Windows DLL, and be visible to the wrapper, e.g. installed in a system-wide folder.
 
 Compiling on UNIX-like platforms
 --------------------------------------------
