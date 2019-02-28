@@ -7,7 +7,7 @@
 
 #include "oqs_cpp.h"
 
-TEST(oqs_KeyEncapsulationMechanism, AllTests) {
+TEST(oqs_KeyEncapsulationMechanism, Enabled) {
     std::cout << "Testing KEMs:\n";
     for (auto&& kem : oqs::KEMs::get_enabled_KEMs()) {
         std::cout << kem << '\n';
@@ -25,4 +25,9 @@ TEST(oqs_KeyEncapsulationMechanism, AllTests) {
         EXPECT_THAT(shared_secret_client,
                     ::testing::ContainerEq(shared_secret_server));
     }
+}
+
+TEST(oqs_KeyEncapsulationMechanism, NotSupported) {
+    EXPECT_THROW(oqs::KeyEncapsulation{"unsupported_kem"},
+                 oqs::MechanismNotSupportedError);
 }

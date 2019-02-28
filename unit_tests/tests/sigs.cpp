@@ -6,7 +6,7 @@
 
 #include "oqs_cpp.h"
 
-TEST(oqs_Signature, AllTests) {
+TEST(oqs_Signature, Enabled) {
     std::cout << "Testing signatures:\n";
     for (auto&& sig : oqs::Sigs::get_enabled_sigs()) {
         std::cout << sig << '\n';
@@ -22,4 +22,9 @@ TEST(oqs_Signature, AllTests) {
 
         EXPECT_TRUE(is_valid);
     }
+}
+
+TEST(oqs_Signature, NotSupported) {
+    EXPECT_THROW(oqs::Signature{"unsupported_sig"},
+                 oqs::MechanismNotSupportedError);
 }
