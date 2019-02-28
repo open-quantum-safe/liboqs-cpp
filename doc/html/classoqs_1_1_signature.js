@@ -13,5 +13,5 @@ var classoqs_1_1_signature =
     [ "alg_name_", "classoqs_1_1_signature.html#ab44f06c0d243d112ad2d984388f6cf9f", null ],
     [ "details_", "classoqs_1_1_signature.html#a28b2857a9cbdf8cbd5f48153fc0711c6", null ],
     [ "secret_key_", "classoqs_1_1_signature.html#af448d670eba1f51c8a4f868cc12d5805", null ],
-    [ "sig_", "classoqs_1_1_signature.html#a277776e2de2c207a2130c15c06a96f0c", null ]
+    [ "sig_", "classoqs_1_1_signature.html#a8c8262260eefb723f118577d20851029", null ]
 ];
