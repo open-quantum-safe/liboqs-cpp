@@ -297,7 +297,7 @@ class KeyEncapsulation {
         OQS_STATUS rv_ =
             OQS_KEM_encaps(kem_.get(), ciphertext.data(), shared_secret.data(),
                            public_key.data());
-        if (rv_ != OQS_STATUS::OQS_SUCCESS)
+        if (rv_ != OQS_SUCCESS)
             throw std::runtime_error("Can not encapsulate secret");
 
         return std::make_pair(ciphertext, shared_secret);
@@ -313,7 +313,7 @@ class KeyEncapsulation {
         OQS_STATUS rv_ = OQS_KEM_decaps(kem_.get(), shared_secret.data(),
                                         ciphertext.data(), secret_key_.data());
 
-        if (rv_ != OQS_STATUS::OQS_SUCCESS)
+        if (rv_ != OQS_SUCCESS)
             throw std::runtime_error("Can not decapsulate secret");
 
         return shared_secret;
@@ -521,7 +521,7 @@ class Signature {
 
         OQS_STATUS rv_ =
             OQS_SIG_keypair(sig_.get(), public_key.data(), secret_key_.data());
-        if (rv_ != OQS_STATUS::OQS_SUCCESS)
+        if (rv_ != OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
 
         return public_key;
@@ -545,7 +545,7 @@ class Signature {
             OQS_SIG_sign(sig_.get(), signature.data(), &sig_len, message.data(),
                          message.size(), secret_key_.data());
 
-        if (rv_ != OQS_STATUS::OQS_SUCCESS)
+        if (rv_ != OQS_SUCCESS)
             throw std::runtime_error("Can not sign message");
 
         signature.resize(sig_len);
@@ -566,7 +566,7 @@ class Signature {
                                         message.size(), signature.data(),
                                         signature.size(), public_key.data());
 
-        if (rv_ != OQS_STATUS::OQS_SUCCESS)
+        if (rv_ != OQS_SUCCESS)
             throw std::runtime_error("Can not verify signature");
 
         return true;
