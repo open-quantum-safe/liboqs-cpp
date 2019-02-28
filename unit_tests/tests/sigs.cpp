@@ -8,8 +8,8 @@
 
 TEST(oqs_Signature, AllTests) {
     std::cout << "Testing signatures:\n";
-    for (auto&& sig : oqs::Sigs::get_enabled_Sigs()) {
-        std::cout << sig << std::endl;
+    for (auto&& sig : oqs::Sigs::get_enabled_sigs()) {
+        std::cout << sig << '\n';
 
         oqs::bytes message = "This is our favourite message to sign"_bytes;
 

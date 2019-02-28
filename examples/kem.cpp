@@ -8,6 +8,7 @@
 
 int main() {
     std::cout << "Supported KEMs:\n" << oqs::KEMs::get_supported_KEMs();
+    std::cout << "Supported KEMs:\n" << oqs::KEMs::get_supported_KEMs();
     std::cout << "\n\nEnabled KEMs:\n" << oqs::KEMs::get_enabled_KEMs();
 
     oqs::KeyEncapsulation client{"DEFAULT"};

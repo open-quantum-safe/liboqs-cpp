@@ -10,7 +10,7 @@
 TEST(oqs_KeyEncapsulationMechanism, AllTests) {
     std::cout << "Testing KEMs:\n";
     for (auto&& kem : oqs::KEMs::get_enabled_KEMs()) {
-        std::cout << kem << std::endl;
+        std::cout << kem << '\n';
 
         oqs::KeyEncapsulation client{kem};
         oqs::bytes client_public_key = client.generate_keypair();

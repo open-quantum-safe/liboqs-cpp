@@ -107,6 +107,7 @@ class MechanismNotEnabledError : public std::runtime_error {
  */
 class KEMs final : public impl_details_::Singleton<const KEMs> {
     friend class impl_details_::Singleton<const KEMs>;
+
     /**
      * \brief Private default constructor
      * \note Use oqs::KEMs::get_instance() to create an instance
@@ -163,26 +164,36 @@ class KEMs final : public impl_details_::Singleton<const KEMs> {
     }
 
     /**
-     * \brief List of supported KEM algorithms
-     * \return List of supported KEM algorithms
+     * \brief Vector of supported KEM algorithms
+     * \return Vector of supported KEM algorithms
      */
-    static std::vector<std::string> get_supported_KEMs() {
-        std::vector<std::string> supported_KEMs;
-        for (std::size_t i = 0; i < max_number_KEMs(); ++i)
-            supported_KEMs.emplace_back(get_KEM_name(i));
+    static const std::vector<std::string>& get_supported_KEMs() {
+        static std::vector<std::string> supported_KEMs;
+        static bool fnc_already_invoked = false; // function was already invoked
+
+        if (!fnc_already_invoked) {
+            for (std::size_t i = 0; i < max_number_KEMs(); ++i)
+                supported_KEMs.emplace_back(get_KEM_name(i));
+            fnc_already_invoked = true;
+        }
 
         return supported_KEMs;
     }
 
     /**
-     * \brief List of enabled KEM algorithms
-     * \return List of enabled KEM algorithms
+     * \brief Vector of enabled KEM algorithms
+     * \return Vector of enabled KEM algorithms
      */
-    static std::vector<std::string> get_enabled_KEMs() {
-        std::vector<std::string> enabled_KEMs;
-        for (auto&& elem : get_supported_KEMs())
-            if (is_KEM_enabled(elem))
-                enabled_KEMs.emplace_back(elem);
+    static const std::vector<std::string>& get_enabled_KEMs() {
+        static std::vector<std::string> enabled_KEMs;
+        static bool fnc_already_invoked = false; // function was already invoked
+
+        if (!fnc_already_invoked) {
+            for (auto&& elem : get_supported_KEMs())
+                if (is_KEM_enabled(elem))
+                    enabled_KEMs.emplace_back(elem);
+            fnc_already_invoked = true;
+        }
 
         return enabled_KEMs;
     }
@@ -222,13 +233,9 @@ class KeyEncapsulation {
     KeyEncapsulation(const std::string& alg_name, const bytes& secret_key = {})
         : alg_name_{alg_name} {
         // KEM not enabled
-        if (std::find(KEMs::get_enabled_KEMs().begin(),
-                      KEMs::get_enabled_KEMs().end(),
-                      alg_name) == KEMs::get_enabled_KEMs().end()) {
+        if (!KEMs::is_KEM_enabled(alg_name)) {
             // perhaps it's supported
-            if (std::find(KEMs::get_supported_KEMs().begin(),
-                          KEMs::get_supported_KEMs().end(),
-                          alg_name) != KEMs::get_supported_KEMs().end())
+            if (KEMs::is_KEM_supported(alg_name))
                 throw MechanismNotEnabledError(alg_name);
             else
                 throw MechanismNotSupportedError(alg_name);
@@ -356,6 +363,7 @@ class KeyEncapsulation {
  */
 class Sigs final : public impl_details_::Singleton<const Sigs> {
     friend class impl_details_::Singleton<const Sigs>;
+
     /**
      * \brief Private default constructor
      * \note Use oqs::Sigs::get_instance() to create an instance
@@ -367,9 +375,9 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
      * \brief Maximum number of supported signatures
      * \return Maximum number of supported signatures
      */
-    static std::size_t max_number_Sigs() {
-        static std::size_t max_number_Sigs_ = OQS_SIG_alg_count();
-        return max_number_Sigs_;
+    static std::size_t max_number_sigs() {
+        static std::size_t max_number_sigs_ = OQS_SIG_alg_count();
+        return max_number_sigs_;
     }
 
     /**
@@ -377,11 +385,11 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
      * \param alg_name Cryptographic algorithm name
      * \return True if the signature algorithm is supported, false otherwise
      */
-    static bool is_Sig_supported(const std::string& alg_name) {
-        auto supported_Sigs = get_supported_Sigs();
+    static bool is_sig_supported(const std::string& alg_name) {
+        auto supported_sigs = get_supported_sigs();
 
-        return std::find(supported_Sigs.begin(), supported_Sigs.end(),
-                         alg_name) != supported_Sigs.end();
+        return std::find(supported_sigs.begin(), supported_sigs.end(),
+                         alg_name) != supported_sigs.end();
     }
 
     /**
@@ -389,7 +397,7 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
      * \param alg_name Cryptographic algorithm name
      * \return True if the signature algorithm is enabled, false otherwise
      */
-    static bool is_Sig_enabled(const std::string& alg_name) {
+    static bool is_sig_enabled(const std::string& alg_name) {
         OQS_SIG* sig = OQS_SIG_new(alg_name.c_str());
         if (sig) {
             OQS_SIG_free(sig);
@@ -404,36 +412,46 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
      * \param alg_id Cryptographic algorithm numerical id
      * \return Signature algorithm name
      */
-    static std::string get_Sig_name(std::size_t alg_id) {
-        if (alg_id >= max_number_Sigs())
+    static std::string get_sig_name(std::size_t alg_id) {
+        if (alg_id >= max_number_sigs())
             throw std::out_of_range("Algorithm ID out of range");
 
         return OQS_SIG_alg_identifier(alg_id);
     }
 
     /**
-     * \brief List of supported signature algorithms
-     * \return List of supported signature algorithms
+     * \brief Vector of supported signature algorithms
+     * \return Vector of supported signature algorithms
      */
-    static std::vector<std::string> get_supported_Sigs() {
-        std::vector<std::string> supported_Sigs;
-        for (std::size_t i = 0; i < max_number_Sigs(); ++i)
-            supported_Sigs.emplace_back(get_Sig_name(i));
+    static const std::vector<std::string>& get_supported_sigs() {
+        static std::vector<std::string> supported_sigs;
+        static bool fnc_already_invoked = false;
 
-        return supported_Sigs;
+        if (!fnc_already_invoked) {
+            for (std::size_t i = 0; i < max_number_sigs(); ++i)
+                supported_sigs.emplace_back(get_sig_name(i));
+            fnc_already_invoked = true;
+        }
+
+        return supported_sigs;
     }
 
     /**
-     * \brief List of enabled KEM algorithms
-     * \return List of enabled KEM algorithms
+     * \brief Vector of enabled signature algorithms
+     * \return Vector of enabled signature algorithms
      */
-    static std::vector<std::string> get_enabled_Sigs() {
-        std::vector<std::string> enabled_Sigs;
-        for (auto&& elem : get_supported_Sigs())
-            if (is_Sig_enabled(elem))
-                enabled_Sigs.emplace_back(elem);
+    static const std::vector<std::string>& get_enabled_sigs() {
+        static std::vector<std::string> enabled_sigs;
+        static bool fnc_already_invoked = false;
 
-        return enabled_Sigs;
+        if (!fnc_already_invoked) {
+            for (auto&& elem : get_supported_sigs())
+                if (is_sig_enabled(elem))
+                    enabled_sigs.emplace_back(elem);
+            fnc_already_invoked = true;
+        }
+
+        return enabled_sigs;
     }
 }; // class Sigs
 
@@ -469,14 +487,10 @@ class Signature {
      */
     Signature(const std::string& alg_name, const bytes& secret_key = {})
         : alg_name_{alg_name} {
-        // Sig not enabled
-        if (std::find(Sigs::get_enabled_Sigs().begin(),
-                      Sigs::get_enabled_Sigs().end(),
-                      alg_name) == Sigs::get_enabled_Sigs().end()) {
+        // signature not enabled
+        if (!Sigs::is_sig_enabled(alg_name)) {
             // perhaps it's supported
-            if (std::find(Sigs::get_supported_Sigs().begin(),
-                          Sigs::get_supported_Sigs().end(),
-                          alg_name) != Sigs::get_supported_Sigs().end())
+            if (Sigs::is_sig_supported(alg_name))
                 throw MechanismNotEnabledError(alg_name);
             else
                 throw MechanismNotSupportedError(alg_name);
@@ -613,7 +627,7 @@ static const Sigs& sigs_ =
 /**
  * \brief std::ostream extraction operator for oqs::bytes
  * \param os Output stream
- * \param rhs Signature instance
+ * \param rhs Vector of oqs::byte
  * \return Reference to the output stream
  */
 inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
@@ -635,7 +649,7 @@ inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
 /**
  * \brief std::ostream extraction operator for vectors of strings
  * \param os Output stream
- * \param rhs Signature instance
+ * \param rhs Vector of std::string
  * \return Reference to the output stream
  */
 inline std::ostream& operator<<(std::ostream& os,
