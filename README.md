@@ -42,7 +42,7 @@ Compiling on UNIX-like platforms
 To use the wrapper, the user must have access to a C++11 compliant compiler, 
 then simply `#include "oqs_cpp.h"` in her/his program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
-directory to it, then type 
+directory to `build`, then type 
 
 `cmake ..; make -j;`
 
