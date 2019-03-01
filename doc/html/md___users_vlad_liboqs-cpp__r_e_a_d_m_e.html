@@ -98,11 +98,11 @@ $(document).ready(function(){initNavTree('md___users_vlad_liboqs-cpp__r_e_a_d_m_
 <h2>Contents </h2>
 <p>liboqs-cpp is a header-only wrapper. The project contains the following files and folders:</p>
 <ul>
-<li><code><a class="el" href="oqs__cpp_8h.html" title="Main header file for the liboqs C++ wrapper. ">include/oqs_cpp.h</a></code>: the main header file</li>
-<li><code>examples/kem.cpp</code>: key encapsulation example</li>
-<li><code>examples/sig.cpp</code>: signature example</li>
-<li><code>unit_tests</code>: unit tests written using Google Test (included)</li>
-<li><code>doc</code>: Doxygen-generated detailed documentation</li>
+<li>**<code>doc</code>**: Doxygen-generated detailed documentation</li>
+<li>**<code>examples/</code>**<code>kem.cpp</code>: key encapsulation example</li>
+<li>**<code>examples/</code>**<code>sig.cpp</code>: signature example</li>
+<li>**<code><a class="el" href="oqs__cpp_8h.html" title="Main header file for the liboqs C++ wrapper. ">include/oqs_cpp.h</a></code>: the main header file of the wrapper**</li>
+<li>**<code>unit_tests</code>**: unit tests written using Google Test (included)</li>
 </ul>
 <h2>Usage </h2>
 <p>To avoid name collisions, liboqs-cpp includes all of its code inside the namespace <code>oqs</code>. liboqs-cpp defines four main classes: <code><a class="el" href="classoqs_1_1_key_encapsulation.html" title="Key encapsulation mechanisms. ">oqs::KeyEncapsulation</a></code> and <code><a class="el" href="classoqs_1_1_signature.html" title="Signature mechanisms. ">oqs::Signature</a></code>, providing post-quantum key encapsulation and signture mechanisms, respectively, and <code><a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">oqs::KEMs</a></code> and <code><a class="el" href="classoqs_1_1_sigs.html" title="Singleton class, contains details about supported/enabled signature mechanisms. ">oqs::Sigs</a></code>, containing only static member functions that provide information related to the available key encapsulation mechanisms or signature mechanism, respectively.</p>
