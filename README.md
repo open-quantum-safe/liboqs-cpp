@@ -54,7 +54,7 @@ To compile and run the unit tests, first `cd unit_tests`, then create a `build` 
 
 `cmake ..; make -j;`
 
-The above commands build `oqs_cpp_testing` suite of unit tests.
+The above commands build `./tests/oqs_cpp_testing` suite of unit tests.
 
 liboqs-cpp has been extensively tested on Linux and macOS systems. Continuous
 integration is provided via Travis CI.
