@@ -19,7 +19,7 @@ and folders:
  - **`doc`**: Doxygen-generated detailed documentation
  - **`examples/`**`kem.cpp`: key encapsulation example
  - **`examples/`**`sig.cpp`: signature example
- - **`include/oqs_cpp.h`: the main header file of the wrapper**
+ - **`include/oqs_cpp.h`: main header file for the wrapper**
  - **`unit_tests`**: unit tests written using Google Test (included)
 
 Usage
