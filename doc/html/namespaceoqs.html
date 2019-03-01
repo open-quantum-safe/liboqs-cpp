@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('namespaceoqs.html','');});
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">oqs Namespace Reference</div>  </div>
 </div><!--header-->
@@ -101,14 +102,11 @@ $(document).ready(function(){initNavTree('namespaceoqs.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceoqs_1_1impl__details__"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoqs_1_1impl__details__.html">impl_details_</a></td></tr>
+<tr class="memitem:namespaceoqs_1_1internal"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoqs_1_1internal.html">internal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1hex__chop.html">hex_chop</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::ostream manipulator for long vectors of <a class="el" href="namespaceoqs.html#a802843a8319a96744fee17bc75011ef1" title="byte (unsigned) ">oqs::byte</a>, use it to display only a small number of elements from the beginning and end of the vector  <a href="classoqs_1_1hex__chop.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_k_e_ms.html">KEMs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Singleton class, contains details about supported/enabled key exchange mechanisms (<a class="el" href="classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ...">KEMs</a>)  <a href="classoqs_1_1_k_e_ms.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,6 +134,12 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a418a2b5eb3a9e3460b1cb590df54490d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoqs.html#a418a2b5eb3a9e3460b1cb590df54490d">bytes</a> = std::vector&lt; <a class="el" href="namespaceoqs.html#a802843a8319a96744fee17bc75011ef1">byte</a> &gt;</td></tr>
 <tr class="memdesc:a418a2b5eb3a9e3460b1cb590df54490d"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector of bytes (unsigned)  <a href="#a418a2b5eb3a9e3460b1cb590df54490d">More...</a><br /></td></tr>
 <tr class="separator:a418a2b5eb3a9e3460b1cb590df54490d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ac05bf6bcac8c0b034eab7e71b1755e66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoqs_1_1internal_1_1_hex_chop.html">internal::HexChop</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoqs.html#ac05bf6bcac8c0b034eab7e71b1755e66">hex_chop</a> (const <a class="el" href="namespaceoqs.html#a418a2b5eb3a9e3460b1cb590df54490d">oqs::bytes</a> &amp;v, std::size_t start=8, std::size_t end=8)</td></tr>
+<tr class="memdesc:ac05bf6bcac8c0b034eab7e71b1755e66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance of <a class="el" href="classoqs_1_1internal_1_1_hex_chop.html" title="std::ostream manipulator for long vectors of oqs::byte, use it to display only a small number of elem...">oqs::internal::HexChop</a>.  <a href="#ac05bf6bcac8c0b034eab7e71b1755e66">More...</a><br /></td></tr>
+<tr class="separator:ac05bf6bcac8c0b034eab7e71b1755e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main namespace for the liboqs C++ wrapper. </p>
@@ -169,6 +173,60 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p>vector of bytes (unsigned) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ac05bf6bcac8c0b034eab7e71b1755e66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac05bf6bcac8c0b034eab7e71b1755e66">&#9670;&nbsp;</a></span>hex_chop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoqs_1_1internal_1_1_hex_chop.html">internal::HexChop</a> oqs::hex_chop </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceoqs.html#a418a2b5eb3a9e3460b1cb590df54490d">oqs::bytes</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>start</em> = <code>8</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>end</em> = <code>8</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs an instance of <a class="el" href="classoqs_1_1internal_1_1_hex_chop.html" title="std::ostream manipulator for long vectors of oqs::byte, use it to display only a small number of elem...">oqs::internal::HexChop</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>Vector of bytes </td></tr>
+    <tr><td class="paramname">start</td><td>Number of hex characters displayed from the beginning of the vector </td></tr>
+    <tr><td class="paramname">end</td><td>Number of hex characters displayed from the end of the vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Instance of <a class="el" href="classoqs_1_1internal_1_1_hex_chop.html" title="std::ostream manipulator for long vectors of oqs::byte, use it to display only a small number of elem...">oqs::internal::HexChop</a> </dd></dl>
 
 </div>
 </div>

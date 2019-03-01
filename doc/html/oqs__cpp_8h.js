@@ -1,6 +1,7 @@
 var oqs__cpp_8h =
 [
-    [ "Singleton", "classoqs_1_1impl__details___1_1_singleton.html", "classoqs_1_1impl__details___1_1_singleton" ],
+    [ "Singleton", "classoqs_1_1internal_1_1_singleton.html", "classoqs_1_1internal_1_1_singleton" ],
+    [ "HexChop", "classoqs_1_1internal_1_1_hex_chop.html", "classoqs_1_1internal_1_1_hex_chop" ],
     [ "MechanismNotSupportedError", "classoqs_1_1_mechanism_not_supported_error.html", "classoqs_1_1_mechanism_not_supported_error" ],
     [ "MechanismNotEnabledError", "classoqs_1_1_mechanism_not_enabled_error.html", "classoqs_1_1_mechanism_not_enabled_error" ],
     [ "KEMs", "classoqs_1_1_k_e_ms.html", "classoqs_1_1_k_e_ms" ],
@@ -9,9 +10,9 @@ var oqs__cpp_8h =
     [ "Sigs", "classoqs_1_1_sigs.html", "classoqs_1_1_sigs" ],
     [ "Signature", "classoqs_1_1_signature.html", "classoqs_1_1_signature" ],
     [ "alg_details_", "structoqs_1_1_signature_1_1alg__details__.html", "structoqs_1_1_signature_1_1alg__details__" ],
-    [ "hex_chop", "classoqs_1_1hex__chop.html", "classoqs_1_1hex__chop" ],
     [ "byte", "oqs__cpp_8h.html#a802843a8319a96744fee17bc75011ef1", null ],
     [ "bytes", "oqs__cpp_8h.html#a418a2b5eb3a9e3460b1cb590df54490d", null ],
+    [ "hex_chop", "oqs__cpp_8h.html#ac05bf6bcac8c0b034eab7e71b1755e66", null ],
     [ "operator\"\"_bytes", "oqs__cpp_8h.html#adafb11d24e37533712b1d102a454029a", null ],
     [ "operator<<", "oqs__cpp_8h.html#aa63869c474d97dfa75316f7b8f369909", null ],
     [ "operator<<", "oqs__cpp_8h.html#a0c346b0d4a7187762ea7a548b6e84131", null ]

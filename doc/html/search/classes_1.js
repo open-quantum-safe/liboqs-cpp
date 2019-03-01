@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hex_5fchop',['hex_chop',['../classoqs_1_1hex__chop.html',1,'oqs']]]
+  ['hexchop',['HexChop',['../classoqs_1_1internal_1_1_hex_chop.html',1,'oqs::internal']]]
 ];

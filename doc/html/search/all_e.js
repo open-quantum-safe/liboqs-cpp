@@ -5,8 +5,8 @@ var searchData=
   ['sign',['sign',['../classoqs_1_1_signature.html#aad83ac8f8a07584b2ff30c9228b33afc',1,'oqs::Signature']]],
   ['signature',['Signature',['../classoqs_1_1_signature.html',1,'oqs::Signature'],['../classoqs_1_1_signature.html#a7a20191573b6ac3f1c7c6b9ef7e55957',1,'oqs::Signature::Signature()']]],
   ['sigs',['Sigs',['../classoqs_1_1_sigs.html',1,'oqs::Sigs'],['../classoqs_1_1_sigs.html#aab70d8cc2df8a720a19693949bffdffb',1,'oqs::Sigs::Sigs()']]],
-  ['singleton',['Singleton',['../classoqs_1_1impl__details___1_1_singleton.html',1,'oqs::impl_details_::Singleton&lt; T &gt;'],['../classoqs_1_1impl__details___1_1_singleton.html#a148af01692e9aa746a4d69d9ca000fac',1,'oqs::impl_details_::Singleton::Singleton() noexcept=default'],['../classoqs_1_1impl__details___1_1_singleton.html#aeeff09d758d275ede74775ab41458d7a',1,'oqs::impl_details_::Singleton::Singleton(const Singleton &amp;)=delete']]],
-  ['singleton_3c_20const_20kems_20_3e',['Singleton&lt; const KEMs &gt;',['../classoqs_1_1impl__details___1_1_singleton.html',1,'oqs::impl_details_']]],
-  ['singleton_3c_20const_20sigs_20_3e',['Singleton&lt; const Sigs &gt;',['../classoqs_1_1impl__details___1_1_singleton.html',1,'oqs::impl_details_']]],
-  ['start_5f',['start_',['../classoqs_1_1hex__chop.html#aaca4140c8c76fdfd1a8e86c2040747dd',1,'oqs::hex_chop']]]
+  ['singleton',['Singleton',['../classoqs_1_1internal_1_1_singleton.html',1,'oqs::internal::Singleton&lt; T &gt;'],['../classoqs_1_1internal_1_1_singleton.html#acb73e009f4e3bd10d90c4913dc75ad6d',1,'oqs::internal::Singleton::Singleton() noexcept=default'],['../classoqs_1_1internal_1_1_singleton.html#a43d2470a0ff8dae94d15844b4bc6f4ba',1,'oqs::internal::Singleton::Singleton(const Singleton &amp;)=delete']]],
+  ['singleton_3c_20const_20kems_20_3e',['Singleton&lt; const KEMs &gt;',['../classoqs_1_1internal_1_1_singleton.html',1,'oqs::internal']]],
+  ['singleton_3c_20const_20sigs_20_3e',['Singleton&lt; const Sigs &gt;',['../classoqs_1_1internal_1_1_singleton.html',1,'oqs::internal']]],
+  ['start_5f',['start_',['../classoqs_1_1internal_1_1_hex_chop.html#ae3f958bc336a176506918f5ad36d84dd',1,'oqs::internal::HexChop']]]
 ];

@@ -4,7 +4,7 @@ var searchData=
   ['get_5fdetails',['get_details',['../classoqs_1_1_key_encapsulation.html#ac6aa67ff25bdf9ed62f723923697fbef',1,'oqs::KeyEncapsulation::get_details()'],['../classoqs_1_1_signature.html#a5219d9ccb4f192b1b5d271e3673c2757',1,'oqs::Signature::get_details()']]],
   ['get_5fenabled_5fkems',['get_enabled_KEMs',['../classoqs_1_1_k_e_ms.html#ab1504f48ebfdebb3e76bd17803573279',1,'oqs::KEMs']]],
   ['get_5fenabled_5fsigs',['get_enabled_sigs',['../classoqs_1_1_sigs.html#a09aaeea48db8ef664c7d3c50dee7d36e',1,'oqs::Sigs']]],
-  ['get_5finstance',['get_instance',['../classoqs_1_1impl__details___1_1_singleton.html#a202bbc820501eb5527d8e960e8b59479',1,'oqs::impl_details_::Singleton']]],
+  ['get_5finstance',['get_instance',['../classoqs_1_1internal_1_1_singleton.html#a7713d122d1254f4e03d7d0ee0c212c13',1,'oqs::internal::Singleton']]],
   ['get_5fkem_5fname',['get_KEM_name',['../classoqs_1_1_k_e_ms.html#a319ce3ed2e61be0c43227b4e0b0311e3',1,'oqs::KEMs']]],
   ['get_5fsig_5fname',['get_sig_name',['../classoqs_1_1_sigs.html#aefeee2e81279cd8a30d38cec5905707d',1,'oqs::Sigs']]],
   ['get_5fsupported_5fkems',['get_supported_KEMs',['../classoqs_1_1_k_e_ms.html#ac806e93a58d17d79ab6356a39a207f12',1,'oqs::KEMs']]],

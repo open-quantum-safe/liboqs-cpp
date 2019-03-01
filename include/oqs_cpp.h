@@ -33,14 +33,15 @@ using byte = std::uint8_t;       ///< byte (unsigned)
 using bytes = std::vector<byte>; ///< vector of bytes (unsigned)
 
 /**
- * \namespace impl_details_
- * \brief Implementation details
+ * \namespace internal
+ * \brief Internal implementation details
  */
-namespace impl_details_ {
+namespace internal {
 /* code from
 https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
  */
 /**
+ * \class oqs::internal::Singleton
  * \brief Singleton class using CRTP pattern
  * \tparam T Class type of which instance will become a Singleton
  */
@@ -71,10 +72,88 @@ class Singleton {
         return instance;
     }
 }; // class Singleton
-} // namespace impl_details_
 
 /**
- * \class MechanismNotSupportedError
+ * \class oqs::internal::HexChop
+ * \brief std::ostream manipulator for long vectors of oqs::byte, use it to
+ * display only a small number of elements from the beginning and end of the
+ * vector
+ */
+class HexChop {
+    bytes v_; ///< vector of byes
+    std::size_t start_,
+        end_; ///< number of hex bytes taken from the start and from the end
+    /**
+     * \brief std::ostream manipulator
+     * \param os Output stream
+     * \param start Number of hex characters displayed from the beginning of
+     * the vector
+     * \param end  Number of hex characters displayed from the end of the vector
+     * \param is_short Vector is too short, display all hex characters
+     */
+    void manipulate_ostream_(std::ostream& os, std::size_t start,
+                             std::size_t end, bool is_short) const {
+        std::ios_base::fmtflags saved{os.flags()}; // save the ostream flags
+        os << std::setfill('0') << std::hex << std::uppercase;
+
+        bool first = true;
+        for (std::size_t i = 0; i < start; ++i) {
+            if (first) {
+                first = false;
+                os << std::setw(2) << static_cast<int>(v_[i]);
+            } else {
+                os << " " << std::setw(2) << static_cast<int>(v_[i]);
+            }
+        }
+
+        if (!is_short)
+            os << " ... ";
+
+        first = true;
+        std::size_t v_size = v_.size();
+        for (std::size_t i = v_size - end; i < v_size; ++i) {
+            if (first) {
+                first = false;
+                os << static_cast<int>(v_[i]);
+            } else
+                os << " " << std::setw(2) << static_cast<int>(v_[i]);
+        }
+
+        os.flags(saved); // restore the ostream flags
+    }
+
+  public:
+    /**
+     * \brief Constructs an instance of oqs::internal::HexChop
+     * \param v Vector of bytes
+     * \param start Number of hex characters displayed from the beginning of
+     * the vector
+     * \param end  Number of hex characters displayed from the end of the vector
+     */
+    explicit HexChop(const oqs::bytes& v, std::size_t start, std::size_t end)
+        : v_{v}, start_{start}, end_{end} {}
+
+    /**
+     * \brief std::ostream extraction operator for oqs::internal::HexChop
+     * \param os Output stream
+     * \param rhs oqs::internal::HexChop instance
+     * \return Reference to the output stream
+     */
+    friend std::ostream& operator<<(std::ostream& os, const HexChop& rhs) {
+
+        bool is_short = rhs.start_ + rhs.end_ >= rhs.v_.size();
+        if (is_short)
+            rhs.manipulate_ostream_(os, rhs.v_.size(), 0, true);
+        else
+            rhs.manipulate_ostream_(os, rhs.start_, rhs.end_, false);
+
+        return os;
+    }
+}; // class HexChop
+} // namespace internal
+
+/**
+ * \class oqs::MechanismNotSupportedError
  * \brief Cryptographic scheme not supported
  */
 class MechanismNotSupportedError : public std::runtime_error {
@@ -88,7 +167,7 @@ class MechanismNotSupportedError : public std::runtime_error {
 }; // class MechanismNotSupportedError
 
 /**
- * \class MechanismNotEnabledError
+ * \class oqs::MechanismNotEnabledError
  * \brief Cryptographic scheme not enabled
  */
 class MechanismNotEnabledError : public std::runtime_error {
@@ -102,12 +181,12 @@ class MechanismNotEnabledError : public std::runtime_error {
 }; // class MechanismNotEnabledError
 
 /**
- * \class KEMs
+ * \class oqs::KEMs
  * \brief Singleton class, contains details about supported/enabled key exchange
  * mechanisms (KEMs)
  */
-class KEMs final : public impl_details_::Singleton<const KEMs> {
-    friend class impl_details_::Singleton<const KEMs>;
+class KEMs final : public internal::Singleton<const KEMs> {
+    friend class internal::Singleton<const KEMs>;
 
     /**
      * \brief Private default constructor
@@ -201,7 +280,7 @@ class KEMs final : public impl_details_::Singleton<const KEMs> {
 }; // class KEMs
 
 /**
- * \class KeyEncapsulation
+ * \class oqs::KeyEncapsulation
  * \brief Key encapsulation mechanisms
  */
 class KeyEncapsulation {
@@ -362,12 +441,12 @@ class KeyEncapsulation {
 }; // class KeyEncapsulation
 
 /**
- * \class Sigs
+ * \class oqs::Sigs
  * \brief Singleton class, contains details about supported/enabled signature
  * mechanisms
  */
-class Sigs final : public impl_details_::Singleton<const Sigs> {
-    friend class impl_details_::Singleton<const Sigs>;
+class Sigs final : public internal::Singleton<const Sigs> {
+    friend class internal::Singleton<const Sigs>;
 
     /**
      * \brief Private default constructor
@@ -461,7 +540,7 @@ class Sigs final : public impl_details_::Singleton<const Sigs> {
 }; // class Sigs
 
 /**
- * \class Signature
+ * \class oqs::Signature
  * \brief Signature mechanisms
  */
 class Signature {
@@ -624,92 +703,26 @@ class Signature {
     }
 }; // class Signature
 
-/**
- * \class hex_chop
- * \brief std::ostream manipulator for long vectors of oqs::byte, use it to
- * display only a small number of elements from the beginning and end of the
- * vector
- */
-class hex_chop {
-    bytes v_; ///< vector of byes
-    std::size_t start_,
-        end_; ///< number of hex bytes taken from the start and from the end
-    /**
-     * \brief std::ostream manipulator
-     * \param os Output stream
-     * \param start Number of hex characters displayed from the beginning of
-     * the vector
-     * \param end  Number of hex characters displayed from the end of the vector
-     * \param is_short Vector is too short, display all hex characters
-     */
-    void manipulate_ostream_(std::ostream& os, std::size_t start,
-                             std::size_t end, bool is_short) const {
-        std::ios_base::fmtflags saved{os.flags()}; // save the ostream flags
-        os << std::setfill('0') << std::hex << std::uppercase;
-
-        bool first = true;
-        for (std::size_t i = 0; i < start; ++i) {
-            if (first) {
-                first = false;
-                os << std::setw(2) << static_cast<int>(v_[i]);
-            } else {
-                os << " " << std::setw(2) << static_cast<int>(v_[i]);
-            }
-        }
-
-        if (!is_short)
-            os << " ... ";
-
-        first = true;
-        std::size_t v_size = v_.size();
-        for (std::size_t i = v_size - end; i < v_size; ++i) {
-            if (first) {
-                first = false;
-                os << static_cast<int>(v_[i]);
-            } else
-                os << " " << std::setw(2) << static_cast<int>(v_[i]);
-        }
-
-        os.flags(saved); // restore the ostream flags
-    }
-
-  public:
-    /**
-     * \brief Constructs an instance of oqs::hex_chop
-     * \param v Vector of bytes
-     * \param start Number of hex characters displayed from the beginning of
-     * the vector
-     * \param end  Number of hex characters displayed from the end of the vector
-     */
-    explicit hex_chop(const oqs::bytes& v, std::size_t start = 8,
-                      std::size_t end = 8)
-        : v_{v}, start_{start}, end_{end} {}
-
-    /**
-     * \brief std::ostream extraction operator for oqs::hex_chop
-     * \param os Output stream
-     * \param rhs oqs::hex_chop instance
-     * \return Reference to the output stream
-     */
-    friend std::ostream& operator<<(std::ostream& os, const hex_chop& rhs) {
-
-        bool is_short = rhs.start_ + rhs.end_ >= rhs.v_.size();
-        if (is_short)
-            rhs.manipulate_ostream_(os, rhs.v_.size(), 0, true);
-        else
-            rhs.manipulate_ostream_(os, rhs.start_, rhs.end_, false);
-
-        return os;
-    }
-}; // class hex_chop
-
-namespace impl_details_ {
+namespace internal {
 // initialize the KEMs and Sigs singletons
 static const KEMs& algs_ =
     KEMs::get_instance(); ///< initializes the KEMs singleton
 static const Sigs& sigs_ =
     Sigs::get_instance(); ///< initializes the Sigs singleton
-} // namespace impl_details_
+} // namespace internal
+
+/**
+ * \brief Constructs an instance of oqs::internal::HexChop
+ * \param v Vector of bytes
+ * \param start Number of hex characters displayed from the beginning of
+ * the vector
+ * \param end  Number of hex characters displayed from the end of the vector
+ * \return Instance of oqs::internal::HexChop
+ */
+inline internal::HexChop hex_chop(const oqs::bytes& v, std::size_t start = 8,
+                                  std::size_t end = 8) {
+    return internal::HexChop(v, start, end);
+}
 } // namespace oqs
 
 /**
@@ -719,9 +732,7 @@ static const Sigs& sigs_ =
  * \return Reference to the output stream
  */
 inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
-    oqs::hex_chop hc{rhs, rhs.size(), 0};
-
-    return os << hc;
+    return os << oqs::hex_chop(rhs, rhs.size(), 0);
 }
 
 /**
