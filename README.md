@@ -16,7 +16,7 @@ Contents
 liboqs-cpp is a header-only wrapper. The project contains the following files
 and folders:
  
- - `include/oqs_cpp.h`: the main header filed
+ - `include/oqs_cpp.h`: the main header file
  - `examples/kem.cpp`: key encapsulation example
  - `examples/sig.cpp`: signature example
  - `unit_tests`: unit tests written using Google Test (included)
@@ -30,7 +30,7 @@ To avoid name collisions, liboqs-cpp includes all of its code inside the namespa
 
 `oqs::KeyEncapsulation` and/or `oqs::Signature` must be instantiated with a string identifying one of mechanisms supported by liboqs; these can be enumerated using the `oqs::KEMs::get_enabled_KEM_mechanisms()` and `oqs::Sigs::get_enabled_sig_mechanisms()` member functions. 
 
-The examples in `examples` file details the wrapper's API.
+The examples in the `examples` folder provide more details about the wrapper's API.
 
 liboqs installation
 -------------------
