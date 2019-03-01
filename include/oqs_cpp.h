@@ -639,7 +639,7 @@ class Signature {
      * \param message Message
      * \return Message signature
      */
-    bytes sign(const bytes& message) {
+    bytes sign(const bytes& message) const {
         bytes signature(get_details().length_signature, 0);
         std::size_t sig_len = 0;
         OQS_STATUS rv_ =
@@ -662,7 +662,7 @@ class Signature {
      * \return True if the signature is valid, false otherwise
      */
     bool verify(const bytes& message, const bytes& signature,
-                const bytes& public_key) {
+                const bytes& public_key) const {
         OQS_STATUS rv_ = OQS_SIG_verify(sig_.get(), message.data(),
                                         message.size(), signature.data(),
                                         signature.size(), public_key.data());

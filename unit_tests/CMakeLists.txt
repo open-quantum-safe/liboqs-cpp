@@ -3,7 +3,6 @@ project(oqs_cpp_testing)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
 # path to liboqs include and lib, modify as needed
 set(LIBOQS_INCLUDE_DIR "/usr/local/include")
@@ -21,3 +20,4 @@ add_subdirectory(tests)
 
 #### Enable all warnings after compiling gtest
 set(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
