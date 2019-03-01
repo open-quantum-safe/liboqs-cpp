@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['_7ekeyencapsulation',['~KeyEncapsulation',['../classoqs_1_1_key_encapsulation.html#a27964fb82f9f89805418b95fb65aae27',1,'oqs::KeyEncapsulation']]],
-  ['_7esignature',['~Signature',['../classoqs_1_1_signature.html#a8e1357f6bcb9487687a1cf6f1445904e',1,'oqs::Signature']]],
-  ['_7esingleton',['~Singleton',['../classoqs_1_1impl__details___1_1_singleton.html#a0926895dca8520426ad71c43aa0fb2f3',1,'oqs::impl_details_::Singleton']]]
+  ['v_5f',['v_',['../classoqs_1_1hex__chop.html#ad750527a33d1ab96a49526ab8d87a6f5',1,'oqs::hex_chop']]],
+  ['verify',['verify',['../classoqs_1_1_signature.html#a8660feaebd1d059e2a8572ca0b93b292',1,'oqs::Signature']]],
+  ['version',['version',['../structoqs_1_1_key_encapsulation_1_1alg__details__.html#af9ecf4a88f94b720a27d25e528ed65c2',1,'oqs::KeyEncapsulation::alg_details_::version()'],['../structoqs_1_1_signature_1_1alg__details__.html#ab43b3f852f94fbc4c884bbc3623da587',1,'oqs::Signature::alg_details_::version()']]]
 ];

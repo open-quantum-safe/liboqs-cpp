@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['max_5fnumber_5fkems',['max_number_KEMs',['../classoqs_1_1_k_e_ms.html#a8d68a984e906be0ac144e3dc2510fd1c',1,'oqs::KEMs']]],
-  ['max_5fnumber_5fsigs',['max_number_sigs',['../classoqs_1_1_sigs.html#ab53721f3b38a77231ee6869e4019e950',1,'oqs::Sigs']]],
-  ['mechanismnotenablederror',['MechanismNotEnabledError',['../classoqs_1_1_mechanism_not_enabled_error.html#a32621e0ce43ff7b418f9b65d8be8d36f',1,'oqs::MechanismNotEnabledError']]],
-  ['mechanismnotsupportederror',['MechanismNotSupportedError',['../classoqs_1_1_mechanism_not_supported_error.html#ae4a1eeea7eb3d3ec22a34b679080c187',1,'oqs::MechanismNotSupportedError']]]
+  ['kems',['KEMs',['../classoqs_1_1_k_e_ms.html#a92e877a21629089e23de85ae56c525d7',1,'oqs::KEMs']]],
+  ['keyencapsulation',['KeyEncapsulation',['../classoqs_1_1_key_encapsulation.html#aace5aeab1bfff7827a761d473eb93f6d',1,'oqs::KeyEncapsulation']]]
 ];

@@ -13,7 +13,8 @@
 Contents
 --------
 
-liboqs-cpp is a header-only wrapper. The project contains the following files:
+liboqs-cpp is a header-only wrapper. The project contains the following files
+and folders:
  
  - `include/oqs_cpp.h`: the main header filed
  - `examples/kem.cpp`: key encapsulation example

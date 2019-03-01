@@ -1,6 +1,7 @@
 var namespaceoqs =
 [
     [ "impl_details_", "namespaceoqs_1_1impl__details__.html", "namespaceoqs_1_1impl__details__" ],
+    [ "hex_chop", "classoqs_1_1hex__chop.html", "classoqs_1_1hex__chop" ],
     [ "KEMs", "classoqs_1_1_k_e_ms.html", "classoqs_1_1_k_e_ms" ],
     [ "KeyEncapsulation", "classoqs_1_1_key_encapsulation.html", "classoqs_1_1_key_encapsulation" ],
     [ "MechanismNotEnabledError", "classoqs_1_1_mechanism_not_enabled_error.html", "classoqs_1_1_mechanism_not_enabled_error" ],

@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <exception>
+#include <iomanip>
 #include <memory>
 #include <ostream>
 #include <string>
@@ -82,7 +83,7 @@ class MechanismNotSupportedError : public std::runtime_error {
      * \brief Constructor
      * \param alg_name Cryptographic algorithm name
      */
-    MechanismNotSupportedError(const std::string& alg_name)
+    explicit MechanismNotSupportedError(const std::string& alg_name)
         : std::runtime_error{alg_name + " is not supported by OQS"} {}
 }; // class MechanismNotSupportedError
 
@@ -96,7 +97,7 @@ class MechanismNotEnabledError : public std::runtime_error {
      * \brief Constructor
      * \param alg_name Cryptographic algorithm name
      */
-    MechanismNotEnabledError(const std::string& alg_name)
+    explicit MechanismNotEnabledError(const std::string& alg_name)
         : std::runtime_error{alg_name + " is not enabled by OQS"} {}
 }; // class MechanismNotEnabledError
 
@@ -230,7 +231,8 @@ class KeyEncapsulation {
      * \param alg_name Cryptographic algorithm name
      * \param secret_key Secret key (optional)
      */
-    KeyEncapsulation(const std::string& alg_name, const bytes& secret_key = {})
+    explicit KeyEncapsulation(const std::string& alg_name,
+                              const bytes& secret_key = {})
         : alg_name_{alg_name} {
         // KEM not enabled
         if (!KEMs::is_KEM_enabled(alg_name)) {
@@ -485,7 +487,8 @@ class Signature {
      * \param alg_name Cryptographic algorithm name
      * \param secret_key Secret key (optional)
      */
-    Signature(const std::string& alg_name, const bytes& secret_key = {})
+    explicit Signature(const std::string& alg_name,
+                       const bytes& secret_key = {})
         : alg_name_{alg_name} {
         // signature not enabled
         if (!Sigs::is_sig_enabled(alg_name)) {
@@ -615,6 +618,85 @@ class Signature {
     }
 }; // class Signature
 
+/**
+ * \class hex_chop
+ * \brief std::ostream manipulator for long vectors of oqs::byte, use it to
+ * display only a small number of elements from the beginning and end of the
+ * vector
+ */
+class hex_chop {
+    bytes v_; ///< vector of byes
+    std::size_t start_,
+        end_; ///< number of hex bytes taken from the start and from the end
+    /**
+     * \brief std::ostream manipulator
+     * \param os Output stream
+     * \param start Number of hex characters displayed from the beginning of
+     * the vector
+     * \param end  Number of hex characters displayed from the end of the vector
+     * \param is_short Vector is too short, display all hex characters
+     */
+    void manipulate_ostream_(std::ostream& os, std::size_t start,
+                             std::size_t end, bool is_short) const {
+        std::ios_base::fmtflags saved{os.flags()}; // save the ostream flags
+        os << std::setfill('0') << std::hex << std::uppercase;
+
+        bool first = true;
+        for (std::size_t i = 0; i < start; ++i) {
+            if (first) {
+                first = false;
+                os << std::setw(2) << static_cast<int>(v_[i]);
+            } else {
+                os << " " << std::setw(2) << static_cast<int>(v_[i]);
+            }
+        }
+
+        if (!is_short)
+            os << " ... ";
+
+        first = true;
+        std::size_t v_size = v_.size();
+        for (std::size_t i = v_size - end; i < v_size; ++i) {
+            if (first) {
+                first = false;
+                os << static_cast<int>(v_[i]);
+            } else
+                os << " " << std::setw(2) << static_cast<int>(v_[i]);
+        }
+
+        os.flags(saved); // restore the ostream flags
+    }
+
+  public:
+    /**
+     * \brief Constructs an instance of oqs::hex_chop
+     * \param v Vector of bytes
+     * \param start Number of hex characters displayed from the beginning of
+     * the vector
+     * \param end  Number of hex characters displayed from the end of the vector
+     */
+    explicit hex_chop(const oqs::bytes& v, std::size_t start = 8,
+                      std::size_t end = 8)
+        : v_{v}, start_{start}, end_{end} {}
+
+    /**
+     * \brief std::ostream extraction operator for oqs::hex_chop
+     * \param os Output stream
+     * \param rhs oqs::hex_chop instance
+     * \return Reference to the output stream
+     */
+    friend std::ostream& operator<<(std::ostream& os, const hex_chop& rhs) {
+
+        bool is_short = rhs.start_ + rhs.end_ >= rhs.v_.size();
+        if (is_short)
+            rhs.manipulate_ostream_(os, rhs.v_.size(), 0, true);
+        else
+            rhs.manipulate_ostream_(os, rhs.start_, rhs.end_, false);
+
+        return os;
+    }
+}; // class hex_chop
+
 namespace impl_details_ {
 // initialize the KEMs and Sigs singletons
 static const KEMs& algs_ =
@@ -631,19 +713,9 @@ static const Sigs& sigs_ =
  * \return Reference to the output stream
  */
 inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
-    std::ios_base::fmtflags saved{os.flags()}; // save the ostream flags
-    bool first = true;
-    for (auto&& elem : rhs) {
-        if (first) {
-            first = false;
-            os << std::hex << std::uppercase << static_cast<int>(elem);
-        } else {
-            os << " " << std::hex << std::uppercase << static_cast<int>(elem);
-        }
-    }
-    os.flags(saved); // restore the ostream flags
+    oqs::hex_chop hc{rhs, rhs.size(), 0};
 
-    return os;
+    return os << hc;
 }
 
 /**

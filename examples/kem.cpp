@@ -14,7 +14,7 @@ int main() {
     oqs::KeyEncapsulation client{"DEFAULT"};
     std::cout << "\n\nKEM details: \n" << client.get_details();
     oqs::bytes client_public_key = client.generate_keypair();
-    std::cout << "\n\nClient public key:\n" << client_public_key;
+    std::cout << "\n\nClient public key:\n" << oqs::hex_chop(client_public_key);
 
     oqs::KeyEncapsulation server{"DEFAULT"};
 

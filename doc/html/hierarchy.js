@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "oqs::KeyEncapsulation::alg_details_", "structoqs_1_1_key_encapsulation_1_1alg__details__.html", null ],
     [ "oqs::Signature::alg_details_", "structoqs_1_1_signature_1_1alg__details__.html", null ],
+    [ "oqs::hex_chop", "classoqs_1_1hex__chop.html", null ],
     [ "oqs::KeyEncapsulation", "classoqs_1_1_key_encapsulation.html", null ],
     [ "runtime_error", null, [
       [ "oqs::MechanismNotEnabledError", "classoqs_1_1_mechanism_not_enabled_error.html", null ],

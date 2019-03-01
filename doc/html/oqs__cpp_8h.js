@@ -9,6 +9,7 @@ var oqs__cpp_8h =
     [ "Sigs", "classoqs_1_1_sigs.html", "classoqs_1_1_sigs" ],
     [ "Signature", "classoqs_1_1_signature.html", "classoqs_1_1_signature" ],
     [ "alg_details_", "structoqs_1_1_signature_1_1alg__details__.html", "structoqs_1_1_signature_1_1alg__details__" ],
+    [ "hex_chop", "classoqs_1_1hex__chop.html", "classoqs_1_1hex__chop" ],
     [ "byte", "oqs__cpp_8h.html#a802843a8319a96744fee17bc75011ef1", null ],
     [ "bytes", "oqs__cpp_8h.html#a418a2b5eb3a9e3460b1cb590df54490d", null ],
     [ "operator\"\"_bytes", "oqs__cpp_8h.html#adafb11d24e37533712b1d102a454029a", null ],

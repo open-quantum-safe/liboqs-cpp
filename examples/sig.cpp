@@ -17,10 +17,9 @@ int main() {
     oqs::bytes signature = signer.sign(message);
 
     oqs::Signature verifier{"DEFAULT"};
-    bool is_valid =
-        verifier.verify(message, signature, signer_public_key);
+    bool is_valid = verifier.verify(message, signature, signer_public_key);
 
-    std::cout << "\n\nSignature:\n" << signature;
+    std::cout << "\n\nSignature:\n" << oqs::hex_chop(signature);
 
     std::cout << std::boolalpha;
     std::cout << "\n\nValid signature? " << is_valid << '\n';

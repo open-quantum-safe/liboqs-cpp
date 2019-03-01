@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['sign',['sign',['../classoqs_1_1_signature.html#aad83ac8f8a07584b2ff30c9228b33afc',1,'oqs::Signature']]],
-  ['signature',['Signature',['../classoqs_1_1_signature.html#a7a20191573b6ac3f1c7c6b9ef7e55957',1,'oqs::Signature']]],
-  ['sigs',['Sigs',['../classoqs_1_1_sigs.html#aab70d8cc2df8a720a19693949bffdffb',1,'oqs::Sigs']]],
-  ['singleton',['Singleton',['../classoqs_1_1impl__details___1_1_singleton.html#a148af01692e9aa746a4d69d9ca000fac',1,'oqs::impl_details_::Singleton::Singleton() noexcept=default'],['../classoqs_1_1impl__details___1_1_singleton.html#aeeff09d758d275ede74775ab41458d7a',1,'oqs::impl_details_::Singleton::Singleton(const Singleton &amp;)=delete']]]
+  ['operator_22_22_5fbytes',['operator&quot;&quot;_bytes',['../namespaceoqs__literals.html#adafb11d24e37533712b1d102a454029a',1,'oqs_literals']]],
+  ['operator_3c_3c',['operator&lt;&lt;',['../oqs__cpp_8h.html#aa63869c474d97dfa75316f7b8f369909',1,'operator&lt;&lt;(std::ostream &amp;os, const oqs::bytes &amp;rhs):&#160;oqs_cpp.h'],['../oqs__cpp_8h.html#a0c346b0d4a7187762ea7a548b6e84131',1,'operator&lt;&lt;(std::ostream &amp;os, const std::vector&lt; std::string &gt; &amp;rhs):&#160;oqs_cpp.h']]],
+  ['operator_3d',['operator=',['../classoqs_1_1impl__details___1_1_singleton.html#a45006ea4ee3f0a409b9e2266eb0d0c02',1,'oqs::impl_details_::Singleton']]]
 ];

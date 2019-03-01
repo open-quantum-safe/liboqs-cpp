@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('md___users_vlad_liboqs-cpp__r_e_a_d_m_
 <p><a href="https://travis-ci.com/open-quantum-safe/liboqs-cpp"></a> </p><hr/>
 <p><b>liboqs-cpp</b> offers a C++ wrapper for the <a href="https://openquantumsafe.org/">Open Quantum Safe</a> <a href="https://github.com/open-quantum-safe/liboqs/">liboqs</a> C library. The wrapper is written in standard C++11.</p>
 <h2>Contents </h2>
-<p>liboqs-cpp is a header-only wrapper. The project contains the following files:</p>
+<p>liboqs-cpp is a header-only wrapper. The project contains the following files and folders:</p>
 <ul>
 <li><code><a class="el" href="oqs__cpp_8h.html" title="Main header file for the liboqs C++ wrapper. ">include/oqs_cpp.h</a></code>: the main header filed</li>
 <li><code>examples/kem.cpp</code>: key encapsulation example</li>
@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('md___users_vlad_liboqs-cpp__r_e_a_d_m_
 <h2>liboqs installation </h2>
 <p>liboqs-cpp depends on the <a href="https://github.com/open-quantum-safe/liboqs">liboqs</a> C library; liboqs must be compiled as a Linux/macOS static library or as a Windows DLL, and be visible to the wrapper, e.g. installed in a system-wide folder.</p>
 <h2>Compiling on UNIX-like platforms </h2>
-<p>To use the wrapper, the user must have access to a C++11 compliant compiler, then simply <code>#include "oqs_cpp.h"</code> in her/his program. The wrapper contains a CMake build system for both examples and unit tests. To compile and run the examples, create a <code>build</code> folder inside the root folder of the project, change directory to it, then type</p>
+<p>To use the wrapper, the user must have access to a C++11 compliant compiler, then simply <code>#include "oqs_cpp.h"</code> in her/his program. The wrapper contains a CMake build system for both examples and unit tests. To compile and run the examples, create a <code>build</code> folder inside the root folder of the project, change directory to <code>build</code>, then type</p>
 <p><code>cmake ..; make -j;</code></p>
 <p>The above commands build <code>oqs_cpp_kem</code> and <code>oqs_cpp_sig</code> examples, assuming the CMake build system is available on the user's platform.</p>
 <p>To compile and run the unit tests, first <code>cd unit_tests</code>, then create a <code>build</code> folder inside <code>unit_tests</code>, change directory to it, and finally type</p>

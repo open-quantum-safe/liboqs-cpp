@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['max_5fnumber_5fkems',['max_number_KEMs',['../classoqs_1_1_k_e_ms.html#a8d68a984e906be0ac144e3dc2510fd1c',1,'oqs::KEMs']]],
-  ['max_5fnumber_5fsigs',['max_number_sigs',['../classoqs_1_1_sigs.html#ab53721f3b38a77231ee6869e4019e950',1,'oqs::Sigs']]],
-  ['mechanismnotenablederror',['MechanismNotEnabledError',['../classoqs_1_1_mechanism_not_enabled_error.html',1,'oqs::MechanismNotEnabledError'],['../classoqs_1_1_mechanism_not_enabled_error.html#a32621e0ce43ff7b418f9b65d8be8d36f',1,'oqs::MechanismNotEnabledError::MechanismNotEnabledError()']]],
-  ['mechanismnotsupportederror',['MechanismNotSupportedError',['../classoqs_1_1_mechanism_not_supported_error.html',1,'oqs::MechanismNotSupportedError'],['../classoqs_1_1_mechanism_not_supported_error.html#ae4a1eeea7eb3d3ec22a34b679080c187',1,'oqs::MechanismNotSupportedError::MechanismNotSupportedError()']]]
+  ['length_5fciphertext',['length_ciphertext',['../structoqs_1_1_key_encapsulation_1_1alg__details__.html#a1708c06f1be664303c3e640b1a10f0d4',1,'oqs::KeyEncapsulation::alg_details_']]],
+  ['length_5fpublic_5fkey',['length_public_key',['../structoqs_1_1_key_encapsulation_1_1alg__details__.html#a20b071d9dbe64dff2dc235f4b03a62ff',1,'oqs::KeyEncapsulation::alg_details_::length_public_key()'],['../structoqs_1_1_signature_1_1alg__details__.html#aa9d1f54457f013e5fc5184bf43f0959f',1,'oqs::Signature::alg_details_::length_public_key()']]],
+  ['length_5fsecret_5fkey',['length_secret_key',['../structoqs_1_1_key_encapsulation_1_1alg__details__.html#a2d4bb50126cd040d1ddae9c724fdea39',1,'oqs::KeyEncapsulation::alg_details_::length_secret_key()'],['../structoqs_1_1_signature_1_1alg__details__.html#ad171300b3b62ea027b33ea3128bad304',1,'oqs::Signature::alg_details_::length_secret_key()']]],
+  ['length_5fshared_5fsecret',['length_shared_secret',['../structoqs_1_1_key_encapsulation_1_1alg__details__.html#a4f21d80dd0d9a5ce091f2db2f88597d9',1,'oqs::KeyEncapsulation::alg_details_']]],
+  ['length_5fsignature',['length_signature',['../structoqs_1_1_signature_1_1alg__details__.html#aa368f82f288142bbfec9da7221ff4752',1,'oqs::Signature::alg_details_']]],
+  ['liboqs_2dcpp',['liboqs-cpp',['../md___users_vlad_liboqs-cpp__r_e_a_d_m_e.html',1,'']]]
 ];
