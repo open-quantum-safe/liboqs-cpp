@@ -105,14 +105,14 @@ $(document).ready(function(){initNavTree('classoqs_1_1_timer.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5184f6c79501d1b42ab0c51c4bb2e5c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a5184f6c79501d1b42ab0c51c4bb2e5c9">Timer</a> () noexcept</td></tr>
-<tr class="memdesc:a5184f6c79501d1b42ab0c51c4bb2e5c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance with the current time as the starting point.  <a href="#a5184f6c79501d1b42ab0c51c4bb2e5c9">More...</a><br /></td></tr>
+<tr class="memdesc:a5184f6c79501d1b42ab0c51c4bb2e5c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance with the current time as the start point.  <a href="#a5184f6c79501d1b42ab0c51c4bb2e5c9">More...</a><br /></td></tr>
 <tr class="separator:a5184f6c79501d1b42ab0c51c4bb2e5c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a205baf3d87e02eb3bcc2fb02f798098c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a205baf3d87e02eb3bcc2fb02f798098c">tic</a> () noexcept</td></tr>
 <tr class="memdesc:a205baf3d87e02eb3bcc2fb02f798098c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the chronometer.  <a href="#a205baf3d87e02eb3bcc2fb02f798098c">More...</a><br /></td></tr>
 <tr class="separator:a205baf3d87e02eb3bcc2fb02f798098c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e3ce2502763032e01a5cb9ea8ea1f67"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a2e3ce2502763032e01a5cb9ea8ea1f67">toc</a> () noexcept</td></tr>
-<tr class="memdesc:a2e3ce2502763032e01a5cb9ea8ea1f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the chronometer.  <a href="#a2e3ce2502763032e01a5cb9ea8ea1f67">More...</a><br /></td></tr>
-<tr class="separator:a2e3ce2502763032e01a5cb9ea8ea1f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f0bcb5eac905f905fcd7488af39391"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#af8f0bcb5eac905f905fcd7488af39391">toc</a> () &amp;noexcept</td></tr>
+<tr class="memdesc:af8f0bcb5eac905f905fcd7488af39391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the chronometer.  <a href="#af8f0bcb5eac905f905fcd7488af39391">More...</a><br /></td></tr>
+<tr class="separator:af8f0bcb5eac905f905fcd7488af39391"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11b82d2d955e035b21dbd9f3570f02b5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a11b82d2d955e035b21dbd9f3570f02b5">tics</a> () const noexcept</td></tr>
 <tr class="memdesc:a11b82d2d955e035b21dbd9f3570f02b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time passed in the duration specified by T.  <a href="#a11b82d2d955e035b21dbd9f3570f02b5">More...</a><br /></td></tr>
 <tr class="separator:a11b82d2d955e035b21dbd9f3570f02b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,7 +175,7 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
 </table>
 </div><div class="memdoc">
 
-<p>Constructs an instance with the current time as the starting point. </p>
+<p>Constructs an instance with the current time as the start point. </p>
 
 </div>
 </div>
@@ -243,7 +243,7 @@ template&lt;typename U  = T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Duration that passed between the instantiation/reset and invocation of <a class="el" href="classoqs_1_1_timer.html#a2e3ce2502763032e01a5cb9ea8ea1f67" title="Stops the chronometer. ">oqs::Timer::toc()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Duration that passed between the instantiation/reset and invocation of <a class="el" href="classoqs_1_1_timer.html#af8f0bcb5eac905f905fcd7488af39391" title="Stops the chronometer. ">oqs::Timer::toc()</a> </dd></dl>
 
 </div>
 </div>
@@ -273,7 +273,7 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
 </div><div class="memdoc">
 
 <p>Resets the chronometer. </p>
-<p>Resets the starting/ending point to the current time </p>
+<p>Resets the start/end point to the current time </p>
 
 </div>
 </div>
@@ -303,12 +303,12 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
 </div><div class="memdoc">
 
 <p>Time passed in the duration specified by T. </p>
-<dl class="section return"><dt>Returns</dt><dd>Number of tics (specified by T) that passed between the instantiation/reset and invocation of <a class="el" href="classoqs_1_1_timer.html#a2e3ce2502763032e01a5cb9ea8ea1f67" title="Stops the chronometer. ">oqs::Timer::toc()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of tics (specified by T) that passed between the instantiation/reset and invocation of <a class="el" href="classoqs_1_1_timer.html#af8f0bcb5eac905f905fcd7488af39391" title="Stops the chronometer. ">oqs::Timer::toc()</a> </dd></dl>
 
 </div>
 </div>
-<a id="a2e3ce2502763032e01a5cb9ea8ea1f67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e3ce2502763032e01a5cb9ea8ea1f67">&#9670;&nbsp;</a></span>toc()</h2>
+<a id="af8f0bcb5eac905f905fcd7488af39391"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8f0bcb5eac905f905fcd7488af39391">&#9670;&nbsp;</a></span>toc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,7 +322,7 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
           <td class="memname">const <a class="el" href="classoqs_1_1_timer.html">Timer</a>&amp; <a class="el" href="classoqs_1_1_timer.html">oqs::Timer</a>&lt; T, CLOCK_T &gt;::toc </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> &amp;</td>
         </tr>
       </table>
   </td>
@@ -333,7 +333,7 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
 </div><div class="memdoc">
 
 <p>Stops the chronometer. </p>
-<p>Set the current time as the ending point</p>
+<p>Set the current time as the end point</p>
 <dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
 
 </div>

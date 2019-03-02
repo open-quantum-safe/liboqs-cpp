@@ -174,25 +174,25 @@ class Timer {
 
   public:
     /**
-     * \brief Constructs an instance with the current time as the starting point
+     * \brief Constructs an instance with the current time as the start point
      */
     Timer() noexcept : start_{CLOCK_T::now()}, end_{start_} {}
 
     /**
      * \brief Resets the chronometer
      *
-     * Resets the starting/ending point to the current time
+     * Resets the start/end point to the current time
      */
     void tic() noexcept { start_ = end_ = CLOCK_T::now(); }
 
     /**
      * \brief Stops the chronometer
      *
-     * Set the current time as the ending point
+     * Set the current time as the end point
      *
      * \return Reference to the current instance
      */
-    const Timer& toc() noexcept {
+    const Timer& toc() & noexcept {
         end_ = CLOCK_T::now();
         return *this;
     }
@@ -438,8 +438,8 @@ class KeyEncapsulation {
      * \return Public key
      */
     bytes generate_keypair() {
-        bytes public_key(get_details().length_public_key, 0);
-        secret_key_ = bytes(get_details().length_secret_key, 0);
+        bytes public_key(details_.length_public_key, 0);
+        secret_key_ = bytes(details_.length_secret_key, 0);
 
         OQS_STATUS rv_ =
             OQS_KEM_keypair(kem_.get(), public_key.data(), secret_key_.data());
@@ -461,8 +461,8 @@ class KeyEncapsulation {
      * \return Pair consisting of 1) ciphertext, and 2) shared secret
      */
     std::pair<bytes, bytes> encap_secret(const bytes& public_key) const {
-        bytes ciphertext(get_details().length_ciphertext, 0);
-        bytes shared_secret(get_details().length_shared_secret, 0);
+        bytes ciphertext(details_.length_ciphertext, 0);
+        bytes shared_secret(details_.length_shared_secret, 0);
         OQS_STATUS rv_ =
             OQS_KEM_encaps(kem_.get(), ciphertext.data(), shared_secret.data(),
                            public_key.data());
@@ -478,7 +478,7 @@ class KeyEncapsulation {
      * \return Shared secret
      */
     bytes decap_secret(const bytes& ciphertext) const {
-        bytes shared_secret(get_details().length_shared_secret, 0);
+        bytes shared_secret(details_.length_shared_secret, 0);
         OQS_STATUS rv_ = OQS_KEM_decaps(kem_.get(), shared_secret.data(),
                                         ciphertext.data(), secret_key_.data());
 
@@ -514,7 +514,7 @@ class KeyEncapsulation {
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const KeyEncapsulation& rhs) {
-        return os << "Key encapsulation mechanism: " << rhs.get_details().name;
+        return os << "Key encapsulation mechanism: " << rhs.details_.name;
     }
 }; // class KeyEncapsulation
 
@@ -693,8 +693,8 @@ class Signature {
      * \return Public key
      */
     bytes generate_keypair() {
-        bytes public_key(get_details().length_public_key, 0);
-        secret_key_ = bytes(get_details().length_secret_key, 0);
+        bytes public_key(details_.length_public_key, 0);
+        secret_key_ = bytes(details_.length_secret_key, 0);
 
         OQS_STATUS rv_ =
             OQS_SIG_keypair(sig_.get(), public_key.data(), secret_key_.data());
@@ -716,7 +716,7 @@ class Signature {
      * \return Message signature
      */
     bytes sign(const bytes& message) const {
-        bytes signature(get_details().length_signature, 0);
+        bytes signature(details_.length_signature, 0);
         std::size_t sig_len = 0;
         OQS_STATUS rv_ =
             OQS_SIG_sign(sig_.get(), signature.data(), &sig_len, message.data(),
@@ -774,7 +774,7 @@ class Signature {
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Signature& rhs) {
-        return os << "Signature mechanism: " << rhs.get_details().name;
+        return os << "Signature mechanism: " << rhs.details_.name;
     }
 }; // class Signature
 
