@@ -14,6 +14,14 @@ include_directories("include")
 include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 link_directories("${LIBOQS_LIB_DIR}")
 
+# build configurations
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING
+            "Choose the type of build, options are: \
+         None Debug Release MinSizeRel RelWithDebInfo."
+            FORCE)
+endif ()
+
 add_executable(oqs_cpp_sig examples/sig.cpp)
 add_executable(oqs_cpp_kem examples/kem.cpp)
 target_link_libraries(oqs_cpp_sig oqs)
