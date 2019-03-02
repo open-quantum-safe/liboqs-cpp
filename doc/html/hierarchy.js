@@ -15,5 +15,6 @@ var hierarchy =
     [ "oqs::internal::Singleton< const KEMs >", "classoqs_1_1internal_1_1_singleton.html", null ],
     [ "oqs::internal::Singleton< const Sigs >", "classoqs_1_1internal_1_1_singleton.html", [
       [ "oqs::Sigs", "classoqs_1_1_sigs.html", null ]
-    ] ]
+    ] ],
+    [ "oqs::Timer< T, CLOCK_T >", "classoqs_1_1_timer.html", null ]
 ];

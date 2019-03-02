@@ -8,5 +8,5 @@ var searchData=
   ['singleton',['Singleton',['../classoqs_1_1internal_1_1_singleton.html',1,'oqs::internal::Singleton&lt; T &gt;'],['../classoqs_1_1internal_1_1_singleton.html#acb73e009f4e3bd10d90c4913dc75ad6d',1,'oqs::internal::Singleton::Singleton() noexcept=default'],['../classoqs_1_1internal_1_1_singleton.html#a43d2470a0ff8dae94d15844b4bc6f4ba',1,'oqs::internal::Singleton::Singleton(const Singleton &amp;)=delete']]],
   ['singleton_3c_20const_20kems_20_3e',['Singleton&lt; const KEMs &gt;',['../classoqs_1_1internal_1_1_singleton.html',1,'oqs::internal']]],
   ['singleton_3c_20const_20sigs_20_3e',['Singleton&lt; const Sigs &gt;',['../classoqs_1_1internal_1_1_singleton.html',1,'oqs::internal']]],
-  ['start_5f',['start_',['../classoqs_1_1internal_1_1_hex_chop.html#ae3f958bc336a176506918f5ad36d84dd',1,'oqs::internal::HexChop']]]
+  ['start_5f',['start_',['../classoqs_1_1internal_1_1_hex_chop.html#ae3f958bc336a176506918f5ad36d84dd',1,'oqs::internal::HexChop::start_()'],['../classoqs_1_1_timer.html#a51fc1d3095f89c711ddecdab280b6eca',1,'oqs::Timer::start_()']]]
 ];

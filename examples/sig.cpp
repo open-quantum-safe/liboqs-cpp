@@ -1,6 +1,7 @@
 // signature C++ example
 
 #include <iostream>
+#include <chrono>
 
 // liboqs C++ wrapper
 #include "oqs_cpp.h"
@@ -13,8 +14,16 @@ int main() {
 
     oqs::Signature signer{"DEFAULT"};
     std::cout << "\n\nSignature details:\n" << signer.get_details();
+
+    oqs::Timer<std::chrono::microseconds> t;
     oqs::bytes signer_public_key = signer.generate_keypair();
+    t.toc();
+    std::cout << "\n\nIt took " << t << " microsecs to generate the key pair";
+
+    t.tic();
     oqs::bytes signature = signer.sign(message);
+    t.toc();
+    std::cout << "\n\nIt took " << t << " microsecs to sign the message";
 
     oqs::Signature verifier{"DEFAULT"};
     bool is_valid = verifier.verify(message, signature, signer_public_key);

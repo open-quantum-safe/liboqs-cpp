@@ -2,6 +2,7 @@ var oqs__cpp_8h =
 [
     [ "Singleton", "classoqs_1_1internal_1_1_singleton.html", "classoqs_1_1internal_1_1_singleton" ],
     [ "HexChop", "classoqs_1_1internal_1_1_hex_chop.html", "classoqs_1_1internal_1_1_hex_chop" ],
+    [ "Timer", "classoqs_1_1_timer.html", "classoqs_1_1_timer" ],
     [ "MechanismNotSupportedError", "classoqs_1_1_mechanism_not_supported_error.html", "classoqs_1_1_mechanism_not_supported_error" ],
     [ "MechanismNotEnabledError", "classoqs_1_1_mechanism_not_enabled_error.html", "classoqs_1_1_mechanism_not_enabled_error" ],
     [ "KEMs", "classoqs_1_1_k_e_ms.html", "classoqs_1_1_k_e_ms" ],
