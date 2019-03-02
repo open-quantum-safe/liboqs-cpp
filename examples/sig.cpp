@@ -25,7 +25,7 @@ int main() {
     t.tic();
     oqs::bytes signature = signer.sign(message);
     t.toc();
-    std::cout << "\n\nIt took " << t << " microsecs to sign the message";
+    std::cout << "\nIt took " << t << " microsecs to sign the message";
 
     oqs::Signature verifier{sig_name};
     bool is_valid = verifier.verify(message, signature, signer_public_key);

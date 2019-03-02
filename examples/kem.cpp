@@ -27,12 +27,12 @@ int main() {
     std::tie(ciphertext, shared_secret_server) =
         server.encap_secret(client_public_key);
     t.toc();
-    std::cout << "\n\nIt took " << t << " millisecs to encapsulate the secret";
+    std::cout << "\nIt took " << t << " millisecs to encapsulate the secret";
 
     t.tic();
     oqs::bytes shared_secret_client = client.decap_secret(ciphertext);
     t.toc();
-    std::cout << "\n\nIt took " << t << " millisecs to decapsulate the secret";
+    std::cout << "\nIt took " << t << " millisecs to decapsulate the secret";
 
     std::cout << "\n\nClient shared secret:\n"
               << oqs::hex_chop(shared_secret_client);
