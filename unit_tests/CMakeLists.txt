@@ -12,17 +12,17 @@ include_directories("../include")
 include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 link_directories("${LIBOQS_LIB_DIR}")
 
-#### Google Test
+# Google Test
 add_subdirectory(lib/gtest-1.8.0)
 
-#### enable all warnings after compiling Google Test
+# enable all warnings only after compiling Google Test
 set(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
-#### unit tests
+# unit tests
 add_subdirectory(tests)
 
-# build configurations
+# default build type
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING
             "Choose the type of build, options are: \
