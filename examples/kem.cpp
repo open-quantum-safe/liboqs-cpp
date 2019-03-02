@@ -10,12 +10,13 @@ int main() {
     std::cout << "Supported KEMs:\n" << oqs::KEMs::get_supported_KEMs();
     std::cout << "\n\nEnabled KEMs:\n" << oqs::KEMs::get_enabled_KEMs();
 
-    oqs::KeyEncapsulation client{"DEFAULT"};
+    std::string kem_name = "DEFAULT";
+    oqs::KeyEncapsulation client{kem_name};
     std::cout << "\n\nKEM details: \n" << client.get_details();
     oqs::bytes client_public_key = client.generate_keypair();
     std::cout << "\n\nClient public key:\n" << oqs::hex_chop(client_public_key);
 
-    oqs::KeyEncapsulation server{"DEFAULT"};
+    oqs::KeyEncapsulation server{kem_name};
 
     oqs::bytes ciphertext, shared_secret_server;
     std::tie(ciphertext, shared_secret_server) =

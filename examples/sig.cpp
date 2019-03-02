@@ -12,7 +12,8 @@ int main() {
 
     oqs::bytes message = "This is the message to sign"_bytes;
 
-    oqs::Signature signer{"DEFAULT"};
+    std::string sig_name = "DEFAULT";
+    oqs::Signature signer{sig_name};
     std::cout << "\n\nSignature details:\n" << signer.get_details();
 
     oqs::Timer<std::chrono::microseconds> t;
@@ -25,7 +26,7 @@ int main() {
     t.toc();
     std::cout << "\n\nIt took " << t << " microsecs to sign the message";
 
-    oqs::Signature verifier{"DEFAULT"};
+    oqs::Signature verifier{sig_name};
     bool is_valid = verifier.verify(message, signature, signer_public_key);
 
     std::cout << "\n\nSignature:\n" << oqs::hex_chop(signature);

@@ -373,7 +373,6 @@ class KeyEncapsulation {
      * \brief KEM algorithm details
      */
     struct alg_details_ {
-        std::string defined_name;
         std::string name;
         std::string version;
         std::size_t claimed_nist_level;
@@ -404,7 +403,6 @@ class KeyEncapsulation {
 
         kem_.reset(OQS_KEM_new(alg_name.c_str()));
 
-        details_.defined_name = alg_name;
         details_.name = kem_->method_name;
         details_.version = kem_->alg_version;
         details_.claimed_nist_level = kem_->claimed_nist_level;
@@ -495,7 +493,6 @@ class KeyEncapsulation {
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const alg_details_& rhs) {
-        os << "Defined name: " << rhs.defined_name << '\n';
         os << "Name: " << rhs.name << '\n';
         os << "Version: " << rhs.version << '\n';
         os << "Claimed NIST level: " << rhs.claimed_nist_level << '\n';
@@ -633,7 +630,6 @@ class Signature {
      * \brief Signature algorithm details
      */
     struct alg_details_ {
-        std::string defined_name;
         std::string name;
         std::string version;
         std::size_t claimed_nist_level;
@@ -663,7 +659,6 @@ class Signature {
 
         sig_.reset(OQS_SIG_new(alg_name.c_str()));
 
-        details_.defined_name = alg_name;
         details_.name = sig_->method_name;
         details_.version = sig_->alg_version;
         details_.claimed_nist_level = sig_->claimed_nist_level;
@@ -760,7 +755,6 @@ class Signature {
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const alg_details_& rhs) {
-        os << "Defined name: " << rhs.defined_name << '\n';
         os << "Name: " << rhs.name << '\n';
         os << "Version: " << rhs.version << '\n';
         os << "Claimed NIST level: " << rhs.claimed_nist_level << '\n';
