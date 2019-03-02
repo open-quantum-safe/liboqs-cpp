@@ -19,6 +19,7 @@ int main() {
     oqs::Timer<std::chrono::microseconds> t;
     oqs::bytes signer_public_key = signer.generate_keypair();
     t.toc();
+    std::cout << "\n\nSigner public key:\n" << oqs::hex_chop(signer_public_key);
     std::cout << "\n\nIt took " << t << " microsecs to generate the key pair";
 
     t.tic();
