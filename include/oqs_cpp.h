@@ -44,6 +44,8 @@ https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
 /**
  * \class oqs::internal::Singleton
  * \brief Singleton class using CRTP pattern
+ * \note Code from
+ * https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
  * \tparam T Class type of which instance will become a Singleton
  */
 template <typename T>
@@ -60,8 +62,6 @@ class Singleton {
   public:
     /**
      * \brief Singleton instance (thread-safe) via CRTP pattern
-     * \note Code from
-     * https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
      * \return Singleton instance
      */
     static T& get_instance() noexcept(std::is_nothrow_constructible<T>::value) {
@@ -159,7 +159,8 @@ https://github.com/vsoftco/qpp/blob/master/include/classes/timer.h
 /**
  * \class oqs::Timer
  * \brief High resolution timer
- *
+ *\note Code from
+ * https://github.com/vsoftco/qpp/blob/master/include/classes/timer.h
  * \tparam T Tics duration, default is std::chrono::duration<double>,
  * i.e. seconds in double precision
  * \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock,
@@ -173,8 +174,7 @@ class Timer {
 
   public:
     /**
-     * \brief Constructs an instance with the current time
-     * as the starting point
+     * \brief Constructs an instance with the current time as the starting point
      */
     Timer() noexcept : start_{CLOCK_T::now()}, end_{start_} {}
 
