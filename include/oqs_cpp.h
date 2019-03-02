@@ -222,26 +222,6 @@ class Timer {
     }
 
     /**
-     * \brief Default copy constructor
-     */
-    Timer(const Timer&) = default;
-
-    /**
-     * \brief Default move constructor
-     */
-    Timer(Timer&&) = default;
-
-    /**
-     * \brief Default copy assignment operator
-     */
-    Timer& operator=(const Timer&) = default;
-
-    /**
-     * \brief Default move assignment operator
-     */
-    Timer& operator=(Timer&&) = default;
-
-    /**
      * \brief Default virtual destructor
      */
     virtual ~Timer() = default;

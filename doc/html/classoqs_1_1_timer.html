@@ -120,18 +120,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4cf597874f95c86f1ef510cb32cd1e66"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a4cf597874f95c86f1ef510cb32cd1e66">get_duration</a> () const noexcept</td></tr>
 <tr class="memdesc:a4cf597874f95c86f1ef510cb32cd1e66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Duration specified by U.  <a href="#a4cf597874f95c86f1ef510cb32cd1e66">More...</a><br /></td></tr>
 <tr class="separator:a4cf597874f95c86f1ef510cb32cd1e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad11a4bbd14a7ff39a939fc05f89fc756"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#ad11a4bbd14a7ff39a939fc05f89fc756">Timer</a> (const <a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;)=default</td></tr>
-<tr class="memdesc:ad11a4bbd14a7ff39a939fc05f89fc756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy constructor.  <a href="#ad11a4bbd14a7ff39a939fc05f89fc756">More...</a><br /></td></tr>
-<tr class="separator:ad11a4bbd14a7ff39a939fc05f89fc756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a735ef906595568a6960c27e3bf8e98ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a735ef906595568a6960c27e3bf8e98ed">Timer</a> (<a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;&amp;)=default</td></tr>
-<tr class="memdesc:a735ef906595568a6960c27e3bf8e98ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move constructor.  <a href="#a735ef906595568a6960c27e3bf8e98ed">More...</a><br /></td></tr>
-<tr class="separator:a735ef906595568a6960c27e3bf8e98ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00209e2f8ad28c6702d404d64aacf5eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a00209e2f8ad28c6702d404d64aacf5eb">operator=</a> (const <a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;)=default</td></tr>
-<tr class="memdesc:a00209e2f8ad28c6702d404d64aacf5eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy assignment operator.  <a href="#a00209e2f8ad28c6702d404d64aacf5eb">More...</a><br /></td></tr>
-<tr class="separator:a00209e2f8ad28c6702d404d64aacf5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb6725cfac8e1754a7f9704716ec7f91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#acb6725cfac8e1754a7f9704716ec7f91">operator=</a> (<a class="el" href="classoqs_1_1_timer.html">Timer</a> &amp;&amp;)=default</td></tr>
-<tr class="memdesc:acb6725cfac8e1754a7f9704716ec7f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default move assignment operator.  <a href="#acb6725cfac8e1754a7f9704716ec7f91">More...</a><br /></td></tr>
-<tr class="separator:acb6725cfac8e1754a7f9704716ec7f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a294eb4d5cfb9227f4c19d25fddb765d4"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_timer.html#a294eb4d5cfb9227f4c19d25fddb765d4">~Timer</a> ()=default</td></tr>
 <tr class="memdesc:a294eb4d5cfb9227f4c19d25fddb765d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor.  <a href="#a294eb4d5cfb9227f4c19d25fddb765d4">More...</a><br /></td></tr>
 <tr class="separator:a294eb4d5cfb9227f4c19d25fddb765d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,7 +150,7 @@ class oqs::Timer&lt; T, CLOCK_T &gt;</h3>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5184f6c79501d1b42ab0c51c4bb2e5c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5184f6c79501d1b42ab0c51c4bb2e5c9">&#9670;&nbsp;</a></span>Timer() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5184f6c79501d1b42ab0c51c4bb2e5c9">&#9670;&nbsp;</a></span>Timer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,66 +175,6 @@ template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T 
 </div><div class="memdoc">
 
 <p>Constructs an instance with the current time as the starting point. </p>
-
-</div>
-</div>
-<a id="ad11a4bbd14a7ff39a939fc05f89fc756"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad11a4bbd14a7ff39a939fc05f89fc756">&#9670;&nbsp;</a></span>Timer() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T  = std::chrono::steady_clock&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classoqs_1_1_timer.html">oqs::Timer</a>&lt; T, CLOCK_T &gt;::<a class="el" href="classoqs_1_1_timer.html">Timer</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classoqs_1_1_timer.html">Timer</a>&lt; T, CLOCK_T &gt; &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default copy constructor. </p>
-
-</div>
-</div>
-<a id="a735ef906595568a6960c27e3bf8e98ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a735ef906595568a6960c27e3bf8e98ed">&#9670;&nbsp;</a></span>Timer() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T  = std::chrono::steady_clock&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classoqs_1_1_timer.html">oqs::Timer</a>&lt; T, CLOCK_T &gt;::<a class="el" href="classoqs_1_1_timer.html">Timer</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classoqs_1_1_timer.html">Timer</a>&lt; T, CLOCK_T &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default move constructor. </p>
 
 </div>
 </div>
@@ -315,66 +243,6 @@ template&lt;typename U  = T&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Duration that passed between the instantiation/reset and invocation of <a class="el" href="classoqs_1_1_timer.html#a2e3ce2502763032e01a5cb9ea8ea1f67" title="Stops the chronometer. ">oqs::Timer::toc()</a> </dd></dl>
-
-</div>
-</div>
-<a id="a00209e2f8ad28c6702d404d64aacf5eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00209e2f8ad28c6702d404d64aacf5eb">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T  = std::chrono::steady_clock&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classoqs_1_1_timer.html">Timer</a>&amp; <a class="el" href="classoqs_1_1_timer.html">oqs::Timer</a>&lt; T, CLOCK_T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classoqs_1_1_timer.html">Timer</a>&lt; T, CLOCK_T &gt; &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default copy assignment operator. </p>
-
-</div>
-</div>
-<a id="acb6725cfac8e1754a7f9704716ec7f91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb6725cfac8e1754a7f9704716ec7f91">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T  = std::chrono::duration&lt;double&gt;, typename CLOCK_T  = std::chrono::steady_clock&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classoqs_1_1_timer.html">Timer</a>&amp; <a class="el" href="classoqs_1_1_timer.html">oqs::Timer</a>&lt; T, CLOCK_T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classoqs_1_1_timer.html">Timer</a>&lt; T, CLOCK_T &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default move assignment operator. </p>
 
 </div>
 </div>
