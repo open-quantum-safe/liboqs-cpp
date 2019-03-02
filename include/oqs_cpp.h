@@ -242,7 +242,8 @@ class MechanismNotSupportedError : public std::runtime_error {
      * \param alg_name Cryptographic algorithm name
      */
     explicit MechanismNotSupportedError(const std::string& alg_name)
-        : std::runtime_error{alg_name + " is not supported by OQS"} {}
+        : std::runtime_error{"\"" + alg_name + "\"" +
+                             " is not supported by OQS"} {}
 }; // class MechanismNotSupportedError
 
 /**
@@ -256,7 +257,8 @@ class MechanismNotEnabledError : public std::runtime_error {
      * \param alg_name Cryptographic algorithm name
      */
     explicit MechanismNotEnabledError(const std::string& alg_name)
-        : std::runtime_error{alg_name + " is not enabled by OQS"} {}
+        : std::runtime_error{"\"" + alg_name + "\"" +
+                             " is not enabled by OQS"} {}
 }; // class MechanismNotEnabledError
 
 /**

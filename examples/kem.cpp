@@ -34,8 +34,10 @@ int main() {
     t.toc();
     std::cout << "\n\nIt took " << t << " millisecs to decapsulate the secret";
 
-    std::cout << "\n\nClient shared secret:\n" << shared_secret_client;
-    std::cout << "\n\nServer shared secret:\n" << shared_secret_server;
+    std::cout << "\n\nClient shared secret:\n"
+              << oqs::hex_chop(shared_secret_client);
+    std::cout << "\n\nServer shared secret:\n"
+              << oqs::hex_chop(shared_secret_server);
     std::cout << "\n\nShared secrets coincide? ";
     std::cout << std::boolalpha;
     std::cout << (shared_secret_client == shared_secret_server) << '\n';
