@@ -25,9 +25,9 @@ if (NOT CMAKE_BUILD_TYPE)
             FORCE)
 endif ()
 
-# build all executables in $EXAMPLES
-foreach(file ${EXAMPLES})
-    get_filename_component(file_no_extension ${file} NAME_WE)
-    add_executable(${file_no_extension} ${file})
-    target_link_libraries(${file_no_extension} oqs)
-endforeach()
+# build all executables in ${EXAMPLES}
+foreach (FILE ${EXAMPLES})
+    get_filename_component(TARGET_NAME ${FILE} NAME_WE)
+    add_executable(${TARGET_NAME} ${FILE})
+    target_link_libraries(${TARGET_NAME} oqs)
+endforeach ()
