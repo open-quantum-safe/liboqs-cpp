@@ -51,9 +51,9 @@ directory to `build`, then type
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
 the CMake build system is available on the user's platform.
-To compile only a single example, e.g. `examples/kem`, specify it as the `make` argument, like
+To build a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
-`cmake ..; make kem`
+`make kem`
 
 To compile and run the unit tests, first `cd unit_tests`, then create a `build` folder inside `unit_tests`, change directory to it, and finally type
 
