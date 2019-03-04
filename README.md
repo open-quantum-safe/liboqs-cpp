@@ -51,7 +51,7 @@ directory to `build`, then type
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
 the CMake build system is available on the user's platform.
-To build a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
+To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
 `make kem`
 
