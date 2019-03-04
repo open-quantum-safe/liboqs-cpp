@@ -113,11 +113,11 @@ $(document).ready(function(){initNavTree('md___users_vlad_liboqs-cpp__r_e_a_d_m_
 <p>liboqs-cpp depends on the <a href="https://github.com/open-quantum-safe/liboqs">liboqs</a> C library; liboqs must be compiled as a Linux/macOS library or as a Windows DLL, and be visible to the wrapper, e.g. installed in a system-wide folder.</p>
 <h2>Compiling on UNIX-like platforms </h2>
 <p>To use the wrapper, the user must have access to a C++11 compliant compiler, then simply <code>#include "oqs_cpp.h"</code> in her/his program. The wrapper contains a CMake build system for both examples and unit tests. To compile and run the examples, create a <code>build</code> folder inside the root folder of the project, change directory to <code>build</code>, then type</p>
-<p><code>cmake ..; make -j</code></p>
-<p>The above commands build all examples in <code>examples</code>, i.e. <code>examples/kem</code> and <code>examples/sig</code>, assuming the CMake build system is available on the user's platform. To build only a specific example, e.g. <code>examples/kem</code>, specify the target as the argument of the <code>make</code> command, such as</p>
+<p><code>cmake ..; make -j 4</code></p>
+<p>The above commands build all examples in <code>examples</code>, i.e. <code>examples/kem</code> and <code>examples/sig</code>, assuming the CMake build system is available on the user's platform. Replace the <code>-j 4</code> flag with your processor's number of cores, e.g. use <code>-j 8</code> if your system has 8 cores. To build only a specific example, e.g. <code>examples/kem</code>, specify the target as the argument of the <code>make</code> command, such as</p>
 <p><code>make kem</code></p>
 <p>To compile and run the unit tests, first <code>cd unit_tests</code>, then create a <code>build</code> folder inside <code>unit_tests</code>, change directory to it, and finally type</p>
-<p><code>cmake ..; make -j</code></p>
+<p><code>cmake ..; make -j 4</code></p>
 <p>The above commands build <code>tests/oqs_cpp_testing</code> suite of unit tests.</p>
 <p>liboqs-cpp has been extensively tested on Linux and macOS systems. Continuous integration is provided via Travis CI.</p>
 <h2>Compiling on Windows </h2>

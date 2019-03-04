@@ -47,17 +47,19 @@ then simply `#include "oqs_cpp.h"` in her/his program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
 directory to `build`, then type 
 
-`cmake ..; make -j`
+`cmake ..; make -j 4`
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
 the CMake build system is available on the user's platform.
+Replace the `-j 4` flag with your
+processor's number of cores, e.g. use `-j 8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
 `make kem`
 
 To compile and run the unit tests, first `cd unit_tests`, then create a `build` folder inside `unit_tests`, change directory to it, and finally type
 
-`cmake ..; make -j`
+`cmake ..; make -j 4`
 
 The above commands build `tests/oqs_cpp_testing` suite of unit tests.
 
