@@ -51,4 +51,4 @@ script:
   - cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j
 
   # Run the unit tests
-  - ./tests/oqs_cpp_testing 
+  - ./tests/oqs_cpp_testing
