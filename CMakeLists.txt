@@ -7,7 +7,7 @@ set(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
 
 # add all examples
-aux_source_directory(examples EXAMPLES)
+aux_source_directory(examples EXAMPLE_FILES)
 
 # path to liboqs include and lib, modify as needed
 set(LIBOQS_INCLUDE_DIR "/usr/local/include")
@@ -25,8 +25,8 @@ if (NOT CMAKE_BUILD_TYPE)
             FORCE)
 endif ()
 
-# build all executables in ${EXAMPLES}
-foreach (FILE ${EXAMPLES})
+# build all executables in ${EXAMPLE_FILES}
+foreach (FILE ${EXAMPLE_FILES})
     get_filename_component(TARGET_NAME ${FILE} NAME_WE)
     add_executable(${TARGET_NAME} ${FILE})
     target_link_libraries(${TARGET_NAME} oqs)
