@@ -32,7 +32,7 @@ To avoid name collisions, liboqs-cpp includes all of its code inside the namespa
 
 The wrapper also defines a high resolution timing class, `oqs::Timer<>`.
 
-The examples in the `examples` folder are self-explanatory and provide more details about the wrapper's API.
+The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) folder are self-explanatory and provide more details about the wrapper's API.
 
 liboqs installation
 -------------------
