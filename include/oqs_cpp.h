@@ -758,9 +758,6 @@ class Signature {
      */
     bool verify(const bytes& message, const bytes& signature,
                 const bytes& public_key) const {
-        if (signature.size() != details_.length_signature)
-            throw std::runtime_error("Incorrect signature length");
-
         if (public_key.size() != details_.length_public_key)
             throw std::runtime_error("Incorrect public key length");
 
