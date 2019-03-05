@@ -373,7 +373,7 @@ class KEMs final : public internal::Singleton<const KEMs> {
  * \brief Key encapsulation mechanisms
  */
 class KeyEncapsulation {
-    const std::string alg_name_; ///< cryptographic algorithm name
+    std::string alg_name_; ///< cryptographic algorithm name
     std::shared_ptr<C::OQS_KEM> kem_{nullptr, [](C::OQS_KEM* p) {
                                          C::OQS_KEM_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_KEM
@@ -401,7 +401,7 @@ class KeyEncapsulation {
      */
     explicit KeyEncapsulation(const std::string& alg_name,
                               const bytes& secret_key = {})
-        : alg_name_{alg_name} {
+        : alg_name_{alg_name}, secret_key_{secret_key} {
         // KEM not enabled
         if (!KEMs::is_KEM_enabled(alg_name)) {
             // perhaps it's supported
@@ -421,10 +421,6 @@ class KeyEncapsulation {
         details_.length_secret_key = kem_->length_secret_key;
         details_.length_ciphertext = kem_->length_ciphertext;
         details_.length_shared_secret = kem_->length_shared_secret;
-
-        if (!secret_key.empty()) {
-            secret_key_ = secret_key;
-        }
     }
 
     /**
@@ -469,6 +465,9 @@ class KeyEncapsulation {
      * \return Pair consisting of 1) ciphertext, and 2) shared secret
      */
     std::pair<bytes, bytes> encap_secret(const bytes& public_key) const {
+        if (public_key.size() != details_.length_public_key)
+            throw std::runtime_error("Incorrect public key length");
+
         bytes ciphertext(details_.length_ciphertext, 0);
         bytes shared_secret(details_.length_shared_secret, 0);
         OQS_STATUS rv_ =
@@ -486,6 +485,15 @@ class KeyEncapsulation {
      * \return Shared secret
      */
     bytes decap_secret(const bytes& ciphertext) const {
+        if (ciphertext.size() != details_.length_ciphertext)
+            throw std::runtime_error("Incorrect ciphertext length");
+
+        if (secret_key_.size() != details_.length_secret_key)
+            throw std::runtime_error(
+                "Incorrect secret key length, make sure you "
+                "specify one in the constructor or run "
+                "oqs::Signature::generate_keypair()");
+
         bytes shared_secret(details_.length_shared_secret, 0);
         OQS_STATUS rv_ =
             C::OQS_KEM_decaps(kem_.get(), shared_secret.data(),
@@ -631,7 +639,7 @@ class Sigs final : public internal::Singleton<const Sigs> {
  * \brief Signature mechanisms
  */
 class Signature {
-    const std::string alg_name_; ///< cryptographic algorithm name
+    std::string alg_name_; ///< cryptographic algorithm name
     std::shared_ptr<C::OQS_SIG> sig_{nullptr, [](C::OQS_SIG* p) {
                                          C::OQS_SIG_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_SIG
@@ -658,7 +666,7 @@ class Signature {
      */
     explicit Signature(const std::string& alg_name,
                        const bytes& secret_key = {})
-        : alg_name_{alg_name} {
+        : alg_name_{alg_name}, secret_key_{secret_key} {
         // signature not enabled
         if (!Sigs::is_sig_enabled(alg_name)) {
             // perhaps it's supported
@@ -677,10 +685,6 @@ class Signature {
         details_.length_public_key = sig_->length_public_key;
         details_.length_secret_key = sig_->length_secret_key;
         details_.length_signature = sig_->length_signature;
-
-        if (!secret_key.empty()) {
-            secret_key_ = secret_key;
-        }
     }
 
     /**
@@ -725,6 +729,12 @@ class Signature {
      * \return Message signature
      */
     bytes sign(const bytes& message) const {
+        if (secret_key_.size() != details_.length_secret_key)
+            throw std::runtime_error(
+                "Incorrect secret key length, make sure you "
+                "specify one in the constructor or run "
+                "oqs::Signature::generate_keypair()");
+
         bytes signature(details_.length_signature, 0);
         std::size_t sig_len = 0;
         OQS_STATUS rv_ =
@@ -748,6 +758,12 @@ class Signature {
      */
     bool verify(const bytes& message, const bytes& signature,
                 const bytes& public_key) const {
+        if (signature.size() != details_.length_signature)
+            throw std::runtime_error("Incorrect signature length");
+
+        if (public_key.size() != details_.length_public_key)
+            throw std::runtime_error("Incorrect public key length");
+
         OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
                                            message.size(), signature.data(),
                                            signature.size(), public_key.data());

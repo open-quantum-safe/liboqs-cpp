@@ -10,7 +10,7 @@ var classoqs_1_1_signature =
     [ "verify", "classoqs_1_1_signature.html#a2137c98ee889ec45cfb90b8aaefbb1c2", null ],
     [ "operator<<", "classoqs_1_1_signature.html#aa175782b43830e2b602f54f2c2b8c5b7", null ],
     [ "operator<<", "classoqs_1_1_signature.html#a939a52b908a1d00720692062870103eb", null ],
-    [ "alg_name_", "classoqs_1_1_signature.html#ab44f06c0d243d112ad2d984388f6cf9f", null ],
+    [ "alg_name_", "classoqs_1_1_signature.html#acab8509412497bc640eec273d0c26af3", null ],
     [ "details_", "classoqs_1_1_signature.html#a28b2857a9cbdf8cbd5f48153fc0711c6", null ],
     [ "secret_key_", "classoqs_1_1_signature.html#af448d670eba1f51c8a4f868cc12d5805", null ],
     [ "sig_", "classoqs_1_1_signature.html#ad83509f4ec9943adac97f3b6a9b3d686", null ]

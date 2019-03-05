@@ -10,7 +10,7 @@ var classoqs_1_1_key_encapsulation =
     [ "get_details", "classoqs_1_1_key_encapsulation.html#ac6aa67ff25bdf9ed62f723923697fbef", null ],
     [ "operator<<", "classoqs_1_1_key_encapsulation.html#aa175782b43830e2b602f54f2c2b8c5b7", null ],
     [ "operator<<", "classoqs_1_1_key_encapsulation.html#a15146ddffc1778a63cec737f686b4c1e", null ],
-    [ "alg_name_", "classoqs_1_1_key_encapsulation.html#a49d6a4ced46b76ff9eddfbf817766783", null ],
+    [ "alg_name_", "classoqs_1_1_key_encapsulation.html#a2887cfa537b150eadec9de16de2abc7d", null ],
     [ "details_", "classoqs_1_1_key_encapsulation.html#ab14d613a959be01a065302e3ff1a9e42", null ],
     [ "kem_", "classoqs_1_1_key_encapsulation.html#aafe21be75ed1a4811ecdcc74d96631b2", null ],
     [ "secret_key_", "classoqs_1_1_key_encapsulation.html#a2e69496111c05f1f3404045b2354b240", null ]
