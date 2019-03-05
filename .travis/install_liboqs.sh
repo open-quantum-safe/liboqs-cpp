@@ -6,5 +6,5 @@ git checkout master
 autoreconf -i
 ./configure
 make clean
-make -j
+make -j 4
 sudo make install
