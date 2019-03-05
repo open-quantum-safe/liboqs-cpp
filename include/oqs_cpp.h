@@ -37,9 +37,9 @@ extern "C" {
 }
 } // namespace C
 
-using byte = std::uint8_t;       ///< byte (unsigned)
-using bytes = std::vector<byte>; ///< vector of bytes (unsigned)
-using OQS_STATUS = C::OQS_STATUS;///< bring OQS_STATUS into the oqs namespace
+using byte = std::uint8_t;        ///< byte (unsigned)
+using bytes = std::vector<byte>;  ///< vector of bytes (unsigned)
+using OQS_STATUS = C::OQS_STATUS; ///< bring OQS_STATUS into the oqs namespace
 
 /**
  * \namespace internal
@@ -375,9 +375,9 @@ class KEMs final : public internal::Singleton<const KEMs> {
 class KeyEncapsulation {
     const std::string alg_name_; ///< cryptographic algorithm name
     std::shared_ptr<C::OQS_KEM> kem_{nullptr, [](C::OQS_KEM* p) {
-                                      C::OQS_KEM_free(p);
-                                  }}; ///< liboqs smart pointer to C::OQS_KEM
-    bytes secret_key_{};              ///< secret key
+                                         C::OQS_KEM_free(p);
+                                     }}; ///< liboqs smart pointer to C::OQS_KEM
+    bytes secret_key_{};                 ///< secret key
 
     /**
      * \brief KEM algorithm details
@@ -449,8 +449,8 @@ class KeyEncapsulation {
         bytes public_key(details_.length_public_key, 0);
         secret_key_ = bytes(details_.length_secret_key, 0);
 
-        OQS_STATUS rv_ =
-            C::OQS_KEM_keypair(kem_.get(), public_key.data(), secret_key_.data());
+        OQS_STATUS rv_ = C::OQS_KEM_keypair(kem_.get(), public_key.data(),
+                                            secret_key_.data());
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
 
@@ -472,8 +472,8 @@ class KeyEncapsulation {
         bytes ciphertext(details_.length_ciphertext, 0);
         bytes shared_secret(details_.length_shared_secret, 0);
         OQS_STATUS rv_ =
-            C::OQS_KEM_encaps(kem_.get(), ciphertext.data(), shared_secret.data(),
-                           public_key.data());
+            C::OQS_KEM_encaps(kem_.get(), ciphertext.data(),
+                              shared_secret.data(), public_key.data());
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not encapsulate secret");
 
@@ -487,8 +487,9 @@ class KeyEncapsulation {
      */
     bytes decap_secret(const bytes& ciphertext) const {
         bytes shared_secret(details_.length_shared_secret, 0);
-        OQS_STATUS rv_ = C::OQS_KEM_decaps(kem_.get(), shared_secret.data(),
-                                        ciphertext.data(), secret_key_.data());
+        OQS_STATUS rv_ =
+            C::OQS_KEM_decaps(kem_.get(), shared_secret.data(),
+                              ciphertext.data(), secret_key_.data());
 
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not decapsulate secret");
@@ -632,9 +633,9 @@ class Sigs final : public internal::Singleton<const Sigs> {
 class Signature {
     const std::string alg_name_; ///< cryptographic algorithm name
     std::shared_ptr<C::OQS_SIG> sig_{nullptr, [](C::OQS_SIG* p) {
-                                      C::OQS_SIG_free(p);
-                                  }}; ///< liboqs smart pointer to C::OQS_SIG
-    bytes secret_key_{};              ///< secret key
+                                         C::OQS_SIG_free(p);
+                                     }}; ///< liboqs smart pointer to C::OQS_SIG
+    bytes secret_key_{};                 ///< secret key
 
     /**
      * \brief Signature algorithm details
@@ -704,8 +705,8 @@ class Signature {
         bytes public_key(details_.length_public_key, 0);
         secret_key_ = bytes(details_.length_secret_key, 0);
 
-        OQS_STATUS rv_ =
-            C::OQS_SIG_keypair(sig_.get(), public_key.data(), secret_key_.data());
+        OQS_STATUS rv_ = C::OQS_SIG_keypair(sig_.get(), public_key.data(),
+                                            secret_key_.data());
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
 
@@ -727,8 +728,8 @@ class Signature {
         bytes signature(details_.length_signature, 0);
         std::size_t sig_len = 0;
         OQS_STATUS rv_ =
-            C::OQS_SIG_sign(sig_.get(), signature.data(), &sig_len, message.data(),
-                         message.size(), secret_key_.data());
+            C::OQS_SIG_sign(sig_.get(), signature.data(), &sig_len,
+                            message.data(), message.size(), secret_key_.data());
 
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not sign message");
@@ -748,8 +749,8 @@ class Signature {
     bool verify(const bytes& message, const bytes& signature,
                 const bytes& public_key) const {
         OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
-                                        message.size(), signature.data(),
-                                        signature.size(), public_key.data());
+                                           message.size(), signature.data(),
+                                           signature.size(), public_key.data());
 
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not verify signature");
