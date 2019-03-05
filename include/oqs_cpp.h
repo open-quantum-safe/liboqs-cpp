@@ -27,7 +27,7 @@ namespace oqs {
 
 /**
  * \namespace oqs::C
- * \brief Namespace containing all of the oqs C functions, so we they do not
+ * \brief Namespace containing all of the oqs C functions, so they do not
  * pollute the oqs namespace
  */
 namespace C {
