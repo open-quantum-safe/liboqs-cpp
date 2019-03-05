@@ -432,10 +432,16 @@ class KeyEncapsulation {
     }
 
     /**
-     * \brief KEM algorithm details
+     * \brief KEM algorithm details, lvalue overload
      * \return KEM algorithm details
      */
-    const alg_details_& get_details() const { return details_; }
+    const alg_details_& get_details() const& { return details_; }
+
+    /**
+     * \brief KEM algorithm details, rvalue overload
+     * \return KEM algorithm details
+     */
+    alg_details_ get_details() const&& { return details_; }
 
     /**
      * \brief Generate public key/secret key pair
@@ -696,17 +702,23 @@ class Signature {
     }
 
     /**
-     * \brief Signature algorithm details
+     * \brief Signature algorithm details, lvalue overload
      * \return Signature algorithm details
      */
-    const alg_details_& get_details() const { return details_; }
+    const alg_details_& get_details() const& { return details_; }
+
+    /**
+     * \brief Signature algorithm details, rvalue overload
+     * \return Signature algorithm details
+     */
+    alg_details_ get_details() const&& { return details_; }
 
     /**
      * \brief Generate public key/secret key pair
      * \return Public key
      */
     bytes generate_keypair() {
-        bytes public_key(details_.length_public_key, 0);
+        bytes public_key(get_details().length_public_key, 0);
         secret_key_ = bytes(details_.length_secret_key, 0);
 
         OQS_STATUS rv_ = C::OQS_SIG_keypair(sig_.get(), public_key.data(),

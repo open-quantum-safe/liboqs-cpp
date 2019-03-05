@@ -125,9 +125,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a27964fb82f9f89805418b95fb65aae27"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#a27964fb82f9f89805418b95fb65aae27">~KeyEncapsulation</a> ()</td></tr>
 <tr class="memdesc:a27964fb82f9f89805418b95fb65aae27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual default destructor.  <a href="#a27964fb82f9f89805418b95fb65aae27">More...</a><br /></td></tr>
 <tr class="separator:a27964fb82f9f89805418b95fb65aae27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6aa67ff25bdf9ed62f723923697fbef"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structoqs_1_1_key_encapsulation_1_1alg__details__.html">alg_details_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#ac6aa67ff25bdf9ed62f723923697fbef">get_details</a> () const</td></tr>
-<tr class="memdesc:ac6aa67ff25bdf9ed62f723923697fbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">KEM algorithm details.  <a href="#ac6aa67ff25bdf9ed62f723923697fbef">More...</a><br /></td></tr>
-<tr class="separator:ac6aa67ff25bdf9ed62f723923697fbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39439d958b827389a6c4c2ce909c559a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structoqs_1_1_key_encapsulation_1_1alg__details__.html">alg_details_</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#a39439d958b827389a6c4c2ce909c559a">get_details</a> () const &amp;</td></tr>
+<tr class="memdesc:a39439d958b827389a6c4c2ce909c559a"><td class="mdescLeft">&#160;</td><td class="mdescRight">KEM algorithm details, lvalue overload.  <a href="#a39439d958b827389a6c4c2ce909c559a">More...</a><br /></td></tr>
+<tr class="separator:a39439d958b827389a6c4c2ce909c559a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade87bc650464af6f50d04229294d6c06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structoqs_1_1_key_encapsulation_1_1alg__details__.html">alg_details_</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#ade87bc650464af6f50d04229294d6c06">get_details</a> () const &amp;&amp;</td></tr>
+<tr class="memdesc:ade87bc650464af6f50d04229294d6c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">KEM algorithm details, rvalue overload.  <a href="#ade87bc650464af6f50d04229294d6c06">More...</a><br /></td></tr>
+<tr class="separator:ade87bc650464af6f50d04229294d6c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a211dd2e7b36f15acb3eb388e5ab6a70f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceoqs.html#a418a2b5eb3a9e3460b1cb590df54490d">bytes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#a211dd2e7b36f15acb3eb388e5ab6a70f">generate_keypair</a> ()</td></tr>
 <tr class="memdesc:a211dd2e7b36f15acb3eb388e5ab6a70f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate public key/secret key pair.  <a href="#a211dd2e7b36f15acb3eb388e5ab6a70f">More...</a><br /></td></tr>
 <tr class="separator:a211dd2e7b36f15acb3eb388e5ab6a70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -366,8 +369,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="ac6aa67ff25bdf9ed62f723923697fbef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6aa67ff25bdf9ed62f723923697fbef">&#9670;&nbsp;</a></span>get_details()</h2>
+<a id="a39439d958b827389a6c4c2ce909c559a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39439d958b827389a6c4c2ce909c559a">&#9670;&nbsp;</a></span>get_details() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -379,7 +382,7 @@ Friends</h2></td></tr>
           <td class="memname">const <a class="el" href="structoqs_1_1_key_encapsulation_1_1alg__details__.html">alg_details_</a>&amp; oqs::KeyEncapsulation::get_details </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const &amp;</td>
         </tr>
       </table>
   </td>
@@ -389,7 +392,35 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>KEM algorithm details. </p>
+<p>KEM algorithm details, lvalue overload. </p>
+<dl class="section return"><dt>Returns</dt><dd>KEM algorithm details </dd></dl>
+
+</div>
+</div>
+<a id="ade87bc650464af6f50d04229294d6c06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade87bc650464af6f50d04229294d6c06">&#9670;&nbsp;</a></span>get_details() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structoqs_1_1_key_encapsulation_1_1alg__details__.html">alg_details_</a> oqs::KeyEncapsulation::get_details </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const &amp;&amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>KEM algorithm details, rvalue overload. </p>
 <dl class="section return"><dt>Returns</dt><dd>KEM algorithm details </dd></dl>
 
 </div>
