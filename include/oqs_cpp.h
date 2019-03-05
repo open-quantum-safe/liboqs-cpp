@@ -778,7 +778,7 @@ class Signature {
                                            signature.size(), public_key.data());
 
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
-            throw std::runtime_error("Can not verify signature");
+            return false;
 
         return true;
     }
