@@ -13,6 +13,7 @@ var oqs__cpp_8h =
     [ "alg_details_", "structoqs_1_1_signature_1_1alg__details__.html", "structoqs_1_1_signature_1_1alg__details__" ],
     [ "byte", "oqs__cpp_8h.html#a802843a8319a96744fee17bc75011ef1", null ],
     [ "bytes", "oqs__cpp_8h.html#a418a2b5eb3a9e3460b1cb590df54490d", null ],
+    [ "OQS_STATUS", "oqs__cpp_8h.html#a12eef479332d3f8c17532f260e6bf775", null ],
     [ "hex_chop", "oqs__cpp_8h.html#ac05bf6bcac8c0b034eab7e71b1755e66", null ],
     [ "operator\"\"_bytes", "oqs__cpp_8h.html#adafb11d24e37533712b1d102a454029a", null ],
     [ "operator<<", "oqs__cpp_8h.html#aa63869c474d97dfa75316f7b8f369909", null ],
