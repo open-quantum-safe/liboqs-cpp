@@ -777,10 +777,7 @@ class Signature {
                                            message.size(), signature.data(),
                                            signature.size(), public_key.data());
 
-        if (rv_ != OQS_STATUS::OQS_SUCCESS)
-            return false;
-
-        return true;
+        return rv_ == OQS_STATUS::OQS_SUCCESS ? true : false;
     }
 
     /**
