@@ -794,7 +794,7 @@ class Signature {
         os << "Is EUF_CMA: " << rhs.is_euf_cma << '\n';
         os << "Length public key (bytes): " << rhs.length_public_key << '\n';
         os << "Length secret key (bytes): " << rhs.length_secret_key << '\n';
-        os << "Length signature (bytes): " << rhs.length_signature;
+        os << "Maximum length signature (bytes): " << rhs.length_signature;
         return os;
     }
 
