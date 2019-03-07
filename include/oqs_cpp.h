@@ -424,6 +424,48 @@ class KeyEncapsulation {
     }
 
     /**
+     * \brief Default copy constructor
+     */
+    KeyEncapsulation(const KeyEncapsulation&) = default;
+
+    /**
+     * \brief Default copy assignment operator
+     * \return Reference to the current instance
+     */
+    KeyEncapsulation& operator=(const KeyEncapsulation&) = default;
+
+    /**
+     * \brief Move constructor, guarantees that the rvalue secret key is always
+     * zeroed
+     * \param rhs oqs::KeyEncapsulation instance
+     */
+    KeyEncapsulation(KeyEncapsulation&& rhs)
+        : alg_name_{std::move(rhs.alg_name_)}, kem_{std::move(rhs.kem_)},
+          secret_key_{std::move(rhs.secret_key_)}, details_{std::move(
+                                                       rhs.details_)} {
+        rhs.secret_key_.resize(details_.length_secret_key);
+        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
+        rhs.secret_key_.resize(0);
+    }
+    /**
+     * \brief Move assignment operator, guarantees that the rvalue secret key is
+     * always zeroed
+     * \param rhs oqs::KeyEncapsulation instance
+     * \return Reference to the current instance
+     */
+    KeyEncapsulation& operator=(KeyEncapsulation&& rhs) {
+        alg_name_ = std::move(rhs.alg_name_);
+        kem_ = std::move(rhs.kem_);
+        secret_key_ = std::move(rhs.secret_key_);
+        details_ = std::move(rhs.details_);
+        rhs.secret_key_.resize(details_.length_secret_key);
+        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
+        rhs.secret_key_.resize(0);
+
+        return *this;
+    }
+
+    /**
      * \brief Virtual default destructor
      */
     virtual ~KeyEncapsulation() {
@@ -532,7 +574,7 @@ class KeyEncapsulation {
     /**
      * \brief std::ostream extraction operator for oqs::KeyEncapsulation
      * \param os Output stream
-     * \param rhs Key encapsulation instance
+     * \param rhs oqs::KeyEncapsulation instance
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
@@ -694,6 +736,48 @@ class Signature {
     }
 
     /**
+     * \brief Default copy constructor
+     */
+    Signature(const Signature&) = default;
+
+    /**
+     * \brief Default copy assignment operator
+     * \return Reference to the current instance
+     */
+    Signature& operator=(const Signature&) = default;
+
+    /**
+     * \brief Move constructor, guarantees that the rvalue secret key is always
+     * zeroed
+     * \param rhs oqs::Signature instance
+     */
+    Signature(Signature&& rhs)
+        : alg_name_{std::move(rhs.alg_name_)}, sig_{std::move(rhs.sig_)},
+          secret_key_{std::move(rhs.secret_key_)}, details_{std::move(
+                                                       rhs.details_)} {
+        rhs.secret_key_.resize(details_.length_secret_key);
+        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
+        rhs.secret_key_.resize(0);
+    }
+    /**
+     * \brief Move assignment operator, guarantees that the rvalue secret key is
+     * always zeroed
+     * \param rhs oqs::Signature instance
+     * \return Reference to the current instance
+     */
+    Signature& operator=(Signature&& rhs) {
+        alg_name_ = std::move(rhs.alg_name_);
+        sig_ = std::move(rhs.sig_);
+        secret_key_ = std::move(rhs.secret_key_);
+        details_ = std::move(rhs.details_);
+        rhs.secret_key_.resize(details_.length_secret_key);
+        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
+        rhs.secret_key_.resize(0);
+
+        return *this;
+    }
+
+    /**
      * \brief Virtual default destructor
      */
     virtual ~Signature() {
@@ -784,7 +868,7 @@ class Signature {
      * \brief std::ostream extraction operator for the signature algorithm
      * details
      * \param os Output stream
-     * \param rhs Algorithm details
+     * \param rhs Algorithm details instance
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const alg_details_& rhs) {
@@ -801,7 +885,7 @@ class Signature {
     /**
      * \brief std::ostream extraction operator for oqs::Signature
      * \param os Output stream
-     * \param rhs Signature instance
+     * \param rhs oqs::Signature instance
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Signature& rhs) {

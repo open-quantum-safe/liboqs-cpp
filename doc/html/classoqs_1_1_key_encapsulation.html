@@ -122,6 +122,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aace5aeab1bfff7827a761d473eb93f6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#aace5aeab1bfff7827a761d473eb93f6d">KeyEncapsulation</a> (const std::string &amp;alg_name, const <a class="el" href="namespaceoqs.html#a418a2b5eb3a9e3460b1cb590df54490d">bytes</a> &amp;secret_key={})</td></tr>
 <tr class="memdesc:aace5aeab1bfff7827a761d473eb93f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance of <a class="el" href="classoqs_1_1_key_encapsulation.html" title="Key encapsulation mechanisms. ">oqs::KeyEncapsulation</a>.  <a href="#aace5aeab1bfff7827a761d473eb93f6d">More...</a><br /></td></tr>
 <tr class="separator:aace5aeab1bfff7827a761d473eb93f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a742ca45f0eb6d0cfcb72113821422ae1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#a742ca45f0eb6d0cfcb72113821422ae1">KeyEncapsulation</a> (const <a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;)=default</td></tr>
+<tr class="memdesc:a742ca45f0eb6d0cfcb72113821422ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy constructor.  <a href="#a742ca45f0eb6d0cfcb72113821422ae1">More...</a><br /></td></tr>
+<tr class="separator:a742ca45f0eb6d0cfcb72113821422ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0f1e9264b2a2d7d92c5916d4ad295e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#a5c0f1e9264b2a2d7d92c5916d4ad295e">operator=</a> (const <a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;)=default</td></tr>
+<tr class="memdesc:a5c0f1e9264b2a2d7d92c5916d4ad295e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy assignment operator.  <a href="#a5c0f1e9264b2a2d7d92c5916d4ad295e">More...</a><br /></td></tr>
+<tr class="separator:a5c0f1e9264b2a2d7d92c5916d4ad295e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54608163ce1f654c389795af57b3ca4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#a54608163ce1f654c389795af57b3ca4d">KeyEncapsulation</a> (<a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&amp;rhs)</td></tr>
+<tr class="memdesc:a54608163ce1f654c389795af57b3ca4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor, guarantees that the rvalue secret key is always zeroed.  <a href="#a54608163ce1f654c389795af57b3ca4d">More...</a><br /></td></tr>
+<tr class="separator:a54608163ce1f654c389795af57b3ca4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae78d2bad6a3fe0493c24cf297e4f674"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#aae78d2bad6a3fe0493c24cf297e4f674">operator=</a> (<a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&amp;rhs)</td></tr>
+<tr class="memdesc:aae78d2bad6a3fe0493c24cf297e4f674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator, guarantees that the rvalue secret key is always zeroed.  <a href="#aae78d2bad6a3fe0493c24cf297e4f674">More...</a><br /></td></tr>
+<tr class="separator:aae78d2bad6a3fe0493c24cf297e4f674"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27964fb82f9f89805418b95fb65aae27"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_key_encapsulation.html#a27964fb82f9f89805418b95fb65aae27">~KeyEncapsulation</a> ()</td></tr>
 <tr class="memdesc:a27964fb82f9f89805418b95fb65aae27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual default destructor.  <a href="#a27964fb82f9f89805418b95fb65aae27">More...</a><br /></td></tr>
 <tr class="separator:a27964fb82f9f89805418b95fb65aae27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,7 +183,7 @@ Friends</h2></td></tr>
 <div class="textblock"><p>Key encapsulation mechanisms. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aace5aeab1bfff7827a761d473eb93f6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aace5aeab1bfff7827a761d473eb93f6d">&#9670;&nbsp;</a></span>KeyEncapsulation()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aace5aeab1bfff7827a761d473eb93f6d">&#9670;&nbsp;</a></span>KeyEncapsulation() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,6 +221,68 @@ Friends</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">alg_name</td><td>Cryptographic algorithm name </td></tr>
     <tr><td class="paramname">secret_key</td><td>Secret key (optional) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a742ca45f0eb6d0cfcb72113821422ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a742ca45f0eb6d0cfcb72113821422ae1">&#9670;&nbsp;</a></span>KeyEncapsulation() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">oqs::KeyEncapsulation::KeyEncapsulation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default copy constructor. </p>
+
+</div>
+</div>
+<a id="a54608163ce1f654c389795af57b3ca4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54608163ce1f654c389795af57b3ca4d">&#9670;&nbsp;</a></span>KeyEncapsulation() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">oqs::KeyEncapsulation::KeyEncapsulation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move constructor, guarantees that the rvalue secret key is always zeroed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td><a class="el" href="classoqs_1_1_key_encapsulation.html" title="Key encapsulation mechanisms. ">oqs::KeyEncapsulation</a> instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -425,6 +499,70 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a5c0f1e9264b2a2d7d92c5916d4ad295e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c0f1e9264b2a2d7d92c5916d4ad295e">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a>&amp; oqs::KeyEncapsulation::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default copy assignment operator. </p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
+<a id="aae78d2bad6a3fe0493c24cf297e4f674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae78d2bad6a3fe0493c24cf297e4f674">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a>&amp; oqs::KeyEncapsulation::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoqs_1_1_key_encapsulation.html">KeyEncapsulation</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move assignment operator, guarantees that the rvalue secret key is always zeroed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td><a class="el" href="classoqs_1_1_key_encapsulation.html" title="Key encapsulation mechanisms. ">oqs::KeyEncapsulation</a> instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="aa175782b43830e2b602f54f2c2b8c5b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa175782b43830e2b602f54f2c2b8c5b7">&#9670;&nbsp;</a></span>operator&lt;&lt; <span class="overload">[1/2]</span></h2>
@@ -510,7 +648,7 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Output stream </td></tr>
-    <tr><td class="paramname">rhs</td><td>Key encapsulation instance </td></tr>
+    <tr><td class="paramname">rhs</td><td><a class="el" href="classoqs_1_1_key_encapsulation.html" title="Key encapsulation mechanisms. ">oqs::KeyEncapsulation</a> instance </td></tr>
   </table>
   </dd>
 </dl>

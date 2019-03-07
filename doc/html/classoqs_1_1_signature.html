@@ -122,6 +122,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a20191573b6ac3f1c7c6b9ef7e55957"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_signature.html#a7a20191573b6ac3f1c7c6b9ef7e55957">Signature</a> (const std::string &amp;alg_name, const <a class="el" href="namespaceoqs.html#a418a2b5eb3a9e3460b1cb590df54490d">bytes</a> &amp;secret_key={})</td></tr>
 <tr class="memdesc:a7a20191573b6ac3f1c7c6b9ef7e55957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance of <a class="el" href="classoqs_1_1_signature.html" title="Signature mechanisms. ">oqs::Signature</a>.  <a href="#a7a20191573b6ac3f1c7c6b9ef7e55957">More...</a><br /></td></tr>
 <tr class="separator:a7a20191573b6ac3f1c7c6b9ef7e55957"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cdbb6182b29cf29a964fb9daddf01c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_signature.html#a6cdbb6182b29cf29a964fb9daddf01c7">Signature</a> (const <a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;)=default</td></tr>
+<tr class="memdesc:a6cdbb6182b29cf29a964fb9daddf01c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy constructor.  <a href="#a6cdbb6182b29cf29a964fb9daddf01c7">More...</a><br /></td></tr>
+<tr class="separator:a6cdbb6182b29cf29a964fb9daddf01c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23583dd0ef2dddb0f870302fc9e3d7dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_signature.html#a23583dd0ef2dddb0f870302fc9e3d7dc">operator=</a> (const <a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;)=default</td></tr>
+<tr class="memdesc:a23583dd0ef2dddb0f870302fc9e3d7dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default copy assignment operator.  <a href="#a23583dd0ef2dddb0f870302fc9e3d7dc">More...</a><br /></td></tr>
+<tr class="separator:a23583dd0ef2dddb0f870302fc9e3d7dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd1d67ba887e743410b2fa99daf960ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_signature.html#afd1d67ba887e743410b2fa99daf960ab">Signature</a> (<a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&amp;rhs)</td></tr>
+<tr class="memdesc:afd1d67ba887e743410b2fa99daf960ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor, guarantees that the rvalue secret key is always zeroed.  <a href="#afd1d67ba887e743410b2fa99daf960ab">More...</a><br /></td></tr>
+<tr class="separator:afd1d67ba887e743410b2fa99daf960ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91401fed61e65f75289bf02f1d8128b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_signature.html#a91401fed61e65f75289bf02f1d8128b7">operator=</a> (<a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&amp;rhs)</td></tr>
+<tr class="memdesc:a91401fed61e65f75289bf02f1d8128b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator, guarantees that the rvalue secret key is always zeroed.  <a href="#a91401fed61e65f75289bf02f1d8128b7">More...</a><br /></td></tr>
+<tr class="separator:a91401fed61e65f75289bf02f1d8128b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e1357f6bcb9487687a1cf6f1445904e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoqs_1_1_signature.html#a8e1357f6bcb9487687a1cf6f1445904e">~Signature</a> ()</td></tr>
 <tr class="memdesc:a8e1357f6bcb9487687a1cf6f1445904e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual default destructor.  <a href="#a8e1357f6bcb9487687a1cf6f1445904e">More...</a><br /></td></tr>
 <tr class="separator:a8e1357f6bcb9487687a1cf6f1445904e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,7 +183,7 @@ Friends</h2></td></tr>
 <div class="textblock"><p><a class="el" href="classoqs_1_1_signature.html" title="Signature mechanisms. ">Signature</a> mechanisms. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7a20191573b6ac3f1c7c6b9ef7e55957"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a20191573b6ac3f1c7c6b9ef7e55957">&#9670;&nbsp;</a></span>Signature()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a20191573b6ac3f1c7c6b9ef7e55957">&#9670;&nbsp;</a></span>Signature() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,6 +221,68 @@ Friends</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">alg_name</td><td>Cryptographic algorithm name </td></tr>
     <tr><td class="paramname">secret_key</td><td>Secret key (optional) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6cdbb6182b29cf29a964fb9daddf01c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cdbb6182b29cf29a964fb9daddf01c7">&#9670;&nbsp;</a></span>Signature() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">oqs::Signature::Signature </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default copy constructor. </p>
+
+</div>
+</div>
+<a id="afd1d67ba887e743410b2fa99daf960ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd1d67ba887e743410b2fa99daf960ab">&#9670;&nbsp;</a></span>Signature() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">oqs::Signature::Signature </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move constructor, guarantees that the rvalue secret key is always zeroed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td><a class="el" href="classoqs_1_1_signature.html" title="Signature mechanisms. ">oqs::Signature</a> instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -355,6 +429,70 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a23583dd0ef2dddb0f870302fc9e3d7dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23583dd0ef2dddb0f870302fc9e3d7dc">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoqs_1_1_signature.html">Signature</a>&amp; oqs::Signature::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default copy assignment operator. </p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
+<a id="a91401fed61e65f75289bf02f1d8128b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91401fed61e65f75289bf02f1d8128b7">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoqs_1_1_signature.html">Signature</a>&amp; oqs::Signature::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoqs_1_1_signature.html">Signature</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move assignment operator, guarantees that the rvalue secret key is always zeroed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td><a class="el" href="classoqs_1_1_signature.html" title="Signature mechanisms. ">oqs::Signature</a> instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current instance </dd></dl>
+
+</div>
+</div>
 <a id="a150e5da4a62d7a3a28b2af214f119813"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a150e5da4a62d7a3a28b2af214f119813">&#9670;&nbsp;</a></span>sign()</h2>
 
@@ -482,7 +620,7 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Output stream </td></tr>
-    <tr><td class="paramname">rhs</td><td>Algorithm details </td></tr>
+    <tr><td class="paramname">rhs</td><td>Algorithm details instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -528,7 +666,7 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">os</td><td>Output stream </td></tr>
-    <tr><td class="paramname">rhs</td><td><a class="el" href="classoqs_1_1_signature.html" title="Signature mechanisms. ">Signature</a> instance </td></tr>
+    <tr><td class="paramname">rhs</td><td><a class="el" href="classoqs_1_1_signature.html" title="Signature mechanisms. ">oqs::Signature</a> instance </td></tr>
   </table>
   </dd>
 </dl>
