@@ -8,6 +8,7 @@
 #include "oqs_cpp.h"
 
 int main() {
+    std::cout << std::boolalpha;
     std::cout << "Supported KEMs:\n" << oqs::KEMs::get_supported_KEMs();
     std::cout << "\n\nEnabled KEMs:\n" << oqs::KEMs::get_enabled_KEMs();
 
@@ -39,7 +40,6 @@ int main() {
     std::cout << "\n\nServer shared secret:\n"
               << oqs::hex_chop(shared_secret_server);
     std::cout << "\n\nShared secrets coincide? ";
-    std::cout << std::boolalpha;
     std::cout << (shared_secret_client == shared_secret_server) << '\n';
     std::cout << std::noboolalpha;
 }

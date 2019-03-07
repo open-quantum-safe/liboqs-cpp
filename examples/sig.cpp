@@ -7,11 +7,11 @@
 #include "oqs_cpp.h"
 
 int main() {
+    std::cout << std::boolalpha;
     std::cout << "Supported signatures:\n" << oqs::Sigs::get_supported_sigs();
     std::cout << "\n\nEnabled signatures:\n" << oqs::Sigs::get_enabled_sigs();
 
     oqs::bytes message = "This is the message to sign"_bytes;
-
     std::string sig_name = "DEFAULT";
     oqs::Signature signer{sig_name};
     std::cout << "\n\nSignature details:\n" << signer.get_details();
@@ -26,13 +26,10 @@ int main() {
     oqs::bytes signature = signer.sign(message);
     t.toc();
     std::cout << "\nIt took " << t << " microsecs to sign the message";
+    std::cout << "\n\nSignature:\n" << oqs::hex_chop(signature);
 
     oqs::Signature verifier{sig_name};
     bool is_valid = verifier.verify(message, signature, signer_public_key);
-
-    std::cout << "\n\nSignature:\n" << oqs::hex_chop(signature);
-
-    std::cout << std::boolalpha;
     std::cout << "\n\nValid signature? " << is_valid << '\n';
     std::cout << std::noboolalpha;
 }
