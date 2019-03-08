@@ -441,11 +441,13 @@ class KeyEncapsulation {
      */
     KeyEncapsulation(KeyEncapsulation&& rhs)
         : alg_name_{std::move(rhs.alg_name_)}, kem_{std::move(rhs.kem_)},
-          secret_key_{std::move(rhs.secret_key_)}, details_{std::move(
-                                                       rhs.details_)} {
-        rhs.secret_key_.resize(details_.length_secret_key);
+          details_{std::move(rhs.details_)} {
+        // paranoid move via copy/clean/resize, see
+        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
+        secret_key_ = rhs.secret_key_; // copy
+        // clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0);
+        rhs.secret_key_.resize(0); // resize
     }
     /**
      * \brief Move assignment operator, guarantees that the rvalue secret key is
@@ -456,11 +458,14 @@ class KeyEncapsulation {
     KeyEncapsulation& operator=(KeyEncapsulation&& rhs) {
         alg_name_ = std::move(rhs.alg_name_);
         kem_ = std::move(rhs.kem_);
-        secret_key_ = std::move(rhs.secret_key_);
         details_ = std::move(rhs.details_);
-        rhs.secret_key_.resize(details_.length_secret_key);
+
+        // paranoid move via copy/clean/resize, see
+        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
+        secret_key_ = rhs.secret_key_; // copy
+        // clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0);
+        rhs.secret_key_.resize(0); // resize
 
         return *this;
     }
@@ -753,11 +758,13 @@ class Signature {
      */
     Signature(Signature&& rhs)
         : alg_name_{std::move(rhs.alg_name_)}, sig_{std::move(rhs.sig_)},
-          secret_key_{std::move(rhs.secret_key_)}, details_{std::move(
-                                                       rhs.details_)} {
-        rhs.secret_key_.resize(details_.length_secret_key);
+          details_{std::move(rhs.details_)} {
+        // paranoid move via copy/clean/resize, see
+        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
+        secret_key_ = rhs.secret_key_; // copy
+        // clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0);
+        rhs.secret_key_.resize(0); // resize
     }
     /**
      * \brief Move assignment operator, guarantees that the rvalue secret key is
@@ -768,11 +775,14 @@ class Signature {
     Signature& operator=(Signature&& rhs) {
         alg_name_ = std::move(rhs.alg_name_);
         sig_ = std::move(rhs.sig_);
-        secret_key_ = std::move(rhs.secret_key_);
         details_ = std::move(rhs.details_);
-        rhs.secret_key_.resize(details_.length_secret_key);
+
+        // paranoid move via copy/clean/resize, see
+        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
+        secret_key_ = rhs.secret_key_; // copy
+        // clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0);
+        rhs.secret_key_.resize(0); // resize
 
         return *this;
     }
