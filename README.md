@@ -15,7 +15,8 @@ Contents
 
 liboqs-cpp is a header-only wrapper. The project contains the following files
 and folders:
- 
+
+ - **`VisualStudio`**: Visual Studio 2017 solution
  - **`doc`**: Doxygen-generated detailed documentation
  - **`examples/`**`kem.cpp`: key encapsulation example
  - **`examples/`**`sig.cpp`: signature example
@@ -73,7 +74,7 @@ integration is provided via Travis CI.
 Compiling on Windows
 --------------------------------
 
-A Visual Studio solution will be provided soon.
+A Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided under the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) folder. It assumes that liboqs is installed under `C:\liboqs`, and that the user had already built the liboqs Visual Studio solution  `C:\liboqs\VisualStudio\liboqs.sln`. In case you end up with a linker error, make sure that the corresponding target from liboqs was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs must be built in advance.
 
 
 Limitations and security
