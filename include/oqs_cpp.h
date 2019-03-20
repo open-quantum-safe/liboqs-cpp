@@ -212,7 +212,8 @@ class Timer {
      * instantiation/reset and invocation of oqs::Timer::toc()
      */
     double tics() const noexcept {
-        return std::chrono::duration_cast<T>(end_ - start_).count();
+        return static_cast<double>(
+			std::chrono::duration_cast<T>(end_ - start_).count());
     }
 
     /**
