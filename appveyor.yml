@@ -7,11 +7,6 @@ init:
   - msbuild /p:configuration=Debug C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
   - msbuild /p:configuration=Release C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
 
-build:
-    project: kem
-    project: sig
-    verbosity: minimal
-
 configuration:
     - Debug
     - Release
@@ -20,4 +15,4 @@ test_script:
     - cmd: >-
         %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\kem
 
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\kem
+        %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\sig
