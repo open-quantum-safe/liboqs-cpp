@@ -1,0 +1,20 @@
+version: 1.0.{build}
+
+image: Visual Studio 2017
+
+init:
+  - git clone https://github.com/open-quantum-safe/liboqs C:\liboqs
+  - msbuild /t:BuildAll /Configuration:"Debug;Release" C:\liboqs\VisualStudio\liboqs.sln
+
+build:
+    verbosity: minimal
+
+configuration:
+    - Debug
+    - Release
+
+test_script:
+    - cmd: >-
+        %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\kem
+
+        %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\kem
