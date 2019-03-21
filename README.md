@@ -45,7 +45,7 @@ liboqs installation
 
 liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) C library; liboqs must be compiled as a Linux/macOS library or as a Windows DLL, and be visible to the wrapper, e.g. installed in a system-wide folder.
 
-Compiling on UNIX-like platforms
+Building on UNIX-like platforms
 --------------------------------------------
 
 To use the wrapper, the user must have access to a C++11 compliant compiler, 
@@ -73,7 +73,7 @@ liboqs-cpp has been extensively tested on Linux and macOS systems. Continuous
 integration is provided via Travis CI.
 
 
-Compiling on Windows
+Building on Windows
 --------------------------------
 
 A Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) folder. It assumes that liboqs is installed under `C:\liboqs`, and that the user had already built the liboqs Visual Studio solution  `C:\liboqs\VisualStudio\liboqs.sln`. In case you end up with a linker error, make sure that the corresponding target from liboqs was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs must be built in advance.
