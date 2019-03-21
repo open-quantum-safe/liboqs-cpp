@@ -6,6 +6,8 @@
 
 [![Build Status](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/1xjgtc25bpujm8w9?svg=true)](https://ci.appveyor.com/project/vsoftco/liboqs-cpp)
+
 ---
 
 **liboqs-cpp** offers a C++ wrapper for the [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library. The wrapper is written in standard C++11.
