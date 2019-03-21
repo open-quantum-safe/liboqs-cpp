@@ -4,9 +4,12 @@ image: Visual Studio 2017
 
 init:
   - git clone https://github.com/open-quantum-safe/liboqs C:\liboqs
-  - msbuild C:\liboqs\VisualStudio\liboqs.sln
+  - msbuild /p:configuration=Debug C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
+  - msbuild /p:configuration=Release C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
 
 build:
+    project: kem
+    project: sig
     verbosity: minimal
 
 configuration:
