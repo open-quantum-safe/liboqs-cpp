@@ -39,7 +39,9 @@ int main() {
               << oqs::hex_chop(shared_secret_client);
     std::cout << "\n\nServer shared secret:\n"
               << oqs::hex_chop(shared_secret_server);
-    std::cout << "\n\nShared secrets coincide? ";
-    std::cout << (shared_secret_client == shared_secret_server) << '\n';
-    std::cout << std::noboolalpha;
+    bool is_valid = (shared_secret_client == shared_secret_server);
+    std::cout << "\n\nShared secrets coincide? " << is_valid << '\n';
+
+    return is_valid ? oqs::OQS_STATUS::OQS_SUCCESS : 
+        oqs::OQS_STATUS::OQS_ERROR;
 }

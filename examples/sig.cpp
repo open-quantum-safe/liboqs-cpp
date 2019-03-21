@@ -31,5 +31,7 @@ int main() {
     oqs::Signature verifier{sig_name};
     bool is_valid = verifier.verify(message, signature, signer_public_key);
     std::cout << "\n\nValid signature? " << is_valid << '\n';
-    std::cout << std::noboolalpha;
+
+    return is_valid ? oqs::OQS_STATUS::OQS_SUCCESS : 
+        oqs::OQS_STATUS::OQS_ERROR;
 }
