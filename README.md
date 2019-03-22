@@ -48,7 +48,7 @@ liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) 
 Building on UNIX-like platforms
 --------------------------------------------
 
-To use the wrapper, the user must have access to a C++11 compliant compiler, 
+To use the wrapper, you must have access to a C++11 compliant compiler, 
 then simply `#include "oqs_cpp.h"` in her/his program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
 directory to `build`, then type 
@@ -56,7 +56,7 @@ directory to `build`, then type
 `cmake ..; make -j 4`
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
-the CMake build system is available on the user's platform.
+the CMake build system is available on your platform.
 Replace the `-j 4` flag with your
 processor's number of cores, e.g. use `-j 8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
@@ -76,7 +76,14 @@ integration is provided via Travis CI.
 Building on Windows
 --------------------------------
 
-A Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) folder. It assumes that liboqs is installed under `C:\liboqs`, and that the user had already built the liboqs Visual Studio solution  `C:\liboqs\VisualStudio\liboqs.sln`. In case you end up with a linker error, make sure that the corresponding target from liboqs was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs must be built in advance.
+A Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) folder. Building instructions:
+
+- First, you must download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#building-and-running-on-windows) for more details.
+- Next, you must set the environment variable `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`. 
+- After completing the steps above, you may now build the liboqs-cpp solution (or each individual projects within the solution). In case you end up with a linker error, make sure that the corresponding target from liboqs was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs must be built in advance.
+
+liboqs-cpp has been extensively tested on Windows 10 systems. Continuous
+integration is provided via AppVeyor.
 
 
 Limitations and security
