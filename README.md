@@ -47,7 +47,7 @@ The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp
 Building on POSIX (Linux/UNIX-like) platforms
 --------------------------------------------
 
-First you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#building), followed by a `[sudo] make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib`). Alternatively, you may modify `LIBOQS_INCLUDE_DIR` and `LIBOQS_LIB_DIR` in [`CMakeLists.txt`](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CMakeLists.txt) so that they point to the location of liboqs headers/library.
+First you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#building), followed by a `[sudo] make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib`). Alternatively, you may modify `LIBOQS_INCLUDE_DIR` and `LIBOQS_LIB_DIR` in [`CMakeLists.txt`](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CMakeLists.txt#L13) so that they point to the location of liboqs headers/library.
 
 Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
