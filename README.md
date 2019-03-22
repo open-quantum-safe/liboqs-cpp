@@ -6,7 +6,7 @@
 
 [![Build Status](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/1xjgtc25bpujm8w9?svg=true)](https://ci.appveyor.com/project/vsoftco/liboqs-cpp)
+[![Build status](https://ci.appveyor.com/api/projects/status/1xjgtc25bpujm8w9?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs-cpp)
 
 ---
 
