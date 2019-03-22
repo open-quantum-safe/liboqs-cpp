@@ -9,6 +9,9 @@ init:
   - msbuild /m /p:configuration=Debug C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
   - msbuild /m /p:configuration=Release C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
 
+environment:
+    LIBOQS_INSTALL_PATH: C:\liboqs
+    
 build:
     project: VisualStudio/liboqs-cpp.sln
     verbosity: minimal
