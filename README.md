@@ -10,9 +10,13 @@
 
 ---
 
-**liboqs-cpp** offers a C++ wrapper for the [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library. The wrapper is written in standard C++11.
+**liboqs-cpp** offers a C++ wrapper for the master branch of [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library. The wrapper is written in standard C++11, hence in the following it is assumed that you have access to a C++11 compliant complier. liboqs-cpp has been extensively tested on Linux, macOS and Windows systems. Continuous integration is provided via Travis CI and AppVeyor.
 
-Contents
+## Pre-requisites
+
+liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) C library; liboqs master branch must first be compiled as a Linux/macOS/Windows library, see the specific platform building instructions below.
+
+Repository contents
 --------
 
 liboqs-cpp is a header-only wrapper. The project contains the following files
@@ -29,7 +33,7 @@ Usage
 -----
 
 To avoid namespace pollution, liboqs-cpp includes all of its code inside the namespace `oqs`. All of liboqs pure C API is located
-in the namespace `oqs::C`, hence to use directly a C API function the user must qualify the call with `oqs::C::liboqs_C_function(...)`. 
+in the namespace `oqs::C`, hence to use directly a C API function you must qualify the call with `oqs::C::liboqs_C_function(...)`. 
 
 liboqs-cpp defines four main classes: `oqs::KeyEncapsulation` and `oqs::Signature`, providing post-quantum key encapsulation and signture mechanisms, respectively, and 
 `oqs::KEMs` and `oqs::Sigs`, containing only static member functions that provide information related to the available key encapsulation mechanisms or signature mechanism, respectively. 
@@ -40,37 +44,30 @@ The wrapper also defines a high resolution timing class, `oqs::Timer<>`.
 
 The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) folder are self-explanatory and provide more details about the wrapper's API.
 
-liboqs installation
--------------------
-
-liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) C library; liboqs must be compiled as a Linux/macOS library or as a Windows DLL, and be visible to the wrapper, e.g. installed in a system-wide folder.
-
-Building on UNIX-like platforms
+Building on POSIX (Linux/UNIX-like) platforms
 --------------------------------------------
 
-To use the wrapper, you must have access to a C++11 compliant compiler, 
-then simply `#include "oqs_cpp.h"` in her/his program. The wrapper contains
+First you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#building), followed by a `[sudo] make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib`). Alternatively, you may modify `LIBOQS_INCLUDE_DIR` and `LIBOQS_LIB_DIR` in [`CMakeLists.txt`](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CMakeLists.txt) so that they point to the location of liboqs headers/library.
+
+Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
 directory to `build`, then type 
 
-`cmake ..; make -j 4`
+`cmake ..; make -j4`
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
 the CMake build system is available on your platform.
-Replace the `-j 4` flag with your
-processor's number of cores, e.g. use `-j 8` if your system has 8 cores.
+Replace the `-j4` flag with your
+processor's number of cores, e.g. use `-j8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
 `make kem`
 
 To compile and run the unit tests, first `cd unit_tests`, then create a `build` folder inside `unit_tests`, change directory to it, and finally type
 
-`cmake ..; make -j 4`
+`cmake ..; make -j4`
 
 The above commands build `tests/oqs_cpp_testing` suite of unit tests.
-
-liboqs-cpp has been extensively tested on Linux and macOS systems. Continuous
-integration is provided via Travis CI.
 
 
 Building on Windows
@@ -78,12 +75,9 @@ Building on Windows
 
 A Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) folder. Building instructions:
 
-- First, you must download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#building-and-running-on-windows) for more details.
-- Next, you must set the environment variable `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`. 
-- After completing the steps above, you may now build the liboqs-cpp solution (or each individual projects within the solution). In case you end up with a linker error, make sure that the corresponding target from liboqs was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs must be built in advance.
-
-liboqs-cpp has been extensively tested on Windows 10 systems. Continuous
-integration is provided via AppVeyor.
+- First, you must clone/download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#building-and-running-on-windows) for more details.
+- Next, you must [set the environment variable](https://stackoverflow.com/a/32463213/3093378) `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`. 
+- Only after completing the steps above you may build the liboqs-cpp solution (or each individual projects within the solution). In case you end up with a linker error, make sure that the corresponding liboqs target was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs should have been built in advance.
 
 
 Limitations and security
