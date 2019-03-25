@@ -79,6 +79,8 @@ A Visual Studio 2017 solution containing both key encapsulation and signature ex
 - Next, you must [set the environment variable](https://stackoverflow.com/a/32463213/3093378) `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`. 
 - Only after completing the steps above you may build the liboqs-cpp solution (or each individual projects within the solution). In case you end up with a linker error, make sure that the corresponding liboqs target was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs should have been built in advance.
 
+In case you get a "Missing Windows SDK" error, right click on the solution name and choose "Retarget solution" to re-target the projects in the solution to your available Windows SDK.
+
 
 Limitations and security
 ------------------------
