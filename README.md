@@ -1,12 +1,8 @@
-# liboqs-cpp
-
-## C++ bindings for liboqs
-
-**Build status:**
+liboqs-cpp: C++ bindings for liboqs
+===================================
 
 [![Build Status](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/1xjgtc25bpujm8w9?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs-cpp)
+[![Build status](https://ci.appveyor.com/api/projects/status/duitngr0lo3p8566/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs-cpp/branch/master)
 
 ---
 
@@ -53,7 +49,8 @@ Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
 directory to `build`, then type 
 
-`cmake ..; make -j4`
+	cmake ..
+	make -j4
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
 the CMake build system is available on your platform.
@@ -61,11 +58,12 @@ Replace the `-j4` flag with your
 processor's number of cores, e.g. use `-j8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
-`make kem`
+	make kem
 
 To compile and run the unit tests, first `cd unit_tests`, then create a `build` folder inside `unit_tests`, change directory to it, and finally type
 
-`cmake ..; make -j4`
+	cmake ..
+	make -j4
 
 The above commands build `tests/oqs_cpp_testing` suite of unit tests.
 
