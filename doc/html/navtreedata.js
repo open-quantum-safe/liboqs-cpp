@@ -24,7 +24,7 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "liboqs-cpp", "index.html", [
-    [ "liboqs-cpp", "md___users_vlad_liboqs-cpp__r_e_a_d_m_e.html", null ],
+    [ "liboqs-cpp: C++ bindings for liboqs", "md___users_vlad_liboqs-cpp__r_e_a_d_m_e.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
