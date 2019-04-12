@@ -1,12 +1,14 @@
 liboqs-cpp: C++ bindings for liboqs
 ===================================
 
-[![Build Status](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
-[![Build status](https://ci.appveyor.com/api/projects/status/duitngr0lo3p8566/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs-cpp/branch/master)
+[![Build status - Linux/macOS](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
+[![Build status - Windows](https://ci.appveyor.com/api/projects/status/duitngr0lo3p8566/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs-cpp/branch/master)
 
 ---
 
-**liboqs-cpp** offers a C++ wrapper for the master branch of [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library. The wrapper is written in standard C++11, hence in the following it is assumed that you have access to a C++11 compliant complier. liboqs-cpp has been extensively tested on Linux, macOS and Windows systems. Continuous integration is provided via Travis CI and AppVeyor.
+**liboqs-cpp** offers a C++ wrapper for the master branch of [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library, which is a C library for quantum-resistant cryptographic algorithms.
+
+The wrapper is written in standard C++11, hence in the following it is assumed that you have access to a C++11 compliant complier. liboqs-cpp has been extensively tested on Linux, macOS and Windows systems. Continuous integration is provided via Travis CI and AppVeyor.
 
 ## Pre-requisites
 
@@ -18,12 +20,12 @@ Repository contents
 liboqs-cpp is a header-only wrapper. The project contains the following files
 and folders:
 
- - **`VisualStudio/`**`liboqs-cpp.sln`: Visual Studio 2017 solution
- - **`doc`**: Doxygen-generated detailed documentation
- - **`examples/`**`kem.cpp`: key encapsulation example
- - **`examples/`**`sig.cpp`: signature example
  - **`include/oqs_cpp.h`: main header file for the wrapper**
- - **`unit_tests`**: unit tests written using Google Test (included)
+ - `examples/kem.cpp`: key encapsulation example
+ - `examples/sig.cpp`: signature example
+ - `doc`: Doxygen-generated detailed documentation
+ - `unit_tests`: unit tests written using Google Test (included)
+ - `VisualStudio/liboqs-cpp.sln`: Visual Studio 2017 solution
 
 Usage
 -----
@@ -102,3 +104,11 @@ Team
 The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
 liboqs-cpp was developed by [Vlad Gheorghiu](http://vsoftco.github.io) at evolutionQ and University of Waterloo.
+
+### Support
+
+Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.  
+
+We'd like to make a special acknowledgement to the companies who have dedicated programmer time to contribute source code to OQS, including Amazon Web Services, evolutionQ, and Microsoft Research.  
+
+Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.
