@@ -159,7 +159,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\unit_tests\tests\tests.cpp" />
+    <ClCompile Include="..\..\unit_tests\tests\main.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\test_kem.cpp" />
     <ClCompile Include="..\..\unit_tests\tests\test_sig.cpp" />
   </ItemGroup>
