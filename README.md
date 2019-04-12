@@ -14,7 +14,7 @@ The wrapper is written in standard C++11, hence in the following it is assumed t
 
 liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) C library; liboqs master branch must first be compiled as a Linux/macOS/Windows library, see the specific platform building instructions below.
 
-Repository contents
+Contents
 --------
 
 liboqs-cpp is a header-only wrapper. The project contains the following files
