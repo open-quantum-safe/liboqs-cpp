@@ -867,6 +867,9 @@ class Signature {
                 const bytes& public_key) const {
         if (public_key.size() != details_.length_public_key)
             throw std::runtime_error("Incorrect public key length");
+        
+        if (signature.size() > details_.length_signature)
+            throw std::runtime_error("Incorrect signature size");
 
         OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
                                            message.size(), signature.data(),
