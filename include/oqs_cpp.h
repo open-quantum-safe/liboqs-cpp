@@ -709,7 +709,7 @@ class Signature {
         bool is_euf_cma;
         std::size_t length_public_key;
         std::size_t length_secret_key;
-        std::size_t length_signature;
+        std::size_t max_length_signature;
     } details_{};
 
   public:
@@ -738,7 +738,7 @@ class Signature {
         details_.is_euf_cma = sig_->euf_cma;
         details_.length_public_key = sig_->length_public_key;
         details_.length_secret_key = sig_->length_secret_key;
-        details_.length_signature = sig_->length_signature;
+        details_.max_length_signature = sig_->length_signature;
     }
 
     /**
@@ -842,7 +842,7 @@ class Signature {
                 "specify one in the constructor or run "
                 "oqs::Signature::generate_keypair()");
 
-        bytes signature(details_.length_signature, 0);
+        bytes signature(details_.max_length_signature, 0);
         std::size_t sig_len = 0;
         OQS_STATUS rv_ =
             C::OQS_SIG_sign(sig_.get(), signature.data(), &sig_len,
@@ -868,7 +868,7 @@ class Signature {
         if (public_key.size() != details_.length_public_key)
             throw std::runtime_error("Incorrect public key length");
         
-        if (signature.size() > details_.length_signature)
+        if (signature.size() > details_.max_length_signature)
             throw std::runtime_error("Incorrect signature size");
 
         OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
@@ -892,7 +892,7 @@ class Signature {
         os << "Is EUF_CMA: " << rhs.is_euf_cma << '\n';
         os << "Length public key (bytes): " << rhs.length_public_key << '\n';
         os << "Length secret key (bytes): " << rhs.length_secret_key << '\n';
-        os << "Maximum length signature (bytes): " << rhs.length_signature;
+        os << "Maximum length signature (bytes): " << rhs.max_length_signature;
         return os;
     }
 
