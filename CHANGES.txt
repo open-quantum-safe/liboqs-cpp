@@ -1,0 +1,7 @@
+Version 0.1.1 - May 29, 2019
+    - Minor API change in oqs_cpp.h: Signature::alg_details_::length_signature
+      is replaced by Signature::alg_details_::max_length_signature
+
+Version 0.1.0 - April 23, 2019
+    - Initial release
+    

@@ -1,4 +1,4 @@
-liboqs-cpp version 0.1.0
+liboqs-cpp version 0.1.1
 ========================
 
 About
@@ -13,12 +13,12 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 Release notes
 =============
 
-This release of liboqs-cpp was released on April 23, 2019. Its release page on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.1.0.
+This release of liboqs-cpp was released on May 29, 2019. Its release page on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.1.1.
 
 What's New
 ----------
 
-This is the first release of liboqs-cpp.
+For a list of changes see [CHANGES.txt]((https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CHANGES.txt)
 
 This solution implements a header-only C++ wrapper in C++11 for the C OQS library. It contains the main header file for the wrapper, as well as examples, documentation, and unit tests.
 
