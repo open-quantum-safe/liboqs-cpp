@@ -4,6 +4,11 @@ project(oqs_cpp_testing)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#### Link Google Test dynamically if using MSVC
+if (MSVC)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+endif ()
+
 # path to liboqs include and lib, modify as needed
 set(LIBOQS_INCLUDE_DIR "/usr/local/include")
 set(LIBOQS_LIB_DIR "/usr/local/lib")
@@ -13,11 +18,14 @@ include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 link_directories("${LIBOQS_LIB_DIR}")
 
 # Google Test
-add_subdirectory(lib/gtest-1.8.0)
+add_subdirectory(lib/googletest-release-1.8.1)
 
-# enable all warnings only after compiling Google Test
-set(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
+# enable all warnings for GNU gcc and Clang/AppleClang 
+# only after compiling Google Test
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+        STREQUAL "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
+endif ()
 
 # unit tests
 add_subdirectory(tests)

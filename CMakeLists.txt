@@ -3,8 +3,12 @@ project(oqs_cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(ADDITIONAL_FLAGS "-pedantic -Wall -Wextra -Weffc++")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ADDITIONAL_FLAGS}")
+
+# enable all warnings for GNU gcc and Clang/AppleClang
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+        STREQUAL "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
+endif ()
 
 # add all examples
 aux_source_directory(examples EXAMPLE_FILES)
