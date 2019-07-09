@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['secret_5fkey_5f',['secret_key_',['../classoqs_1_1_key_encapsulation.html#a2e69496111c05f1f3404045b2354b240',1,'oqs::KeyEncapsulation::secret_key_()'],['../classoqs_1_1_signature.html#af448d670eba1f51c8a4f868cc12d5805',1,'oqs::Signature::secret_key_()']]],
-  ['sig_5f',['sig_',['../classoqs_1_1_signature.html#ad83509f4ec9943adac97f3b6a9b3d686',1,'oqs::Signature']]],
-  ['start_5f',['start_',['../classoqs_1_1internal_1_1_hex_chop.html#ae3f958bc336a176506918f5ad36d84dd',1,'oqs::internal::HexChop::start_()'],['../classoqs_1_1_timer.html#a51fc1d3095f89c711ddecdab280b6eca',1,'oqs::Timer::start_()']]]
+  ['name',['name',['../structoqs_1_1_key_encapsulation_1_1alg__details__.html#a0a775f01fe320eb305e2a234401d4f54',1,'oqs::KeyEncapsulation::alg_details_::name()'],['../structoqs_1_1_signature_1_1alg__details__.html#ae24dfa3af1f4cecc0aff0fe21b38b478',1,'oqs::Signature::alg_details_::name()']]]
 ];

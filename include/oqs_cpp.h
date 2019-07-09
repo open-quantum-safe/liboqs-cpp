@@ -843,15 +843,15 @@ class Signature {
                 "oqs::Signature::generate_keypair()");
 
         bytes signature(details_.max_length_signature, 0);
-        std::size_t sig_len = 0;
+        std::size_t max_len_sig = details_.max_length_signature;
         OQS_STATUS rv_ =
-            C::OQS_SIG_sign(sig_.get(), signature.data(), &sig_len,
+            C::OQS_SIG_sign(sig_.get(), signature.data(), &max_len_sig,
                             message.data(), message.size(), secret_key_.data());
 
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not sign message");
 
-        signature.resize(sig_len);
+        signature.resize(max_len_sig);
 
         return signature;
     }

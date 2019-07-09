@@ -1,4 +1,4 @@
-liboqs-cpp version 0.1.1
+liboqs-cpp version 0.1.2
 ========================
 
 About
@@ -13,7 +13,7 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 Release notes
 =============
 
-This release of liboqs-cpp was released on May 29, 2019. Its release page on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.1.1.
+This release of liboqs-cpp was released on July 9, 2019. Its release page on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.1.2.
 
 What's New
 ----------

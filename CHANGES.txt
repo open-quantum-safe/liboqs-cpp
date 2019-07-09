@@ -1,3 +1,8 @@
+Version 0.1.2 - July 9, 2019
+    - Added MSVC support for CMake
+    - Updated Google Test to version 1.8.1
+    - Bugfix in oqs::Signature::sign()
+
 Version 0.1.1 - May 29, 2019
     - Minor API change in oqs_cpp.h: Signature::alg_details_::length_signature
       is replaced by Signature::alg_details_::max_length_signature
