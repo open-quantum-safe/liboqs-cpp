@@ -45,18 +45,17 @@ The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp
 Building on POSIX (Linux/UNIX-like) platforms
 --------------------------------------------
 
-First you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#building), followed by a `[sudo] make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib`). Alternatively, you may modify `LIBOQS_INCLUDE_DIR` and `LIBOQS_LIB_DIR` in [`CMakeLists.txt`](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CMakeLists.txt#L13) so that they point to the location of liboqs headers/library.
+First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#building), followed (optionally) by a `[sudo] make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib` under Linux/macOS).
 
 Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
 directory to `build`, then type 
 
-	cmake ..
+	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
 	make -j4
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
-the CMake build system is available on your platform.
-Replace the `-j4` flag with your
+the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library. You may replace the `-j4` flag with your
 processor's number of cores, e.g. use `-j8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
@@ -64,7 +63,7 @@ To build only a specific example, e.g. `examples/kem`, specify the target as the
 
 To compile and run the unit tests, first `cd unit_tests`, then create a `build` folder inside `unit_tests`, change directory to it, and finally type
 
-	cmake ..
+	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
 	make -j4
 
 The above commands build `tests/oqs_cpp_testing` suite of unit tests.
