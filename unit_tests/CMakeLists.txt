@@ -13,11 +13,11 @@ endif ()
 set(LIBOQS_INCLUDE_DIR "" CACHE PATH "Path to liboqs include folder")
 set(LIBOQS_LIB_DIR "" CACHE PATH "Path to liboqs lib folder")
 
-if (${LIBOQS_INCLUDE_DIR} STREQUAL "")
+if (LIBOQS_INCLUDE_DIR STREQUAL "")
     message(FATAL_ERROR "Please specify the path to liboqs include folder")
 endif ()
 
-if (${LIBOQS_LIB_DIR} STREQUAL "")
+if (LIBOQS_LIB_DIR STREQUAL "")
     message(FATAL_ERROR "Please specify the path to liboqs lib folder")
 endif ()
 
