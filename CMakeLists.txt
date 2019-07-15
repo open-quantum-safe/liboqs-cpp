@@ -18,11 +18,19 @@ set(LIBOQS_INCLUDE_DIR "" CACHE PATH "Path to liboqs include folder")
 set(LIBOQS_LIB_DIR "" CACHE PATH "Path to liboqs lib folder")
 
 if (LIBOQS_INCLUDE_DIR STREQUAL "")
-    message(FATAL_ERROR "Please specify the path to liboqs include folder")
+    message(FATAL_ERROR "Please specify the path to the liboqs include directory by\
+    setting the LIBOQS_INCLUDE_DIR cmake flag, i.e.
+    cmake -DLIBOQS_INCLUDE_DIR=/path/to/liboqs/include")
+elseif (NOT IS_DIRECTORY ${LIBOQS_INCLUDE_DIR})
+    message(FATAL_ERROR "Invalid path to the liboqs include directory")
 endif ()
 
 if (LIBOQS_LIB_DIR STREQUAL "")
-    message(FATAL_ERROR "Please specify the path to liboqs lib folder")
+    message(FATAL_ERROR "Please specify the path to the liboqs lib directory by\
+    setting the LIBOQS_LIB_DIR cmake flag, i.e.
+    cmake -DLIBOQS_LIB_DIR=/path/to/liboqs/include")
+elseif (NOT IS_DIRECTORY ${LIBOQS_LIB_DIR})
+    message(FATAL_ERROR "Invalid path to the liboqs lib directory")
 endif ()
 
 include_directories("include")
