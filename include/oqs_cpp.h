@@ -213,7 +213,7 @@ class Timer {
      */
     double tics() const noexcept {
         return static_cast<double>(
-			std::chrono::duration_cast<T>(end_ - start_).count());
+            std::chrono::duration_cast<T>(end_ - start_).count());
     }
 
     /**
@@ -312,14 +312,6 @@ class KEMs final : public internal::Singleton<const KEMs> {
      * \return True if the KEM algorithm is enabled, false otherwise
      */
     static bool is_KEM_enabled(const std::string& alg_name) {
-        /*C::OQS_KEM* kem = C::OQS_KEM_new(alg_name.c_str());
-        if (kem) {
-            C::OQS_KEM_free(kem);
-            return true;
-        }
-
-        return false;
-        */
         return C::OQS_KEM_alg_is_enabled(alg_name.c_str());
     }
 
@@ -633,13 +625,6 @@ class Sigs final : public internal::Singleton<const Sigs> {
      * \return True if the signature algorithm is enabled, false otherwise
      */
     static bool is_sig_enabled(const std::string& alg_name) {
-        /*C::OQS_SIG* sig = C::OQS_SIG_new(alg_name.c_str());
-        if (sig) {
-            C::OQS_SIG_free(sig);
-            return true;
-        }
-
-        return false;*/
         return C::OQS_SIG_alg_is_enabled(alg_name.c_str());
     }
 
@@ -870,7 +855,7 @@ class Signature {
                 const bytes& public_key) const {
         if (public_key.size() != details_.length_public_key)
             throw std::runtime_error("Incorrect public key length");
-        
+
         if (signature.size() > details_.max_length_signature)
             throw std::runtime_error("Incorrect signature size");
 

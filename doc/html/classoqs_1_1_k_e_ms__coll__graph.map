@@ -1,3 +1,4 @@
 <map id="oqs::KEMs" name="oqs::KEMs">
-<area shape="rect" id="node2" href="$classoqs_1_1internal_1_1_singleton.html" title="Singleton class using CRTP pattern. " alt="" coords="5,5,163,47"/>
+<area shape="rect" id="node1" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs)" alt="" coords="41,95,127,121"/>
+<area shape="rect" id="node2" href="$classoqs_1_1internal_1_1_singleton.html" title="Singleton class using CRTP pattern." alt="" coords="5,5,163,47"/>
 </map>

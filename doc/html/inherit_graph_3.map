@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classoqs_1_1internal_1_1_singleton.html" title="Singleton class using CRTP pattern. " alt="" coords="5,5,195,32"/>
-<area shape="rect" id="node2" href="$classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs) ..." alt="" coords="243,5,329,32"/>
+<area shape="rect" id="node1" href="$classoqs_1_1internal_1_1_singleton.html" title="Singleton class using CRTP pattern." alt="" coords="5,5,195,32"/>
+<area shape="rect" id="node2" href="$classoqs_1_1_k_e_ms.html" title="Singleton class, contains details about supported/enabled key exchange mechanisms (KEMs)" alt="" coords="243,5,329,32"/>
 </map>
