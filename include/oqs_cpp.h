@@ -190,8 +190,13 @@ class Timer {
      * \brief Resets the chronometer
      *
      * Resets the start/end point to the current time
+     *
+     * \return Reference to the current instance
      */
-    void tic() noexcept { start_ = end_ = CLOCK_T::now(); }
+    Timer& tic() noexcept { 
+        start_ = end_ = CLOCK_T::now(); 
+        return *this;
+    }
 
     /**
      * \brief Stops the chronometer
@@ -200,7 +205,7 @@ class Timer {
      *
      * \return Reference to the current instance
      */
-    const Timer& toc() & noexcept {
+    Timer& toc() & noexcept {
         end_ = CLOCK_T::now();
         return *this;
     }
