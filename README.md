@@ -45,7 +45,7 @@ The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp
 Building on POSIX (Linux/UNIX-like) platforms
 --------------------------------------------
 
-First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#building), followed (optionally) by a `sudo make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib` under Linux/macOS).
+First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#linuxmacos), followed (optionally) by a `sudo make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib` under Linux/macOS).
 
 Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` directory inside the root directory of the project, change
@@ -77,7 +77,7 @@ We provide CMake support for Visual Studio. We recommend using Visual Studio 201
 
 In addition, a Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) directory. Building instructions:
 
-- First, you must clone/download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#building-and-running-on-windows) for more details.
+- First, you must clone/download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#windows) for more details.
 - Next, you must [set the environment variable](https://stackoverflow.com/a/32463213/3093378) `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`. 
 - Only after completing the steps above you may build the liboqs-cpp solution (or each individual projects within the solution). In case you end up with a linker error, make sure that the corresponding liboqs target was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs should have been built in advance.
 
