@@ -18,7 +18,7 @@ Contents
 --------
 
 liboqs-cpp is a header-only wrapper. The project contains the following files
-and folders:
+and directories:
 
  - **`include/oqs_cpp.h`: main header file for the wrapper**
  - `examples/kem.cpp`: key encapsulation example
@@ -40,7 +40,7 @@ liboqs-cpp defines four main classes: `oqs::KeyEncapsulation` and `oqs::Signatur
 
 The wrapper also defines a high resolution timing class, `oqs::Timer<>`.
 
-The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) folder are self-explanatory and provide more details about the wrapper's API.
+The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) directory are self-explanatory and provide more details about the wrapper's API.
 
 Building on POSIX (Linux/UNIX-like) platforms
 --------------------------------------------
@@ -48,7 +48,7 @@ Building on POSIX (Linux/UNIX-like) platforms
 First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#building), followed (optionally) by a `sudo make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib` under Linux/macOS).
 
 Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The wrapper contains
-a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` folder inside the root folder of the project, change
+a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` directory inside the root directory of the project, change
 directory to `build`, then type 
 
 	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
@@ -61,7 +61,7 @@ To build only a specific example, e.g. `examples/kem`, specify the target as the
 
 	make kem
 
-To compile and run the unit tests, first `cd unit_tests`, then create a `build` folder inside `unit_tests`, change directory to it, and finally type
+To compile and run the unit tests, first `cd unit_tests`, then create a `build` directory inside `unit_tests`, change directory to it, and finally type
 
 	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
 	make -j4
@@ -75,7 +75,7 @@ Building on Windows
 We provide CMake support for Visual Studio. We recommend using Visual Studio 2017 or later (preferably Visual Studio 2019). For comprehensive details about using CMake with Visual Studio please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019).
 
 
-In addition, a Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) folder. Building instructions:
+In addition, a Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) directory. Building instructions:
 
 - First, you must clone/download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#building-and-running-on-windows) for more details.
 - Next, you must [set the environment variable](https://stackoverflow.com/a/32463213/3093378) `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`. 

@@ -193,8 +193,8 @@ class Timer {
      *
      * \return Reference to the current instance
      */
-    Timer& tic() noexcept { 
-        start_ = end_ = CLOCK_T::now(); 
+    Timer& tic() noexcept {
+        start_ = end_ = CLOCK_T::now();
         return *this;
     }
 
@@ -835,8 +835,9 @@ class Signature {
                 "specify one in the constructor or run "
                 "oqs::Signature::generate_keypair()");
 
-        bytes signature(details_.max_length_signature, 0);
         std::size_t max_len_sig = details_.max_length_signature;
+        bytes signature(max_len_sig, 0);
+
         OQS_STATUS rv_ =
             C::OQS_SIG_sign(sig_.get(), signature.data(), &max_len_sig,
                             message.data(), message.size(), secret_key_.data());

@@ -10,8 +10,8 @@ if (MSVC)
 endif ()
 
 # path to liboqs include and lib, modify as needed
-set(LIBOQS_INCLUDE_DIR "" CACHE PATH "Path to liboqs include folder")
-set(LIBOQS_LIB_DIR "" CACHE PATH "Path to liboqs lib folder")
+set(LIBOQS_INCLUDE_DIR "" CACHE PATH "Path to liboqs include directory")
+set(LIBOQS_LIB_DIR "" CACHE PATH "Path to liboqs lib directory")
 
 if (LIBOQS_INCLUDE_DIR STREQUAL "")
     message(FATAL_ERROR "Please specify the path to the liboqs include directory by\
