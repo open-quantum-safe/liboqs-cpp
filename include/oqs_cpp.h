@@ -835,17 +835,18 @@ class Signature {
                 "specify one in the constructor or run "
                 "oqs::Signature::generate_keypair()");
 
-        std::size_t max_len_sig = details_.max_length_signature;
-        bytes signature(max_len_sig, 0);
 
+        bytes signature(details_.max_length_signature, 0);
+
+        std::size_t len_sig;
         OQS_STATUS rv_ =
-            C::OQS_SIG_sign(sig_.get(), signature.data(), &max_len_sig,
+            C::OQS_SIG_sign(sig_.get(), signature.data(), &len_sig,
                             message.data(), message.size(), secret_key_.data());
 
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not sign message");
 
-        signature.resize(max_len_sig);
+        signature.resize(len_sig);
 
         return signature;
     }
