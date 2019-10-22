@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['kems_78',['KEMs',['../classoqs_1_1_k_e_ms.html',1,'oqs']]],
-  ['keyencapsulation_79',['KeyEncapsulation',['../classoqs_1_1_key_encapsulation.html',1,'oqs']]]
+  ['mechanismnotenablederror_81',['MechanismNotEnabledError',['../classoqs_1_1_mechanism_not_enabled_error.html',1,'oqs']]],
+  ['mechanismnotsupportederror_82',['MechanismNotSupportedError',['../classoqs_1_1_mechanism_not_supported_error.html',1,'oqs']]]
 ];

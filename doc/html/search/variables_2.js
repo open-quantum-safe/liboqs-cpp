@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['details_5f_139',['details_',['../classoqs_1_1_key_encapsulation.html#ab14d613a959be01a065302e3ff1a9e42',1,'oqs::KeyEncapsulation::details_()'],['../classoqs_1_1_signature.html#a28b2857a9cbdf8cbd5f48153fc0711c6',1,'oqs::Signature::details_()']]]
+  ['end_5f_142',['end_',['../classoqs_1_1internal_1_1_hex_chop.html#a9d605b4a325056f6a8d6c547e3859725',1,'oqs::internal::HexChop::end_()'],['../classoqs_1_1_timer.html#a76d913ed4f0918fccf72376bf8a62aff',1,'oqs::Timer::end_()']]]
 ];

@@ -378,11 +378,11 @@ class KeyEncapsulation {
                                          C::OQS_KEM_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_KEM
     bytes secret_key_{};                 ///< secret key
-
+  public:
     /**
      * \brief KEM algorithm details
      */
-    struct alg_details_ {
+    struct KeyEncapsulationDetails {
         std::string name;
         std::string version;
         std::size_t claimed_nist_level;
@@ -391,7 +391,10 @@ class KeyEncapsulation {
         std::size_t length_secret_key;
         std::size_t length_ciphertext;
         std::size_t length_shared_secret;
-    } details_{};
+    };
+
+  private:
+    KeyEncapsulationDetails alg_details_{}; ///< KEM algorithm details
 
   public:
     /**
@@ -413,14 +416,14 @@ class KeyEncapsulation {
 
         kem_.reset(C::OQS_KEM_new(alg_name.c_str()));
 
-        details_.name = kem_->method_name;
-        details_.version = kem_->alg_version;
-        details_.claimed_nist_level = kem_->claimed_nist_level;
-        details_.is_ind_cca = kem_->ind_cca;
-        details_.length_public_key = kem_->length_public_key;
-        details_.length_secret_key = kem_->length_secret_key;
-        details_.length_ciphertext = kem_->length_ciphertext;
-        details_.length_shared_secret = kem_->length_shared_secret;
+        alg_details_.name = kem_->method_name;
+        alg_details_.version = kem_->alg_version;
+        alg_details_.claimed_nist_level = kem_->claimed_nist_level;
+        alg_details_.is_ind_cca = kem_->ind_cca;
+        alg_details_.length_public_key = kem_->length_public_key;
+        alg_details_.length_secret_key = kem_->length_secret_key;
+        alg_details_.length_ciphertext = kem_->length_ciphertext;
+        alg_details_.length_shared_secret = kem_->length_shared_secret;
     }
 
     /**
@@ -441,7 +444,7 @@ class KeyEncapsulation {
      */
     KeyEncapsulation(KeyEncapsulation&& rhs)
         : alg_name_{std::move(rhs.alg_name_)}, kem_{std::move(rhs.kem_)},
-          details_{std::move(rhs.details_)} {
+          alg_details_{std::move(rhs.alg_details_)} {
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
@@ -458,7 +461,7 @@ class KeyEncapsulation {
     KeyEncapsulation& operator=(KeyEncapsulation&& rhs) {
         alg_name_ = std::move(rhs.alg_name_);
         kem_ = std::move(rhs.kem_);
-        details_ = std::move(rhs.details_);
+        alg_details_ = std::move(rhs.alg_details_);
 
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
@@ -482,21 +485,21 @@ class KeyEncapsulation {
      * \brief KEM algorithm details, lvalue overload
      * \return KEM algorithm details
      */
-    const alg_details_& get_details() const& { return details_; }
+    const KeyEncapsulationDetails& get_details() const& { return alg_details_; }
 
     /**
      * \brief KEM algorithm details, rvalue overload
      * \return KEM algorithm details
      */
-    alg_details_ get_details() const&& { return details_; }
+    KeyEncapsulationDetails get_details() const&& { return alg_details_; }
 
     /**
      * \brief Generate public key/secret key pair
      * \return Public key
      */
     bytes generate_keypair() {
-        bytes public_key(details_.length_public_key, 0);
-        secret_key_ = bytes(details_.length_secret_key, 0);
+        bytes public_key(alg_details_.length_public_key, 0);
+        secret_key_ = bytes(alg_details_.length_secret_key, 0);
 
         OQS_STATUS rv_ = C::OQS_KEM_keypair(kem_.get(), public_key.data(),
                                             secret_key_.data());
@@ -518,11 +521,11 @@ class KeyEncapsulation {
      * \return Pair consisting of 1) ciphertext, and 2) shared secret
      */
     std::pair<bytes, bytes> encap_secret(const bytes& public_key) const {
-        if (public_key.size() != details_.length_public_key)
+        if (public_key.size() != alg_details_.length_public_key)
             throw std::runtime_error("Incorrect public key length");
 
-        bytes ciphertext(details_.length_ciphertext, 0);
-        bytes shared_secret(details_.length_shared_secret, 0);
+        bytes ciphertext(alg_details_.length_ciphertext, 0);
+        bytes shared_secret(alg_details_.length_shared_secret, 0);
         OQS_STATUS rv_ =
             C::OQS_KEM_encaps(kem_.get(), ciphertext.data(),
                               shared_secret.data(), public_key.data());
@@ -538,16 +541,16 @@ class KeyEncapsulation {
      * \return Shared secret
      */
     bytes decap_secret(const bytes& ciphertext) const {
-        if (ciphertext.size() != details_.length_ciphertext)
+        if (ciphertext.size() != alg_details_.length_ciphertext)
             throw std::runtime_error("Incorrect ciphertext length");
 
-        if (secret_key_.size() != details_.length_secret_key)
+        if (secret_key_.size() != alg_details_.length_secret_key)
             throw std::runtime_error(
                 "Incorrect secret key length, make sure you "
                 "specify one in the constructor or run "
                 "oqs::Signature::generate_keypair()");
 
-        bytes shared_secret(details_.length_shared_secret, 0);
+        bytes shared_secret(alg_details_.length_shared_secret, 0);
         OQS_STATUS rv_ =
             C::OQS_KEM_decaps(kem_.get(), shared_secret.data(),
                               ciphertext.data(), secret_key_.data());
@@ -564,7 +567,8 @@ class KeyEncapsulation {
      * \param rhs Algorithm details instance
      * \return Reference to the output stream
      */
-    friend std::ostream& operator<<(std::ostream& os, const alg_details_& rhs) {
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const KeyEncapsulationDetails& rhs) {
         os << "Name: " << rhs.name << '\n';
         os << "Version: " << rhs.version << '\n';
         os << "Claimed NIST level: " << rhs.claimed_nist_level << '\n';
@@ -584,7 +588,7 @@ class KeyEncapsulation {
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const KeyEncapsulation& rhs) {
-        return os << "Key encapsulation mechanism: " << rhs.details_.name;
+        return os << "Key encapsulation mechanism: " << rhs.alg_details_.name;
     }
 }; // class KeyEncapsulation
 
@@ -692,10 +696,11 @@ class Signature {
                                      }}; ///< liboqs smart pointer to C::OQS_SIG
     bytes secret_key_{};                 ///< secret key
 
+  public:
     /**
      * \brief Signature algorithm details
      */
-    struct alg_details_ {
+    struct SignatureDetails {
         std::string name;
         std::string version;
         std::size_t claimed_nist_level;
@@ -703,7 +708,10 @@ class Signature {
         std::size_t length_public_key;
         std::size_t length_secret_key;
         std::size_t max_length_signature;
-    } details_{};
+    };
+
+  private:
+    SignatureDetails alg_details_{}; ///< Signature algorithm details
 
   public:
     /**
@@ -725,13 +733,13 @@ class Signature {
 
         sig_.reset(C::OQS_SIG_new(alg_name.c_str()));
 
-        details_.name = sig_->method_name;
-        details_.version = sig_->alg_version;
-        details_.claimed_nist_level = sig_->claimed_nist_level;
-        details_.is_euf_cma = sig_->euf_cma;
-        details_.length_public_key = sig_->length_public_key;
-        details_.length_secret_key = sig_->length_secret_key;
-        details_.max_length_signature = sig_->length_signature;
+        alg_details_.name = sig_->method_name;
+        alg_details_.version = sig_->alg_version;
+        alg_details_.claimed_nist_level = sig_->claimed_nist_level;
+        alg_details_.is_euf_cma = sig_->euf_cma;
+        alg_details_.length_public_key = sig_->length_public_key;
+        alg_details_.length_secret_key = sig_->length_secret_key;
+        alg_details_.max_length_signature = sig_->length_signature;
     }
 
     /**
@@ -752,7 +760,7 @@ class Signature {
      */
     Signature(Signature&& rhs)
         : alg_name_{std::move(rhs.alg_name_)}, sig_{std::move(rhs.sig_)},
-          details_{std::move(rhs.details_)} {
+          alg_details_{std::move(rhs.alg_details_)} {
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
@@ -769,7 +777,7 @@ class Signature {
     Signature& operator=(Signature&& rhs) {
         alg_name_ = std::move(rhs.alg_name_);
         sig_ = std::move(rhs.sig_);
-        details_ = std::move(rhs.details_);
+        alg_details_ = std::move(rhs.alg_details_);
 
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
@@ -793,13 +801,13 @@ class Signature {
      * \brief Signature algorithm details, lvalue overload
      * \return Signature algorithm details
      */
-    const alg_details_& get_details() const& { return details_; }
+    const SignatureDetails& get_details() const& { return alg_details_; }
 
     /**
      * \brief Signature algorithm details, rvalue overload
      * \return Signature algorithm details
      */
-    alg_details_ get_details() const&& { return details_; }
+    SignatureDetails get_details() const&& { return alg_details_; }
 
     /**
      * \brief Generate public key/secret key pair
@@ -807,7 +815,7 @@ class Signature {
      */
     bytes generate_keypair() {
         bytes public_key(get_details().length_public_key, 0);
-        secret_key_ = bytes(details_.length_secret_key, 0);
+        secret_key_ = bytes(alg_details_.length_secret_key, 0);
 
         OQS_STATUS rv_ = C::OQS_SIG_keypair(sig_.get(), public_key.data(),
                                             secret_key_.data());
@@ -829,14 +837,13 @@ class Signature {
      * \return Message signature
      */
     bytes sign(const bytes& message) const {
-        if (secret_key_.size() != details_.length_secret_key)
+        if (secret_key_.size() != alg_details_.length_secret_key)
             throw std::runtime_error(
                 "Incorrect secret key length, make sure you "
                 "specify one in the constructor or run "
                 "oqs::Signature::generate_keypair()");
 
-
-        bytes signature(details_.max_length_signature, 0);
+        bytes signature(alg_details_.max_length_signature, 0);
 
         std::size_t len_sig;
         OQS_STATUS rv_ =
@@ -860,10 +867,10 @@ class Signature {
      */
     bool verify(const bytes& message, const bytes& signature,
                 const bytes& public_key) const {
-        if (public_key.size() != details_.length_public_key)
+        if (public_key.size() != alg_details_.length_public_key)
             throw std::runtime_error("Incorrect public key length");
 
-        if (signature.size() > details_.max_length_signature)
+        if (signature.size() > alg_details_.max_length_signature)
             throw std::runtime_error("Incorrect signature size");
 
         OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
@@ -880,7 +887,8 @@ class Signature {
      * \param rhs Algorithm details instance
      * \return Reference to the output stream
      */
-    friend std::ostream& operator<<(std::ostream& os, const alg_details_& rhs) {
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const SignatureDetails& rhs) {
         os << "Name: " << rhs.name << '\n';
         os << "Version: " << rhs.version << '\n';
         os << "Claimed NIST level: " << rhs.claimed_nist_level << '\n';
@@ -898,7 +906,7 @@ class Signature {
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Signature& rhs) {
-        return os << "Signature mechanism: " << rhs.details_.name;
+        return os << "Signature mechanism: " << rhs.alg_details_.name;
     }
 }; // class Signature
 
