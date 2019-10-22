@@ -43,7 +43,7 @@ The wrapper also defines a high resolution timing class, `oqs::Timer<>`.
 The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) directory are self-explanatory and provide more details about the wrapper's API.
 
 Building on POSIX (Linux/UNIX-like) platforms
---------------------------------------------
+---------------------------------------------
 
 First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#linuxmacos), followed (optionally) by a `sudo make install` to ensure that the compiled library is system-wide visible (by default it installs under `/usr/local/include` and `/usr/local/lib` under Linux/macOS).
 
@@ -70,7 +70,7 @@ The above commands build `tests/oqs_cpp_testing` suite of unit tests.
 
 
 Building on Windows
---------------------------------
+-------------------
 
 We provide CMake support for Visual Studio. We recommend using Visual Studio 2017 or later (preferably Visual Studio 2019). For comprehensive details about using CMake with Visual Studio please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019).
 
