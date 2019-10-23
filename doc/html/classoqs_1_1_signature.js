@@ -16,7 +16,6 @@ var classoqs_1_1_signature =
     [ "operator<<", "classoqs_1_1_signature.html#a939a52b908a1d00720692062870103eb", null ],
     [ "operator<<", "classoqs_1_1_signature.html#a7974e724e88e1f70b585d1fe11ca12e8", null ],
     [ "alg_details_", "classoqs_1_1_signature.html#a03bb274cd9fda464634eeee037479ff2", null ],
-    [ "alg_name_", "classoqs_1_1_signature.html#acab8509412497bc640eec273d0c26af3", null ],
     [ "secret_key_", "classoqs_1_1_signature.html#af448d670eba1f51c8a4f868cc12d5805", null ],
     [ "sig_", "classoqs_1_1_signature.html#ad83509f4ec9943adac97f3b6a9b3d686", null ]
 ];

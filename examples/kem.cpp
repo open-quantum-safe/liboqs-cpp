@@ -42,6 +42,5 @@ int main() {
     bool is_valid = (shared_secret_client == shared_secret_server);
     std::cout << "\n\nShared secrets coincide? " << is_valid << '\n';
 
-    return is_valid ? oqs::OQS_STATUS::OQS_SUCCESS : 
-        oqs::OQS_STATUS::OQS_ERROR;
+    return is_valid ? oqs::OQS_STATUS::OQS_SUCCESS : oqs::OQS_STATUS::OQS_ERROR;
 }

@@ -16,7 +16,6 @@ var classoqs_1_1_key_encapsulation =
     [ "operator<<", "classoqs_1_1_key_encapsulation.html#a15146ddffc1778a63cec737f686b4c1e", null ],
     [ "operator<<", "classoqs_1_1_key_encapsulation.html#a0a45f1f5f370b9e6a16dec4f064ca672", null ],
     [ "alg_details_", "classoqs_1_1_key_encapsulation.html#a785395d9e7bfc48626d825d10e4d50e9", null ],
-    [ "alg_name_", "classoqs_1_1_key_encapsulation.html#a2887cfa537b150eadec9de16de2abc7d", null ],
     [ "kem_", "classoqs_1_1_key_encapsulation.html#aafe21be75ed1a4811ecdcc74d96631b2", null ],
     [ "secret_key_", "classoqs_1_1_key_encapsulation.html#a2e69496111c05f1f3404045b2354b240", null ]
 ];

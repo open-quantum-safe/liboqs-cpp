@@ -373,7 +373,6 @@ class KEMs final : public internal::Singleton<const KEMs> {
  * \brief Key encapsulation mechanisms
  */
 class KeyEncapsulation {
-    std::string alg_name_; ///< cryptographic algorithm name
     std::shared_ptr<C::OQS_KEM> kem_{nullptr, [](C::OQS_KEM* p) {
                                          C::OQS_KEM_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_KEM
@@ -404,7 +403,7 @@ class KeyEncapsulation {
      */
     explicit KeyEncapsulation(const std::string& alg_name,
                               const bytes& secret_key = {})
-        : alg_name_{alg_name}, secret_key_{secret_key} {
+        : secret_key_{secret_key} {
         // KEM not enabled
         if (!KEMs::is_KEM_enabled(alg_name)) {
             // perhaps it's supported
@@ -443,8 +442,7 @@ class KeyEncapsulation {
      * \param rhs oqs::KeyEncapsulation instance
      */
     KeyEncapsulation(KeyEncapsulation&& rhs)
-        : alg_name_{std::move(rhs.alg_name_)}, kem_{std::move(rhs.kem_)},
-          alg_details_{std::move(rhs.alg_details_)} {
+        : kem_{std::move(rhs.kem_)}, alg_details_{std::move(rhs.alg_details_)} {
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
@@ -459,7 +457,6 @@ class KeyEncapsulation {
      * \return Reference to the current instance
      */
     KeyEncapsulation& operator=(KeyEncapsulation&& rhs) {
-        alg_name_ = std::move(rhs.alg_name_);
         kem_ = std::move(rhs.kem_);
         alg_details_ = std::move(rhs.alg_details_);
 
@@ -690,7 +687,6 @@ class Sigs final : public internal::Singleton<const Sigs> {
  * \brief Signature mechanisms
  */
 class Signature {
-    std::string alg_name_; ///< cryptographic algorithm name
     std::shared_ptr<C::OQS_SIG> sig_{nullptr, [](C::OQS_SIG* p) {
                                          C::OQS_SIG_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_SIG
@@ -721,7 +717,7 @@ class Signature {
      */
     explicit Signature(const std::string& alg_name,
                        const bytes& secret_key = {})
-        : alg_name_{alg_name}, secret_key_{secret_key} {
+        : secret_key_{secret_key} {
         // signature not enabled
         if (!Sigs::is_sig_enabled(alg_name)) {
             // perhaps it's supported
@@ -759,8 +755,7 @@ class Signature {
      * \param rhs oqs::Signature instance
      */
     Signature(Signature&& rhs)
-        : alg_name_{std::move(rhs.alg_name_)}, sig_{std::move(rhs.sig_)},
-          alg_details_{std::move(rhs.alg_details_)} {
+        : sig_{std::move(rhs.sig_)}, alg_details_{std::move(rhs.alg_details_)} {
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
@@ -775,7 +770,6 @@ class Signature {
      * \return Reference to the current instance
      */
     Signature& operator=(Signature&& rhs) {
-        alg_name_ = std::move(rhs.alg_name_);
         sig_ = std::move(rhs.sig_);
         alg_details_ = std::move(rhs.alg_details_);
 

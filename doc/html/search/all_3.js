@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['decap_5fsecret_5',['decap_secret',['../classoqs_1_1_key_encapsulation.html#a16480f28431be8fccaaf00342b2aa011',1,'oqs::KeyEncapsulation']]]
+  ['decap_5fsecret_4',['decap_secret',['../classoqs_1_1_key_encapsulation.html#a16480f28431be8fccaaf00342b2aa011',1,'oqs::KeyEncapsulation']]]
 ];
