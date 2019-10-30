@@ -44,7 +44,7 @@ bytes randombytes(std::size_t bytes_to_read) {
 /**
  * \brief Switches the core OQS_randombytes to use the specified algorithm.
  * \param alg_name Algorithm name, possible values are "system", "NIST-KAT",
- * "OpenSSL". See <oqs/rand.h> C header for more details.
+ * "OpenSSL". See <oqs/rand.h> liboqs header for more details.
  */
 void randombytes_switch_algorithm(const std::string& alg_name) {
     if (C::OQS_randombytes_switch_algorithm(alg_name.c_str()) != C::OQS_SUCCESS)
