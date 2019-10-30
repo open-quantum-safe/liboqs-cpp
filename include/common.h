@@ -16,8 +16,23 @@
 #include <vector>
 
 namespace oqs {
-using byte = std::uint8_t;       ///< byte (unsigned)
-using bytes = std::vector<byte>; ///< vector of bytes (unsigned)
+namespace C {
+// everything in liboqs has C linkage
+extern "C" {
+#include <oqs/common.h>
+}
+} // namespace C
+using byte = std::uint8_t;        ///< byte (unsigned)
+using bytes = std::vector<byte>;  ///< vector of bytes (unsigned)
+using OQS_STATUS = C::OQS_STATUS; ///< bring OQS_STATUS into the oqs namespace
+
+/**
+ * \brief Sets to zero the content of \a v by invoking the liboqs
+ * OQS_MEM_cleanse() function. Use it to clean "hot" memory areas, such as
+ * secret keys etc.
+ * \param v Vector of bytes
+ */
+void mem_cleanse(bytes& v) { C::OQS_MEM_cleanse(v.data(), v.size()); }
 
 /**
  * \namespace internal

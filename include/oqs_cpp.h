@@ -34,16 +34,6 @@ extern "C" {
 }
 } // namespace C
 
-using OQS_STATUS = C::OQS_STATUS; ///< bring OQS_STATUS into the oqs namespace
-
-/**
- * \brief Sets to zero the content of \a v by invoking the liboqs
- * OQS_MEM_cleanse() function. Use it to clean "hot" memory areas, such as
- * secret keys etc.
- * \param v Vector of bytes
- */
-void mem_cleanse(bytes& v) { C::OQS_MEM_cleanse(v.data(), v.size()); }
-
 /**
  * \class oqs::MechanismNotSupportedError
  * \brief Cryptographic scheme not supported

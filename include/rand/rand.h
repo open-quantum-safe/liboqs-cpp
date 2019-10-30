@@ -1,6 +1,6 @@
 /**
  * \file rand/rand.h
- * \brief Provides support for various RNG related functions
+ * \brief Provides support for various RNG-related functions
  */
 
 #ifndef RAND_RAND_H_
@@ -23,8 +23,10 @@ extern "C" {
 }
 } // namespace C
 
-using OQS_STATUS = C::OQS_STATUS; ///< bring OQS_STATUS into the oqs namespace
-
+/**
+ * \namespace rand
+ * \brief Namespace containing RNG-related functions
+ */
 namespace rand {
 /**
  * \brief Generates \a bytes_to_read random bytes. This implementation uses
@@ -78,7 +80,8 @@ using algorithm_ptr_fn = bytes (*)(size_t);
 
 /**
  * \brief Global RNG algorithm callback
- * \return Global RNG callback set by oqs::rand::randombytes_custom_algorithm()
+ * \return Global RNG algorithm callback set by
+ * oqs::rand::randombytes_custom_algorithm()
  */
 algorithm_ptr_fn& get_algorithm_ptr_fn() {
     static algorithm_ptr_fn algorithm_ptr_callback{nullptr};
@@ -103,9 +106,9 @@ void algorithm_ptr(uint8_t* random_array, size_t bytes_to_read) {
 
 /**
  * \brief Switches oqs::rand::randombytes() to use the given function.
-// This allows additional custom RNGs besides the provided ones. The provided
-// RNG function must have the same signature as oqs::rand::randombytes(),
-// i.e. bytes (*)(std::size_t)
+ * This allows additional custom RNGs besides the provided ones. The provided
+ * RNG function must have the same signature as oqs::rand::randombytes(),
+ * i.e. bytes (*)(std::size_t).
  * \param algorithm_ptr Pointer to RNG function
  */
 void randombytes_custom_algorithm(bytes (*algorithm_ptr)(std::size_t)) {
