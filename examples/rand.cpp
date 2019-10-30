@@ -14,7 +14,7 @@ oqs::bytes custom_RNG(std::size_t bytes_to_read) {
 }
 
 int main() {
-    oqs::rand::randombytes_switch_algorithm("NIST-KAT");
+    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
     oqs::bytes entropy_seed(48);
     entropy_seed[0] = 100;
     entropy_seed[20] = 200;
@@ -27,11 +27,11 @@ int main() {
     std::cout << std::setw(18) << std::left;
     std::cout << "Custom RNG: " << oqs::rand::randombytes(32) << '\n';
 
-    oqs::rand::randombytes_switch_algorithm("OpenSSL");
+    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_openssl);
     std::cout << std::setw(18) << std::left;
     std::cout << "OpenSSL: " << oqs::rand::randombytes(32) << '\n';
 
-    oqs::rand::randombytes_switch_algorithm("system");
+    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_system);
     std::cout << std::setw(18) << std::left;
     std::cout << "System (default): " << oqs::rand::randombytes(32) << '\n';
 }
