@@ -1,7 +1,8 @@
 // signature C++ example
 
-#include <iostream>
 #include <chrono>
+#include <iostream>
+#include <string>
 
 // liboqs C++ wrapper
 #include "oqs_cpp.h"

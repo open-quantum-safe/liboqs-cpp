@@ -1,7 +1,8 @@
 // key encapsulation C++ example
 
-#include <iostream>
 #include <chrono>
+#include <iostream>
+#include <string>
 #include <tuple>
 
 // liboqs C++ wrapper
