@@ -22,8 +22,8 @@ and directories:
 
  - **`include/oqs_cpp.h`: main header file for the wrapper**
  - `examples/kem.cpp`: key encapsulation example
+ - `examples/rand.cpp`: RNG example
  - `examples/sig.cpp`: signature example
- - `doc`: Doxygen-generated detailed documentation
  - `unit_tests`: unit tests written using Google Test (included)
  - `VisualStudio/liboqs-cpp.sln`: Visual Studio 2017 solution
 
@@ -37,6 +37,8 @@ liboqs-cpp defines four main classes: `oqs::KeyEncapsulation` and `oqs::Signatur
 `oqs::KEMs` and `oqs::Sigs`, containing only static member functions that provide information related to the available key encapsulation mechanisms or signature mechanism, respectively. 
 
 `oqs::KeyEncapsulation` and/or `oqs::Signature` must be instantiated with a string identifying one of mechanisms supported by liboqs; these can be enumerated using the `oqs::KEMs::get_enabled_KEM_mechanisms()` and `oqs::Sigs::get_enabled_sig_mechanisms()` member functions. 
+
+Support for alternative RNGs is provided by the `include/rand/rand.h` header file, which exports its functions in `namespace oqs::rand`. This header file must be explicitly included in order to activate the support for alternative RNGs.
 
 The wrapper also defines a high resolution timing class, `oqs::Timer<>`.
 
@@ -55,7 +57,7 @@ directory to `build`, then type
 	make -j4
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
-the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library (in this case `/usr/local/include` and `/usr/local/lib`, respectively). You may replace the `-j4` flag with your
+the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library. You may omit those flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local` (true if you ran `sudo make install` after building liboqs). You may replace the `-j4` flag with your
 processor's number of cores, e.g. use `-j8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
@@ -66,8 +68,7 @@ To compile and run the unit tests, first `cd unit_tests`, then create a `build` 
 	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
 	make -j4
 
-The above commands build `tests/oqs_cpp_testing` suite of unit tests.
-
+The above commands build `tests/oqs_cpp_testing` suite of unit tests. Again you may omit the CMake flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local`.
 
 Building on Windows
 -------------------
@@ -81,6 +82,22 @@ In addition, a Visual Studio 2017 solution containing both key encapsulation and
 - Only after completing the steps above you may build the liboqs-cpp solution (or each individual projects within the solution). In case you end up with a linker error, make sure that the corresponding liboqs target was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs should have been built in advance.
 
 In case you get a "Missing Windows SDK" error, right-click on the solution name and choose "Retarget solution" to re-target the projects in the solution to your available Windows SDK.
+
+Documentation
+-------------
+To generate the full official API documentation in both PDF and HTML formats run 
+[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
+documentation directory `doc` containing both the HTML and LaTeX documentation.
+
+The HTML documentation file will be accessible by opening `doc/html/index.html` with the browser of your choice.
+
+To generate a PDF file of the documentation, run 
+
+```bash
+latexmk -pdf refman.tex
+```
+
+from the `doc/latex` directory or compile the file `doc/latex/refman.tex` with your LaTeX compiler. This will create the `doc/latex/refman.pdf` documentation file. Consult your favourite LaTeX manual for how to compile/build LaTeX files under your specific operating system. 
 
 Limitations and security
 ------------------------
