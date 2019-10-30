@@ -1,16 +1,17 @@
 // various RNGs C++ example
 
+#include <cstdint>
+#include <cstdlib>
 #include <iostream>
 
 // RNG support
 #include "rand/rand.h"
 
-// CustomRNG provides a (trivial) custom random number generator
-oqs::bytes custom_RNG(std::size_t bytes_to_read) {
-    oqs::bytes result(bytes_to_read);
+// CustomRNG provides a (trivial) custom random number generator; the memory is
+// provided by the caller, i.e. oqs::rand::randombytes()
+void custom_RNG(uint8_t* random_array, std::size_t bytes_to_read) {
     for (std::size_t i = 0; i < bytes_to_read; ++i)
-        result[i] = static_cast<oqs::byte>(i);
-    return result;
+        random_array[i] = static_cast<oqs::byte>(i);
 }
 
 int main() {

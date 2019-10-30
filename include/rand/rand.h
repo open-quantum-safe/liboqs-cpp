@@ -43,6 +43,22 @@ bytes randombytes(std::size_t bytes_to_read) {
 }
 
 /**
+ * \brief Generates \a bytes_to_read random bytes in-place
+ * \note This implementation uses either the default RNG algorithm ("system"),
+ * or whichever algorithm has been selected by
+ * oqs::rand::randombytes_switch_algorithm()
+ * \note \a bytes_to_read must not exceed the size of \a random_array
+ * \param [in] bytes_to_read The number of random bytes to generate
+ * \param [out] random_array Output vector of random bytes
+ */
+void randombytes(bytes& random_array, std::size_t bytes_to_read) {
+    if (bytes_to_read > random_array.size())
+        throw(std::out_of_range(
+            "bytes_to_read exceeds the size of the random_array"));
+    C::OQS_randombytes(random_array.data(), bytes_to_read);
+}
+
+/**
  * \brief Switches the core OQS_randombytes to use the specified algorithm
  * \see <oqs/rand.h> liboqs header for more details.
  * \param alg_name Algorithm name, possible values are "system", "NIST-KAT", and
@@ -78,46 +94,14 @@ void randombytes_nist_kat_init(const bytes& entropy_input,
     C::OQS_randombytes_nist_kat_init(entropy_input.data(), nullptr, 256);
 }
 
-namespace internal {
-using algorithm_ptr_fn = bytes (*)(size_t);
-
-/**
- * \brief Global RNG algorithm callback
- * \return Global RNG algorithm callback set by
- * oqs::rand::randombytes_custom_algorithm()
- */
-algorithm_ptr_fn& get_algorithm_ptr_fn() {
-    static algorithm_ptr_fn algorithm_ptr_callback{nullptr};
-    return algorithm_ptr_callback;
-}
-
-/**
- * \brief Automatically invoked by oqs::rand::randombytes_custom_algorithm()
- * \note When invoked, the memory is provided by the caller, i.e. by
- * oqs::rand::randombytes()
- * \param random_array Pointer to memory to be filled in
- * \param bytes_to_read The number of (random) bytes to generate
- */
-void algorithm_ptr(uint8_t* random_array, size_t bytes_to_read) {
-    algorithm_ptr_fn& algorithm_ptr_callback = get_algorithm_ptr_fn();
-    if (algorithm_ptr_callback == nullptr)
-        throw std::runtime_error("the RNG algorithm callback is not set");
-
-    bytes result = algorithm_ptr_callback(bytes_to_read);
-    std::memcpy(random_array, result.data(), bytes_to_read);
-}
-} // namespace internal
-
 /**
  * \brief Switches oqs::rand::randombytes() to use the given function
- * \note This allows additional custom RNGs besides the provided ones. The
- * provided RNG function must have the same signature as
- * oqs::rand::randombytes(), i.e. bytes (*)(std::size_t).
+ * \note This allows additional custom RNGs besides the provided ones.
  * \param algorithm_ptr Pointer to RNG function
  */
-void randombytes_custom_algorithm(bytes (*algorithm_ptr)(std::size_t)) {
-    internal::get_algorithm_ptr_fn() = algorithm_ptr;
-    C::OQS_randombytes_custom_algorithm(internal::algorithm_ptr);
+void randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t*,
+                                                        std::size_t)) {
+    C::OQS_randombytes_custom_algorithm(algorithm_ptr);
 }
 } // namespace rand
 } // namespace oqs
