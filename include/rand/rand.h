@@ -29,9 +29,10 @@ extern "C" {
  */
 namespace rand {
 /**
- * \brief Generates \a bytes_to_read random bytes. This implementation uses
- * either the default RNG algorithm ("system"), or whichever algorithm has been
- * selected by oqs::rand::randombytes_switch_algorithm().
+ * \brief Generates \a bytes_to_read random bytes
+ * \note This implementation uses either the default RNG algorithm ("system"),
+ * or whichever algorithm has been selected by
+ * oqs::rand::randombytes_switch_algorithm()
  * \param bytes_to_read The number of random bytes to generate
  * \return Vector of random bytes
  */
@@ -42,7 +43,7 @@ bytes randombytes(std::size_t bytes_to_read) {
 }
 
 /**
- * \brief Switches the core OQS_randombytes to use the specified algorithm.
+ * \brief Switches the core OQS_randombytes to use the specified algorithm
  * \param alg_name Algorithm name, possible values are "system", "NIST-KAT",
  * "OpenSSL". See <oqs/rand.h> liboqs header for more details.
  */
@@ -89,8 +90,9 @@ algorithm_ptr_fn& get_algorithm_ptr_fn() {
 }
 
 /**
- * \brief Automatically invoked by oqs::rand::random_bytes_custom_algorithm().
- * The memory is provided by the caller (C::OQS_randombytes).
+ * \brief Automatically invoked by oqs::rand::randombytes_custom_algorithm()
+ * \note When invoked, the memory is provided by the caller, i.e. by
+ * oqs::rand::randombytes()
  * \param random_array Pointer to memory to be filled in
  * \param bytes_to_read The number of (random) bytes to generate
  */
@@ -105,10 +107,10 @@ void algorithm_ptr(uint8_t* random_array, size_t bytes_to_read) {
 } // namespace internal
 
 /**
- * \brief Switches oqs::rand::randombytes() to use the given function.
- * This allows additional custom RNGs besides the provided ones. The provided
- * RNG function must have the same signature as oqs::rand::randombytes(),
- * i.e. bytes (*)(std::size_t).
+ * \brief Switches oqs::rand::randombytes() to use the given function
+ * \note This allows additional custom RNGs besides the provided ones. The
+ * provided RNG function must have the same signature as
+ * oqs::rand::randombytes(), i.e. bytes (*)(std::size_t).
  * \param algorithm_ptr Pointer to RNG function
  */
 void randombytes_custom_algorithm(bytes (*algorithm_ptr)(std::size_t)) {
