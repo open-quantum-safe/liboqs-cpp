@@ -32,7 +32,7 @@ using OQS_STATUS = C::OQS_STATUS; ///< bring OQS_STATUS into the oqs namespace
  * secret keys etc.
  * \param v Vector of bytes
  */
-void mem_cleanse(bytes& v) { C::OQS_MEM_cleanse(v.data(), v.size()); }
+inline void mem_cleanse(bytes& v) { C::OQS_MEM_cleanse(v.data(), v.size()); }
 
 /**
  * \namespace internal
