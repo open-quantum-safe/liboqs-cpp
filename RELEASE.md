@@ -1,4 +1,4 @@
-liboqs-cpp version 0.2.0
+liboqs-cpp version 0.2.1
 ========================
 
 About
@@ -13,15 +13,12 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 Release notes
 =============
 
-This release of liboqs-cpp was released on October 8, 2019.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.2.0.
-
+This release of liboqs-cpp was released on October 31, 2019.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.2.1.
 What's New
 ----------
 
-This is the fourth release of liboqs-cpp.
+This is the fifth release of liboqs-cpp.
 
 For a list of changes see [CHANGES.txt](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CHANGES.txt).
 
-This release updates for compatibility with liboqs 0.2.0, which contains new/updated algorithms based on NIST Round 2 submissions.
-
-This release incorporates minor changes to accommodate liboqs API changes.
+This release adds support for \<oqs/rand.h\> RNG-related functions.
