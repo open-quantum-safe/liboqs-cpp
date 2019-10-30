@@ -54,7 +54,7 @@ bytes randombytes(std::size_t bytes_to_read) {
 void randombytes(bytes& random_array, std::size_t bytes_to_read) {
     if (bytes_to_read > random_array.size())
         throw(std::out_of_range(
-            "bytes_to_read exceeds the size of the random_array"));
+            "bytes_to_read exceeds the size of random_array"));
     C::OQS_randombytes(random_array.data(), bytes_to_read);
 }
 
