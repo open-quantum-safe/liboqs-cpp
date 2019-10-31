@@ -1,5 +1,6 @@
 // Unit testing oqs::KeyEncapsulation
 
+#include <iostream>
 #include <tuple>
 
 #include <gtest/gtest.h>
