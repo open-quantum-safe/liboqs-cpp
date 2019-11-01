@@ -43,5 +43,5 @@ CMakeSettings.json
 build/
 cmake-build*/
 
-# documentation source files
+# Documentation source files
 doc/
