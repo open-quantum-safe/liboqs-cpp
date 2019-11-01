@@ -43,6 +43,9 @@ script:
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
+ 
+  # Run the examples  
+  - ./kem && ./rand && ./sig  
 
   # Build the unit tests
   - cd ../unit_tests
