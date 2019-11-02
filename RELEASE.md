@@ -19,4 +19,3 @@ What's New
 ----------
 
 This is the fifth release of liboqs-cpp. For a list of changes see [CHANGES.txt](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CHANGES.txt).
-
