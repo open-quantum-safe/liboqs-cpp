@@ -4,7 +4,6 @@
 #include <tuple>
 
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 
 #include "oqs_cpp.h"
 
