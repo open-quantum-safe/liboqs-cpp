@@ -18,8 +18,6 @@ This release of liboqs-cpp was released on October 31, 2019.  Its release page o
 What's New
 ----------
 
-This is the fifth release of liboqs-cpp.
-
-For a list of changes see [CHANGES.txt](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CHANGES.txt).
+This is the fifth release of liboqs-cpp. For a list of changes see [CHANGES.txt](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/CHANGES.txt).
 
 This release adds support for \<oqs/rand.h\> RNG-related functions.
