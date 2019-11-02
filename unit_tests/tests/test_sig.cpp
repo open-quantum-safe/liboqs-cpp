@@ -6,21 +6,20 @@
 
 #include "oqs_cpp.h"
 
+bool test_sig(const std::string& sig_name, const oqs::bytes& msg) {
+    oqs::Signature signer{sig_name};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes signature = signer.sign(msg);
+    oqs::Signature verifier{sig_name};
+    return verifier.verify(msg, signature, signer_public_key);
+}
+
 TEST(oqs_Signature, Enabled) {
     std::cout << "Testing enabled signatures:\n";
-    for (auto&& sig : oqs::Sigs::get_enabled_sigs()) {
-        std::cout << sig << '\n';
-
-        oqs::bytes message = "This is our favourite message to sign"_bytes;
-
-        oqs::Signature signer{sig};
-        oqs::bytes signer_public_key = signer.generate_keypair();
-        oqs::bytes signature = signer.sign(message);
-
-        oqs::Signature verifier{sig};
-        bool is_valid = verifier.verify(message, signature, signer_public_key);
-
-        EXPECT_TRUE(is_valid);
+    oqs::bytes message = "This is our favourite message to sign"_bytes;
+    for (auto&& sig_name : oqs::Sigs::get_enabled_sigs()) {
+        std::cout << sig_name << '\n';
+        EXPECT_TRUE(test_sig(sig_name, message));
     }
 }
 
