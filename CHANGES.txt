@@ -1,5 +1,6 @@
-Version 0.2.1 - October 31, 2019 
+Version 0.2.1 - November 2, 2019 
     - Added support for RNGs from <oqs/rand.h>
+    - Concurrent unit testing
 
 Version 0.2.0 - October 8, 2019
     - Minor changes to accomodate for liboqs API changes

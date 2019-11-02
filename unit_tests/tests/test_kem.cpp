@@ -1,13 +1,18 @@
 // Unit testing oqs::KeyEncapsulation
 
 #include <iostream>
+#include <mutex>
+#include <thread>
 #include <tuple>
+#include <vector>
 
 #include <gtest/gtest.h>
 
 #include "oqs_cpp.h"
 
-bool test_kem(const std::string& kem_name) {
+static std::mutex mut;
+
+void test_kem(const std::string& kem_name) {
     oqs::KeyEncapsulation client{kem_name};
     oqs::bytes client_public_key = client.generate_keypair();
     oqs::KeyEncapsulation server{kem_name};
@@ -15,17 +20,24 @@ bool test_kem(const std::string& kem_name) {
     std::tie(ciphertext, shared_secret_server) =
         server.encap_secret(client_public_key);
     oqs::bytes shared_secret_client = client.decap_secret(ciphertext);
-    for (std::size_t i = 0; i < shared_secret_client.size(); ++i)
-        if (shared_secret_client[i] != shared_secret_server[i])
-            return false;
-    return true;
+    bool is_valid = (shared_secret_client == shared_secret_server);
+    mut.lock();
+    EXPECT_TRUE(is_valid);
+    if (!is_valid)
+        std::cout << kem_name << ": shared secrets do not coincide"
+                  << std::endl;
+    mut.unlock();
 }
 
 TEST(oqs_KeyEncapsulation, Enabled) {
+    std::vector<std::thread> thread_pool;
+    thread_pool.reserve(oqs::KEMs::get_enabled_KEMs().size());
     for (auto&& kem_name : oqs::KEMs::get_enabled_KEMs()) {
-        std::cout << kem_name << '\n';
-        EXPECT_TRUE(test_kem(kem_name));
+        std::cout << kem_name << std::endl;
+        thread_pool.emplace_back(std::thread(test_kem, kem_name));
     }
+    for (auto&& elem : thread_pool)
+        elem.join();
 }
 
 TEST(oqs_KeyEncapsulation, NotSupported) {
