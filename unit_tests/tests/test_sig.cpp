@@ -15,7 +15,6 @@ bool test_sig(const std::string& sig_name, const oqs::bytes& msg) {
 }
 
 TEST(oqs_Signature, Enabled) {
-    std::cout << "Testing enabled signatures:\n";
     oqs::bytes message = "This is our favourite message to sign"_bytes;
     for (auto&& sig_name : oqs::Sigs::get_enabled_sigs()) {
         std::cout << sig_name << '\n';

@@ -23,7 +23,6 @@ bool test_kem(const std::string& kem_name) {
 }
 
 TEST(oqs_KeyEncapsulation, Enabled) {
-    std::cout << "Testing enabled KEMs:\n";
     for (auto&& kem_name : oqs::KEMs::get_enabled_KEMs()) {
         std::cout << kem_name << '\n';
         EXPECT_TRUE(test_kem(kem_name));
