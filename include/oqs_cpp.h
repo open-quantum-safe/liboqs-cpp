@@ -80,8 +80,8 @@ class KEMs final : public internal::Singleton<const KEMs> {
 
   public:
     /**
-     * \brief Maximum number of supported KEMs
-     * \return Maximum number of supported KEMs
+     * \brief Maximum number of supported KEM algorithms
+     * \return Maximum number of supported KEM algorithms
      */
     static std::size_t max_number_KEMs() {
         static std::size_t max_number_KEMs_ = C::OQS_KEM_alg_count();
@@ -396,8 +396,8 @@ class Sigs final : public internal::Singleton<const Sigs> {
 
   public:
     /**
-     * \brief Maximum number of supported signatures
-     * \return Maximum number of supported signatures
+     * \brief Maximum number of supported signature algorithms
+     * \return Maximum number of supported signature algorithms
      */
     static std::size_t max_number_sigs() {
         static std::size_t max_number_sigs_ = C::OQS_SIG_alg_count();
