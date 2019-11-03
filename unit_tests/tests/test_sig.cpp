@@ -17,11 +17,10 @@ void test_sig(const std::string& sig_name, const oqs::bytes& msg) {
     oqs::bytes signature = signer.sign(msg);
     oqs::Signature verifier{sig_name};
     bool is_valid = verifier.verify(msg, signature, signer_public_key);
-    mut.lock();
+    std::lock_guard<std::mutex> lock{mut};
     EXPECT_TRUE(is_valid);
     if (!is_valid)
         std::cout << sig_name << ": signature verification failed" << std::endl;
-    mut.unlock();
 }
 
 TEST(oqs_Signature, Enabled) {
