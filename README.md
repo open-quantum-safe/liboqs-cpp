@@ -21,6 +21,7 @@ liboqs-cpp is a header-only wrapper. The project contains the following files
 and directories:
 
  - **`include/oqs_cpp.h`: main header file for the wrapper**
+ - `include/rand/rand.h`: support for RNGs from `<oqs/rand.h>`
  - `examples/kem.cpp`: key encapsulation example
  - `examples/rand.cpp`: RNG example
  - `examples/sig.cpp`: signature example
