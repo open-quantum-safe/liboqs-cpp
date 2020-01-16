@@ -12,7 +12,6 @@ endif ()
 
 # add all examples
 aux_source_directory(examples EXAMPLE_FILES)
-aux_source_directory(examples/rand EXAMPLE_FILES)
 
 # path to liboqs include and lib, modify as needed
 if (NOT WIN32)

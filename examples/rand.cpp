@@ -28,9 +28,11 @@ int main() {
     std::cout << std::setw(18) << std::left;
     std::cout << "Custom RNG: " << oqs::rand::randombytes(32) << '\n';
 
+#ifndef _WIN32
     oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_openssl);
     std::cout << std::setw(18) << std::left;
     std::cout << "OpenSSL: " << oqs::rand::randombytes(32) << '\n';
+#endif
 
     oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_system);
     std::cout << std::setw(18) << std::left;
