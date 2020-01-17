@@ -1,5 +1,5 @@
 Version 0.2.2 - November 16, 2020
-    - Added rand example project to Visual Studio solution
+    - Added additional RNG example project to Visual Studio solution
 
 Version 0.2.1 - November 2, 2019 
     - Added support for RNGs from <oqs/rand.h>
