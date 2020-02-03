@@ -36,7 +36,7 @@ script:
   - $CXX --version
 
   # Install liboqs
-  - sh ./.travis/install_liboqs.sh &>/dev/null
+  - sh ./.travis/install_liboqs.sh #&>/dev/null
 
   # Build the examples
   - mkdir build
