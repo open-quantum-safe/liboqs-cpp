@@ -41,6 +41,7 @@ TEST(oqs_KeyEncapsulation, Enabled) {
     }
     for (auto&& elem : thread_pool)
         elem.join();
+    // test LEDAcryptKEM-LT52 in the main thread (stack size is 8Mb on macOS)
     test_kem("LEDAcryptKEM-LT52");
 }
 
