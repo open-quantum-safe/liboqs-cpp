@@ -28,6 +28,7 @@ int main() {
     std::cout << std::setw(18) << std::left;
     std::cout << "Custom RNG: " << oqs::rand::randombytes(32) << '\n';
 
+// we do not yet support OpenSSL under Windows
 #ifndef _WIN32
     oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_openssl);
     std::cout << std::setw(18) << std::left;
