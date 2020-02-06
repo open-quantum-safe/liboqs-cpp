@@ -32,7 +32,6 @@ TEST(oqs_Signature, Enabled) {
     thread_pool.reserve(oqs::Sigs::get_enabled_sigs().size());
     for (auto&& sig_name : oqs::Sigs::get_enabled_sigs()) {
         std::cout << sig_name << std::endl;
-        test_sig(sig_name, message);
         thread_pool.emplace_back(std::thread(test_sig, sig_name, message));
     }
     for (auto&& elem : thread_pool)
