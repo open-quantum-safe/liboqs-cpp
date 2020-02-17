@@ -58,7 +58,7 @@ directory to `build`, then type
 	make -j4
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
-the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library. You may omit those flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local` (true if you ran `sudo make install` after building liboqs). You may replace the `-j4` flag with your
+the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library. You may omit those flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local` (true if you ran `sudo ninja install` after building liboqs). You may replace the `-j4` flag with your
 processor's number of cores, e.g. use `-j8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
