@@ -32,15 +32,18 @@ void test_kem(const std::string& kem_name) {
 
 TEST(oqs_KeyEncapsulation, Enabled) {
     std::vector<std::thread> thread_pool;
-    thread_pool.reserve(oqs::KEMs::get_enabled_KEMs().size());
-    for (auto&& kem_name : oqs::KEMs::get_enabled_KEMs()) {
+    auto enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
+    thread_pool.reserve(enabled_KEMs.size());
+    for (auto&& kem_name : enabled_KEMs) {
         std::cout << kem_name << std::endl;
         // issues with stack size being too small in macOS (512Kb for threads)
         if (kem_name != "LEDAcryptKEM-LT52")
             thread_pool.emplace_back(std::thread(test_kem, kem_name));
     }
     // test LEDAcryptKEM-LT52 in the main thread (stack size is 8Mb on macOS)
-    test_kem("LEDAcryptKEM-LT52");
+    if (std::find(std::begin(enabled_KEMs), std::end(enabled_KEMs),
+                  "LEDAcryptKEM-LT52") != std::end(enabled_KEMs))
+        test_kem("LEDAcryptKEM-LT52");
     // join the rest of the threads
     for (auto&& elem : thread_pool)
         elem.join();
