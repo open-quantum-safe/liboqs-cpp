@@ -32,7 +32,7 @@ void test_kem(const std::string& kem_name) {
 
 TEST(oqs_KeyEncapsulation, Enabled) {
     std::vector<std::thread> thread_pool;
-    auto enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
+    std::vector<std::string> enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
     thread_pool.reserve(enabled_KEMs.size());
     for (auto&& kem_name : enabled_KEMs) {
         std::cout << kem_name << std::endl;

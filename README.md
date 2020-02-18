@@ -58,7 +58,7 @@ directory to `build`, then type
 	make -j4
 
 The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
-the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library. You may omit those flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local` (true if you ran `sudo ninja install` after building liboqs). You may replace the `-j4` flag with your
+the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library, respectively. You may omit those flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local` (true if you ran `sudo ninja install` after building liboqs). You may replace the `-j4` flag with your
 processor's number of cores, e.g. use `-j8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
@@ -76,13 +76,15 @@ Building on Windows
 
 We provide CMake support for Visual Studio. We recommend using Visual Studio 2017 or later (preferably Visual Studio 2019). For comprehensive details about using CMake with Visual Studio please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019).
 
-In addition, a Visual Studio 2017 solution containing both key encapsulation and signature examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as two separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) directory. Building instructions:
+In addition, a Visual Studio 2017 solution containing the examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) directory. Building instructions:
 
 - First, you must clone/download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#windows) for more details.
-- Next, you must [set the environment variable](https://stackoverflow.com/a/32463213/3093378) `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`. 
-- Only after completing the steps above you may build the liboqs-cpp solution (or each individual projects within the solution). In case you end up with a linker error, make sure that the corresponding liboqs target was built, i.e. if building a `Release` version with an `x64` target, then the corresponding `Release/x64` solution from liboqs should have been built in advance.
+- Next, you must [set the environment variable](https://stackoverflow.com/a/32463213/3093378) `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`, and `LIBOQS_INCLUDE_DIR` and `LIBOQS_LIB_DIR` to point to the location to the liboqs headers and compiled library, respectively.
+- Only after completing the steps above you may build the liboqs-cpp solution (or each individual projects within the solution).
 
 In case you get a "Missing Windows SDK" error, right-click on the solution name and choose "Retarget solution" to re-target the projects in the solution to your available Windows SDK.
+
+In case you compiled liboqs as a shared library, you need to add `oqs.dll` (usually produced in `bin` inside the build directory) to the system path, e.g. `set PATH=C:\liboqs\build\bin;%PATH%`.
 
 Documentation
 -------------
