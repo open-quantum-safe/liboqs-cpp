@@ -1,29 +1,32 @@
 version: 1.0.{build}
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 platform: x64
 
 environment:
     LIBOQS_INSTALL_PATH: C:\liboqs
-    
+
 init:
-  - git clone https://github.com/open-quantum-safe/liboqs %LIBOQS_INSTALL_PATH%
-  - msbuild /m /p:configuration=Debug C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
-  - msbuild /m /p:configuration=Release C:\liboqs\VisualStudio\liboqs.sln /nologo /noconsolelogger
-    
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+    - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%    
+    - git clone https://github.com/open-quantum-safe/liboqs %LIBOQS_INSTALL_PATH%
+    - cd %LIBOQS_INSTALL_PATH%
+    - mkdir build
+    - cd build
+    - cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON
+    - ninja 1> nul
+
 build:
     project: VisualStudio/liboqs-cpp.sln
     verbosity: minimal
     parallel: true
 
-configuration:
-    - Debug
-    - Release
-
 test_script:
     - cmd: >-
         %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\kem
+
+        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\rand
 
         %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\sig
 
