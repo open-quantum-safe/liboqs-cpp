@@ -1,7 +1,6 @@
 // Unit testing oqs::KeyEncapsulation
 
 #include <iostream>
-#include <mutex>
 #include <thread>
 #include <tuple>
 #include <vector>
@@ -9,8 +8,6 @@
 #include <gtest/gtest.h>
 
 #include "oqs_cpp.h"
-
-static std::mutex mut;
 
 void test_kem(const std::string& kem_name) {
     oqs::KeyEncapsulation client{kem_name};
@@ -21,13 +18,10 @@ void test_kem(const std::string& kem_name) {
         server.encap_secret(client_public_key);
     oqs::bytes shared_secret_client = client.decap_secret(ciphertext);
     bool is_valid = (shared_secret_client == shared_secret_server);
-    {
-        std::lock_guard<std::mutex> lock{mut};
-        EXPECT_TRUE(is_valid);
-        if (!is_valid)
-            std::cout << kem_name << ": shared secrets do not coincide"
-                      << std::endl;
-    }
+    if (!is_valid)
+        std::cerr << kem_name << ": shared secrets do not coincide"
+                  << std::endl;
+    EXPECT_TRUE(is_valid);
 }
 
 TEST(oqs_KeyEncapsulation, Enabled) {

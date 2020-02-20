@@ -1,7 +1,6 @@
 // Unit testing oqs::Signature
 
 #include <iostream>
-#include <mutex>
 #include <thread>
 #include <vector>
 
@@ -9,21 +8,15 @@
 
 #include "oqs_cpp.h"
 
-static std::mutex mut;
-
 void test_sig(const std::string& sig_name, const oqs::bytes& msg) {
     oqs::Signature signer{sig_name};
     oqs::bytes signer_public_key = signer.generate_keypair();
     oqs::bytes signature = signer.sign(msg);
     oqs::Signature verifier{sig_name};
     bool is_valid = verifier.verify(msg, signature, signer_public_key);
-    {
-        std::lock_guard<std::mutex> lock{mut};
-        EXPECT_TRUE(is_valid);
-        if (!is_valid)
-            std::cout << sig_name << ": signature verification failed"
-                      << std::endl;
-    }
+    if (!is_valid)
+        std::cerr << sig_name << ": signature verification failed" << std::endl;
+    EXPECT_TRUE(is_valid);
 }
 
 TEST(oqs_Signature, Enabled) {
