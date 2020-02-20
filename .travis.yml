@@ -39,9 +39,7 @@ script:
   - sh ./.travis/install_liboqs.sh &>/dev/null
 
   # Build the examples
-  - mkdir build
-  - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
+  - mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
  
   # Run the examples
   - ./kem
@@ -49,10 +47,7 @@ script:
   - ./sig
 
   # Build the unit tests
-  - cd ../unit_tests
-  - mkdir build
-  - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
+  - cd ../unit_tests && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
 
   # Run the unit tests
   - ./tests/oqs_cpp_testing
