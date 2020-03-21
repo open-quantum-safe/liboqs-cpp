@@ -1,7 +1,8 @@
 language: cpp
 dist: bionic
+os: linux
 
-matrix:
+jobs:
   include:
     # Ubuntu Linux 18.04 gcc
     - os: linux
