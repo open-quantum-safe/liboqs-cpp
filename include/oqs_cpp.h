@@ -698,11 +698,11 @@ class Signature {
 }; // class Signature
 
 namespace internal {
-// initialize the KEMs and Sigs singletons
-static const KEMs& algs_ =
-    KEMs::get_instance(); ///< initializes the KEMs singleton
+// instantiate the KEMs and Sigs singletons (if ever needed)
+static const KEMs& kems_ =
+    KEMs::get_instance(); ///< instantiates the KEMs singleton
 static const Sigs& sigs_ =
-    Sigs::get_instance(); ///< initializes the Sigs singleton
+    Sigs::get_instance(); ///< instantiates the Sigs singleton
 } // namespace internal
 } // namespace oqs
 

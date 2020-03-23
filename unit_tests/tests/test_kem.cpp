@@ -1,6 +1,7 @@
 // Unit testing oqs::KeyEncapsulation
 
 #include <iostream>
+#include <mutex>
 #include <thread>
 #include <tuple>
 #include <vector>
@@ -9,7 +10,19 @@
 
 #include "oqs_cpp.h"
 
+// no_thread_KEM_patterns lists KEM patterns that have issues running in a
+// separate thread
+static std::vector<std::string> no_thread_KEM_patterns{"Classic-McEliece",
+                                                       "LEDAcryptKEM-LT52"};
+
+// used for thread-safe console output
+static std::mutex mu;
+
 void test_kem(const std::string& kem_name) {
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << kem_name << std::endl;
+    }
     oqs::KeyEncapsulation client{kem_name};
     oqs::bytes client_public_key = client.generate_keypair();
     oqs::KeyEncapsulation server{kem_name};
@@ -27,17 +40,28 @@ void test_kem(const std::string& kem_name) {
 TEST(oqs_KeyEncapsulation, Enabled) {
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
-    thread_pool.reserve(enabled_KEMs.size());
     for (auto&& kem_name : enabled_KEMs) {
-        std::cout << kem_name << std::endl;
-        // issues with stack size being too small in macOS (512Kb for threads)
-        if (kem_name != "LEDAcryptKEM-LT52")
-            thread_pool.emplace_back(std::thread(test_kem, kem_name));
+        // use threads only for KEMs that are not in no_thread_KEM_patterns, due
+        // to issues with stack size being too small in macOS (512Kb for
+        // threads)
+        bool test_in_thread = true;
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
+            thread_pool.emplace_back(test_kem, kem_name);
     }
-    // test LEDAcryptKEM-LT52 in the main thread (stack size is 8Mb on macOS)
-    if (std::find(std::begin(enabled_KEMs), std::end(enabled_KEMs),
-                  "LEDAcryptKEM-LT52") != std::end(enabled_KEMs))
-        test_kem("LEDAcryptKEM-LT52");
+    // test the other KEMs in the main thread (stack size is 8Mb on macOS)
+    for (auto&& kem_name : enabled_KEMs) {
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_kem(kem_name);
+            }
+        }
+    }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
         elem.join();
