@@ -40,10 +40,18 @@ void test_kem(const std::string& kem_name) {
 TEST(oqs_KeyEncapsulation, Enabled) {
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
+    // first test KEMs that belong to no_thread_KEM_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
     for (auto&& kem_name : enabled_KEMs) {
-        // use threads only for KEMs that are not in no_thread_KEM_patterns, due
-        // to issues with stack size being too small in macOS (512Kb for
-        // threads)
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_kem(kem_name);
+            }
+        }
+    }
+    // test the remaining KEMs in separate threads
+    for (auto&& kem_name : enabled_KEMs) {
         bool test_in_thread = true;
         for (auto&& no_thread_kem : no_thread_KEM_patterns) {
             if (kem_name.find(no_thread_kem) != std::string::npos) {
@@ -53,14 +61,6 @@ TEST(oqs_KeyEncapsulation, Enabled) {
         }
         if (test_in_thread)
             thread_pool.emplace_back(test_kem, kem_name);
-    }
-    // test the other KEMs in the main thread (stack size is 8Mb on macOS)
-    for (auto&& kem_name : enabled_KEMs) {
-        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
-            if (kem_name.find(no_thread_kem) != std::string::npos) {
-                test_kem(kem_name);
-            }
-        }
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)

@@ -20,6 +20,14 @@ if (NOT WIN32)
     set(LIBOQS_LIB_DIR "/usr/local/lib" CACHE PATH
             "Path to liboqs lib directory")
 else ()
+    # increase the stack size to 8MB on Windows
+    if (MSVC)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:8388608")
+    elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+            STREQUAL "GNU")
+        set(CMAKE_EXE_LINKER_FLAGS
+                "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,8388608")
+    endif ()
     set(LIBOQS_INCLUDE_DIR "" CACHE PATH "Path to liboqs include directory")
     set(LIBOQS_LIB_DIR "" CACHE PATH "Path to liboqs lib directory")
 endif ()

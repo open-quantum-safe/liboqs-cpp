@@ -36,10 +36,18 @@ TEST(oqs_Signature, Enabled) {
     oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
+    // first test sigs that belong to no_thread_sig_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
     for (auto&& sig_name : enabled_sigs) {
-        // use threads only for sigs that are not in no_thread_sig_patterns, due
-        // to issues with stack size being too small in macOS (512Kb for
-        // threads)
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_sig(sig_name, message);
+            }
+        }
+    }
+    // test the remaining sigs in separate threads
+    for (auto&& sig_name : enabled_sigs) {
         bool test_in_thread = true;
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
@@ -49,14 +57,6 @@ TEST(oqs_Signature, Enabled) {
         }
         if (test_in_thread)
             thread_pool.emplace_back(test_sig, sig_name, message);
-    }
-    // test the other sigs in the main thread (stack size is 8Mb on macOS)
-    for (auto&& sig_name : enabled_sigs) {
-        for (auto&& no_thread_sig : no_thread_sig_patterns) {
-            if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig(sig_name, message);
-            }
-        }
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
