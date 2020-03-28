@@ -10,10 +10,9 @@
 
 int main() {
     std::cout << std::boolalpha;
-    std::cout << "Supported KEMs:\n" << oqs::KEMs::get_supported_KEMs();
-    std::cout << "\n\nEnabled KEMs:\n" << oqs::KEMs::get_enabled_KEMs();
+    std::cout << "Enabled KEMs:\n" << oqs::KEMs::get_enabled_KEMs();
 
-    std::string kem_name = "DEFAULT";
+    std::string kem_name = "Classic-McEliece-348864";
     oqs::KeyEncapsulation client{kem_name};
     std::cout << "\n\nKEM details: \n" << client.get_details();
 

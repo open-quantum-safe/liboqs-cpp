@@ -10,14 +10,10 @@
 
 #include "oqs_cpp.h"
 
-// no_thread_KEMs lists KEMs that have issues running in a separate thread
-static std::vector<std::string> no_thread_KEMs{
-    "Classic-McEliece-348864",  "Classic-McEliece-348864f",
-    "Classic-McEliece-460896",  "Classic-McEliece-460896f",
-    "Classic-McEliece-6688128", "Classic-McEliece-6688128f",
-    "Classic-McEliece-6960119", "Classic-McEliece-6960119f",
-    "Classic-McEliece-8192128", "Classic-McEliece-8192128f",
-    "LEDAcryptKEM-LT52"};
+// no_thread_KEM_patterns lists KEM patterns that have issues running in a
+// separate thread
+static std::vector<std::string> no_thread_KEM_patterns{"Classic-McEliece",
+                                                       "LEDAcryptKEM-LT52"};
 
 // used for thread-safe console output
 static std::mutex mu;
@@ -44,18 +40,28 @@ void test_kem(const std::string& kem_name) {
 TEST(oqs_KeyEncapsulation, Enabled) {
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
+    // first test KEMs that belong to no_thread_KEM_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
     for (auto&& kem_name : enabled_KEMs) {
-        // use threads only for KEMs that are not in no_thread_KEMs, due to
-        // issues with stack size being too small in macOS (512Kb for threads)
-        if (std::find(std::begin(no_thread_KEMs), std::end(no_thread_KEMs),
-                      kem_name) == std::end(no_thread_KEMs))
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_kem(kem_name);
+            }
+        }
+    }
+    // test the remaining KEMs in separate threads
+    for (auto&& kem_name : enabled_KEMs) {
+        bool test_in_thread = true;
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
             thread_pool.emplace_back(test_kem, kem_name);
     }
-    // test the other KEMs in the main thread (stack size is 8Mb on macOS)
-    for (auto&& kem_name : no_thread_KEMs)
-        if (std::find(std::begin(enabled_KEMs), std::end(enabled_KEMs),
-                      kem_name) != std::end(enabled_KEMs))
-            test_kem(kem_name);
     // join the rest of the threads
     for (auto&& elem : thread_pool)
         elem.join();
