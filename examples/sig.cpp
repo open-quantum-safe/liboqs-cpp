@@ -12,7 +12,7 @@ int main() {
     std::cout << "Enabled signatures:\n" << oqs::Sigs::get_enabled_sigs();
 
     oqs::bytes message = "This is the message to sign"_bytes;
-    std::string sig_name = "Rainbow-IIIc-Cyclic";
+    std::string sig_name = "DEFAULT";
     oqs::Signature signer{sig_name};
     std::cout << "\n\nSignature details:\n" << signer.get_details();
 
