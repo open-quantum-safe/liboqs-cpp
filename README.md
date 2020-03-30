@@ -2,7 +2,7 @@ liboqs-cpp: C++ bindings for liboqs
 ===================================
 
 [![Build status - Linux/macOS](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
-[![Build status - Windows](https://ci.appveyor.com/api/projects/status/duitngr0lo3p8566/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs-cpp/branch/master)
+[![Build status - Windows](https://ci.appveyor.com/api/projects/status/v7b5ner85txm8u77?svg=true)](https://ci.appveyor.com/project/vsoftco/liboqs-cpp)
 
 ---
 
