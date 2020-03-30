@@ -34,8 +34,9 @@
 # vim
 *.swp
 
-# Visual Studio
+# MSVC
 .vs/
+/out*
 CMakeSettings.json
 
 # CLion
