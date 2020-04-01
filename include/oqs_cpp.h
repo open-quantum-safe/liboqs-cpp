@@ -698,6 +698,19 @@ class Signature {
 }; // class Signature
 
 namespace internal {
+/**
+ * \class oqs::internal::Init
+ * \brief liboqs initialization
+ */
+class Init final : public internal::Singleton<const Init> {
+    friend class internal::Singleton<const Init>;
+    /**
+     * \brief Private default constructor
+     * \note Use oqs::internal::Init::get_instance() to create an instance
+     */
+    Init() { C::OQS_init(); }
+};
+static const Init& init_ = Init::get_instance(); ///< liboqs initialization
 // instantiate the KEMs and Sigs singletons (if ever needed)
 static const KEMs& kems_ =
     KEMs::get_instance(); ///< instantiates the KEMs singleton
