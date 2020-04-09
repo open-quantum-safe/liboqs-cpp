@@ -5,38 +5,43 @@ image: Visual Studio 2019
 platform: x64
 
 environment:
-    LIBOQS_INSTALL_PATH: C:\liboqs
-    LIBOQS_BUILD_DIR: C:\liboqs\build
-    LIBOQS_INCLUDE_DIR: C:\liboqs\build\include
-    LIBOQS_LIB_DIR: C:\liboqs\build\lib
-    LIBOQS_DLL_DIR: C:\liboqs\build\bin
+  LIBOQS_INSTALL_PATH: C:\liboqs
+  LIBOQS_BUILD_DIR: C:\liboqs\build
+  LIBOQS_INCLUDE_DIR: C:\liboqs\build\include
+  LIBOQS_LIB_DIR: C:\liboqs\build\lib
+  LIBOQS_DLL_DIR: C:\liboqs\build\bin
 
 before_build:
-    - cmd: |-
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-        set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%    
-        git clone https://github.com/open-quantum-safe/liboqs %LIBOQS_INSTALL_PATH%
-        mkdir %LIBOQS_BUILD_DIR%
-        cd %LIBOQS_BUILD_DIR%
-        cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=ON
-        ninja 1> nul
+  - cmd: |-
+      @echo on
+      set "PATH=C:\Python37;C:\Python37\Scripts;%LIBOQS_DLL_DIR%;%PATH%"
+      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"  
+      git clone https://github.com/open-quantum-safe/liboqs %LIBOQS_INSTALL_PATH%
+      mkdir %LIBOQS_BUILD_DIR%
+      cd %LIBOQS_BUILD_DIR%
+      cmake -DCMAKE_BUILD_TYPE=Optimized .. -G"Ninja" -DBUILD_SHARED_LIBS=ON
+      ninja 1> nul
 
-build:
-    project: VisualStudio/liboqs-cpp.sln
-    verbosity: minimal
-    parallel: true
+build_script:
+  - cmd: |-
+      cd %APPVEYOR_BUILD_FOLDER%
+      mkdir build
+      cd build
+      cmake -DLIBOQS_INCLUDE_DIR=%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=%LIBOQS_LIB_DIR% ..
+      msbuild -verbosity:minimal oqs_cpp.sln
+      %APPVEYOR_BUILD_FOLDER%\build\Debug\kem.exe
+      %APPVEYOR_BUILD_FOLDER%\build\Debug\rand.exe
+      %APPVEYOR_BUILD_FOLDER%\build\Debug\sig.exe
 
-configuration:
-    - Debug
+before_test:
+  - cmd: |-
+      cd %APPVEYOR_BUILD_FOLDER%\unit_tests
+      mkdir build
+      cd build
+      cmake -DLIBOQS_INCLUDE_DIR=%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=%LIBOQS_LIB_DIR% ..
+      msbuild -verbosity:minimal oqs_cpp_testing.sln
+        
 
 test_script:
-    - cmd: >-
-        set PATH=%LIBOQS_DLL_DIR%;%PATH%
-
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\kem
-
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\rand
-
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\sig
-
-        %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\unit_tests
+  - cmd: |-
+      %APPVEYOR_BUILD_FOLDER%\unit_tests\build\tests\Debug\oqs_cpp_testing.exe

@@ -203,7 +203,8 @@ class KeyEncapsulation {
                 throw MechanismNotSupportedError(alg_name);
         }
 
-        kem_.reset(C::OQS_KEM_new(alg_name.c_str()));
+        kem_.reset(C::OQS_KEM_new(alg_name.c_str()),
+                   [](C::OQS_KEM* p) { C::OQS_KEM_free(p); });
 
         alg_details_.name = kem_->method_name;
         alg_details_.version = kem_->alg_version;
@@ -231,7 +232,7 @@ class KeyEncapsulation {
      * zeroed
      * \param rhs oqs::KeyEncapsulation instance
      */
-    KeyEncapsulation(KeyEncapsulation&& rhs)
+    KeyEncapsulation(KeyEncapsulation&& rhs) noexcept
         : kem_{std::move(rhs.kem_)}, alg_details_{std::move(rhs.alg_details_)} {
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
@@ -246,7 +247,7 @@ class KeyEncapsulation {
      * \param rhs oqs::KeyEncapsulation instance
      * \return Reference to the current instance
      */
-    KeyEncapsulation& operator=(KeyEncapsulation&& rhs) {
+    KeyEncapsulation& operator=(KeyEncapsulation&& rhs) noexcept {
         kem_ = std::move(rhs.kem_);
         alg_details_ = std::move(rhs.alg_details_);
 
@@ -519,7 +520,8 @@ class Signature {
                 throw MechanismNotSupportedError(alg_name);
         }
 
-        sig_.reset(C::OQS_SIG_new(alg_name.c_str()));
+        sig_.reset(C::OQS_SIG_new(alg_name.c_str()),
+                   [](C::OQS_SIG* p) { C::OQS_SIG_free(p); });
 
         alg_details_.name = sig_->method_name;
         alg_details_.version = sig_->alg_version;
@@ -546,7 +548,7 @@ class Signature {
      * zeroed
      * \param rhs oqs::Signature instance
      */
-    Signature(Signature&& rhs)
+    Signature(Signature&& rhs) noexcept
         : sig_{std::move(rhs.sig_)}, alg_details_{std::move(rhs.alg_details_)} {
         // paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
@@ -561,7 +563,7 @@ class Signature {
      * \param rhs oqs::Signature instance
      * \return Reference to the current instance
      */
-    Signature& operator=(Signature&& rhs) {
+    Signature& operator=(Signature&& rhs) noexcept {
         sig_ = std::move(rhs.sig_);
         alg_details_ = std::move(rhs.alg_details_);
 

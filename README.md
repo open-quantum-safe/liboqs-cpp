@@ -8,7 +8,7 @@ liboqs-cpp: C++ bindings for liboqs
 
 **liboqs-cpp** offers a C++ wrapper for the master branch of [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library, which is a C library for quantum-resistant cryptographic algorithms.
 
-The wrapper is written in standard C++11, hence in the following it is assumed that you have access to a C++11 compliant complier. liboqs-cpp has been extensively tested on Linux, macOS and Windows systems. Continuous integration is provided via Travis CI and AppVeyor.
+The wrapper is written in standard C++11, hence in the following it is assumed that you have access to a C++11 compliant complier. liboqs-cpp has been extensively tested on Linux, macOS and Windows platforms. Continuous integration is provided via Travis CI and AppVeyor.
 
 ## Pre-requisites
 
@@ -26,7 +26,6 @@ and directories:
  - `examples/rand.cpp`: RNG example
  - `examples/sig.cpp`: signature example
  - `unit_tests`: unit tests written using Google Test (included)
- - `VisualStudio/liboqs-cpp.sln`: Visual Studio 2017 solution
 
 Usage
 -----
@@ -76,15 +75,9 @@ Building on Windows
 
 We provide CMake support for Visual Studio. We recommend using Visual Studio 2017 or later (preferably Visual Studio 2019). For comprehensive details about using CMake with Visual Studio please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019).
 
-In addition, a Visual Studio 2017 solution containing the examples from [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) as separate projects is provided in the [`VisualStudio`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/VisualStudio) directory. Building instructions:
+---
 
-- First, you must clone/download and build liboqs under Windows, see [liboqs Windows building instructions](https://github.com/open-quantum-safe/liboqs#windows) for more details.
-- Next, you must [set the environment variable](https://stackoverflow.com/a/32463213/3093378) `LIBOQS_INSTALL_PATH` to point to the location of liboqs, e.g. `C:\liboqs`, and `LIBOQS_INCLUDE_DIR` and `LIBOQS_LIB_DIR` to point to the location to the liboqs headers and compiled library, respectively.
-- Only after completing the steps above you may build the liboqs-cpp solution (or each individual projects within the solution).
-
-In case you get a "Missing Windows SDK" error, right-click on the solution name and choose "Retarget solution" to re-target the projects in the solution to your available Windows SDK.
-
-In case you compiled liboqs as a shared library, you need to add `oqs.dll` (usually produced in `bin` inside the build directory) to the system path, e.g. `set PATH=C:\liboqs\build\bin;%PATH%`.
+Note: in case you built `liboqs` as a shared library, add the directory that contains `oqs.dll` (e.g. `C:\Users\yourusername\Documents\GitHub\liboqs\build\bin`) to the `PATH` environment variable.
 
 Documentation
 -------------
