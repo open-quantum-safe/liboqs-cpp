@@ -7,41 +7,26 @@ platform: x64
 environment:
   LIBOQS_INSTALL_PATH: C:\liboqs
   LIBOQS_BUILD_DIR: C:\liboqs\build
-  LIBOQS_INCLUDE_DIR: C:\liboqs\build\include
-  LIBOQS_LIB_DIR: C:\liboqs\build\lib
   LIBOQS_DLL_DIR: C:\liboqs\build\bin
+  LIBOQS_INCLUDE_DIR: liboqs/build/include
+  LIBOQS_LIB_DIR: liboqs/build/lib
+  matrix:
+    - compiler: msvc2019
+    - compiler: msys2
 
-before_build:
+install:
   - cmd: |-
       @echo on
-      set "PATH=C:\Python37;C:\Python37\Scripts;%LIBOQS_DLL_DIR%;%PATH%"
-      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"  
+      set "PATH=%LIBOQS_DLL_DIR%;%PATH%"
+      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
       git clone https://github.com/open-quantum-safe/liboqs %LIBOQS_INSTALL_PATH%
       mkdir %LIBOQS_BUILD_DIR%
       cd %LIBOQS_BUILD_DIR%
-      cmake -DCMAKE_BUILD_TYPE=Optimized .. -G"Ninja" -DBUILD_SHARED_LIBS=ON
+      cmake .. -DCMAKE_BUILD_TYPE=Optimized -DBUILD_SHARED_LIBS=ON -G"Ninja"
       ninja 1> nul
 
 build_script:
-  - cmd: |-
-      cd %APPVEYOR_BUILD_FOLDER%
-      mkdir build
-      cd build
-      cmake -DLIBOQS_INCLUDE_DIR=%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=%LIBOQS_LIB_DIR% ..
-      msbuild -verbosity:minimal oqs_cpp.sln
-      %APPVEYOR_BUILD_FOLDER%\build\Debug\kem.exe
-      %APPVEYOR_BUILD_FOLDER%\build\Debug\rand.exe
-      %APPVEYOR_BUILD_FOLDER%\build\Debug\sig.exe
-
-before_test:
-  - cmd: |-
-      cd %APPVEYOR_BUILD_FOLDER%\unit_tests
-      mkdir build
-      cd build
-      cmake -DLIBOQS_INCLUDE_DIR=%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=%LIBOQS_LIB_DIR% ..
-      msbuild -verbosity:minimal oqs_cpp_testing.sln
-        
+  - cmd: '%APPVEYOR_BUILD_FOLDER%\.appveyor\appveyor_build.bat'
 
 test_script:
-  - cmd: |-
-      %APPVEYOR_BUILD_FOLDER%\unit_tests\build\tests\Debug\oqs_cpp_testing.exe
+  - cmd: '%APPVEYOR_BUILD_FOLDER%\.appveyor\appveyor_test.bat'

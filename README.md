@@ -47,7 +47,13 @@ The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp
 Building on POSIX (Linux/UNIX-like) platforms
 ---------------------------------------------
 
-First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#linuxmacos) with shared library support enabled (add `-DBUILD_SHARED_LIBS=ON` to the `cmake` command), followed (optionally) by a `sudo ninja install` to ensure that the compiled library is visible system-wide (by default it installs under `/usr/local/include` and `/usr/local/lib` on Linux/macOS).
+First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#linuxmacos) with shared library support enabled (add `-DBUILD_SHARED_LIBS=ON` to the `cmake` command), followed (optionally) by a `sudo ninja install` to ensure that the shared library is visible system-wide (by default it installs under `/usr/local/include` and `/usr/local/lib` on Linux/macOS). 
+
+You may need to set the `LD_LIBRARY_PATH` (`DYLD_LIBRARY_PATH` on macOS) environment variable to point to the path to liboqs' library directory, e.g.
+
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+assuming `liboqs.so.*` were installed in `/usr/local/lib` (true if you ran `sudo ninja install` after building liboqs).
 
 Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The wrapper contains
 a CMake build system for both examples and unit tests. To compile and run the examples, create a `build` directory inside the root directory of the project, change
@@ -73,11 +79,13 @@ The above commands build `tests/oqs_cpp_testing` suite of unit tests. Again you 
 Building on Windows
 -------------------
 
-We provide CMake support for Visual Studio. We recommend using Visual Studio 2017 or later (preferably Visual Studio 2019). For comprehensive details about using CMake with Visual Studio please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019).
+We provide CMake support for Visual Studio. We recommend using Visual Studio 2017 or later (preferably Visual Studio 2019). For comprehensive details about using CMake with Visual Studio please read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019). 
 
----
-
-Note: in case you built `liboqs` as a shared library, add the directory that contains `oqs.dll` (e.g. `C:\Users\yourusername\Documents\GitHub\liboqs\build\bin`) to the `PATH` environment variable.
+Ensure that the liboqs shared library `oqs.dll` is visible system-wide. Use the "Edit the system environment variables" Control Panel tool or type in a Command Prompt
+	
+	set PATH="%PATH%;C:\some\dir\liboqs\build\bin"
+	
+of course replacing the paths with the ones corresponding to your system.
 
 Documentation
 -------------
