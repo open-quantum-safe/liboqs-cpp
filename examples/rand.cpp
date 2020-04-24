@@ -20,7 +20,7 @@ int main() {
     entropy_seed[0] = 100;
     entropy_seed[20] = 200;
     entropy_seed[47] = 150;
-    oqs::rand::randombytes_nist_kat_init(entropy_seed);
+    oqs::rand::randombytes_nist_kat_init_256bit(entropy_seed);
     std::cout << std::setw(18) << std::left;
     std::cout << "NIST-KAT: " << oqs::rand::randombytes(32) << '\n';
 
