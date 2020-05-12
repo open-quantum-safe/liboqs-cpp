@@ -6,13 +6,13 @@ liboqs-cpp: C++ bindings for liboqs
 
 ---
 
-**liboqs-cpp** offers a C++ wrapper for the master branch of [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library, which is a C library for quantum-resistant cryptographic algorithms.
+**liboqs-cpp** offers a C++ wrapper for the [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/) C library, which is a C library for quantum-resistant cryptographic algorithms.
 
 The wrapper is written in standard C++11, hence in the following it is assumed that you have access to a C++11 compliant complier. liboqs-cpp has been extensively tested on Linux, macOS and Windows platforms. Continuous integration is provided via Travis CI and AppVeyor.
 
 ## Pre-requisites
 
-liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) C library; liboqs master branch must first be compiled as a Linux/macOS/Windows library (i.e. using `ninja install` with `-DBUILD_SHARED_LIBS=ON` during configuration), see the specific platform building instructions below.
+liboqs-cpp depends on the [liboqs](https://github.com/open-quantum-safe/liboqs) C library; liboqs must first be compiled as a Linux/macOS/Windows library (i.e. using `ninja install` with `-DBUILD_SHARED_LIBS=ON` during configuration), see the specific platform building instructions below.
 
 Contents
 --------
@@ -47,7 +47,7 @@ The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp
 Building on POSIX (Linux/UNIX-like) platforms
 ---------------------------------------------
 
-First, you must build the master branch of liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#linuxmacos) with shared library support enabled (add `-DBUILD_SHARED_LIBS=ON` to the `cmake` command), followed (optionally) by a `sudo ninja install` to ensure that the shared library is visible system-wide (by default it installs under `/usr/local/include` and `/usr/local/lib` on Linux/macOS). 
+First, you must build liboqs according to the [liboqs building instructions](https://github.com/open-quantum-safe/liboqs#linuxmacos) with shared library support enabled (add `-DBUILD_SHARED_LIBS=ON` to the `cmake` command), followed (optionally) by a `sudo ninja install` to ensure that the shared library is visible system-wide (by default it installs under `/usr/local/include` and `/usr/local/lib` on Linux/macOS). 
 
 You may need to set the `LD_LIBRARY_PATH` (`DYLD_LIBRARY_PATH` on macOS) environment variable to point to the path to liboqs' library directory, e.g.
 
