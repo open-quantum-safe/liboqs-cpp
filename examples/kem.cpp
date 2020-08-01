@@ -14,7 +14,7 @@ int main() {
 
     std::string kem_name = "DEFAULT";
     oqs::KeyEncapsulation client{kem_name};
-    std::cout << "\n\nKEM details: \n" << client.get_details();
+    std::cout << "\n\nKEM details:\n" << client.get_details();
 
     oqs::Timer<std::chrono::milliseconds> t;
     oqs::bytes client_public_key = client.generate_keypair();
