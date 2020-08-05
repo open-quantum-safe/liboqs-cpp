@@ -14,7 +14,7 @@
 // no_thread_KEM_patterns lists KEM patterns that have issues running in a
 // separate thread
 static std::vector<std::string> no_thread_KEM_patterns{"Classic-McEliece",
-                                                       "LEDAcryptKEM-LT52"};
+                                                       "HQC-256"};
 
 // used for thread-safe console output
 static std::mutex mu;
