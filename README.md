@@ -1,7 +1,7 @@
 liboqs-cpp: C++ bindings for liboqs
 ===================================
 
-[![Build status - Linux/macOS](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=master)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
+[![Build status - Linux/macOS](https://api.travis-ci.com/open-quantum-safe/liboqs-cpp.svg?branch=main)](https://travis-ci.com/open-quantum-safe/liboqs-cpp)
 [![Build status - Windows](https://ci.appveyor.com/api/projects/status/v7b5ner85txm8u77?svg=true)](https://ci.appveyor.com/project/vsoftco/liboqs-cpp)
 
 ---
@@ -42,7 +42,7 @@ Support for alternative RNGs is provided by the `include/rand/rand.h` header fil
 
 The wrapper also defines a high resolution timing class, `oqs::Timer<>`.
 
-The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/master/examples) directory are self-explanatory and provide more details about the wrapper's API.
+The examples in the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/examples) directory are self-explanatory and provide more details about the wrapper's API.
 
 Building on POSIX (Linux/UNIX-like) platforms
 ---------------------------------------------
@@ -90,7 +90,7 @@ of course replacing the paths with the ones corresponding to your system.
 Documentation
 -------------
 To generate the full official API documentation in both PDF and HTML formats run 
-[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
+[`doxygen`](http://www.doxygen.nl) on the [`Doxyfile`](https://github.com/open-quantum-safe/liboqs-cpp/blob/main/Doxyfile) file. The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be installed (`sudo apt-get install graphviz` in Ubuntu/Debian). Running `doxygen` will generate the 
 documentation directory `doc` containing both the HTML and LaTeX documentation.
 
 The HTML documentation file will be accessible by opening `doc/html/index.html` with the browser of your choice.
@@ -112,12 +112,12 @@ We believe that the NIST Post-Quantum Cryptography standardization project is cu
 
 We acknowledge that some parties may want to begin deploying post-quantum cryptography prior to the conclusion of the NIST standardization project. We strongly recommend that any attempts to do make use of so-called **hybrid cryptography**, in which post-quantum public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
 
-Just like liboqs, liboqs-cpp is provided "as is", without warranty of any kind. See [LICENSE](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/LICENSE) for the full disclaimer.
+Just like liboqs, liboqs-cpp is provided "as is", without warranty of any kind. See [LICENSE](https://github.com/open-quantum-safe/liboqs-cpp/blob/main/LICENSE) for the full disclaimer.
 
 License
 -------
 
-liboqs-cpp is licensed under the MIT License; see [LICENSE](https://github.com/open-quantum-safe/liboqs-cpp/blob/master/LICENSE) for details.
+liboqs-cpp is licensed under the MIT License; see [LICENSE](https://github.com/open-quantum-safe/liboqs-cpp/blob/main/LICENSE) for details.
 
 Team
 ----
