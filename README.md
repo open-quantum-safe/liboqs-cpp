@@ -62,19 +62,19 @@ directory to `build`, then type
 	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
 	make -j4
 
-The above commands build all examples in `examples`, i.e. `examples/kem` and `examples/sig`, assuming
+The above commands build all examples in `examples`, together with the unit tests suite, assuming
 the CMake build system is available on your platform. The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to the liboqs headers and compiled library, respectively. You may omit those flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local` (true if you ran `sudo ninja install` after building liboqs). You may replace the `-j4` flag with your
 processor's number of cores, e.g. use `-j8` if your system has 8 cores.
 To build only a specific example, e.g. `examples/kem`, specify the target as the argument of the `make` command, such as
 
 	make kem
 
-To compile and run the unit tests, first `cd unit_tests`, then create a `build` directory inside `unit_tests`, change directory to it, and finally type
+To run the unit tests, type
 
-	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
-	make -j4
-
-The above commands build `tests/oqs_cpp_testing` suite of unit tests. Again you may omit the CMake flags and simply type `cmake .. && make -j4` in case you installed liboqs in `/usr/local`.
+	make test # or ctest
+	
+after building the project. Use `GTEST_COLOR=1 ARGS="-V" make test` or 
+`GTEST_COLOR=1 ctest -V` for coloured verbose testing output.
 
 Building on Windows
 -------------------

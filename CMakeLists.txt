@@ -1,14 +1,9 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.10)
 project(oqs_cpp VERSION 0.4.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# enable all warnings for GNU gcc and Clang/AppleClang
-if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
-        STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
-endif ()
+enable_testing()
 
 # add all examples
 aux_source_directory(examples EXAMPLE_FILES)
@@ -58,6 +53,15 @@ if (NOT CMAKE_BUILD_TYPE)
             "Choose the type of build, options are: \
          None Debug Release MinSizeRel RelWithDebInfo."
             FORCE)
+endif ()
+
+#### Unit testing
+add_subdirectory(unit_tests/)
+
+# enable all warnings for GNU gcc and Clang/AppleClang
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+        STREQUAL "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
 endif ()
 
 # build all executables in ${EXAMPLE_FILES}

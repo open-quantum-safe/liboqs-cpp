@@ -7,11 +7,6 @@ IF %COMPILER%==msvc2019 (
     cd build
     cmake .. -DLIBOQS_INCLUDE_DIR="C:\%LIBOQS_INCLUDE_DIR%" -DLIBOQS_LIB_DIR="C:\%LIBOQS_LIB_DIR%"
     msbuild -verbosity:minimal oqs_cpp.sln
-    cd ../unit_tests
-    mkdir build
-    cd build
-    cmake .. -DLIBOQS_INCLUDE_DIR="C:\%LIBOQS_INCLUDE_DIR%" -DLIBOQS_LIB_DIR="C:\%LIBOQS_LIB_DIR%"
-    msbuild -verbosity:minimal oqs_cpp_testing.sln
     %APPVEYOR_BUILD_FOLDER%\build\Debug\kem.exe
     %APPVEYOR_BUILD_FOLDER%\build\Debug\rand.exe
     %APPVEYOR_BUILD_FOLDER%\build\Debug\sig.exe
@@ -22,10 +17,6 @@ IF %COMPILER%==msys2 (
     cd %APPVEYOR_BUILD_FOLDER%
     bash -lc 'ls /c/%LIBOQS_INCLUDE_DIR%'
     mkdir build
-    cd build
-    bash -lc "cmake ..  -DLIBOQS_INCLUDE_DIR=/c/%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=/c/%LIBOQS_LIB_DIR% -GNinja && ninja"
-    cd ../unit_tests 
-    mkdir build 
     cd build
     bash -lc "cmake ..  -DLIBOQS_INCLUDE_DIR=/c/%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=/c/%LIBOQS_LIB_DIR% -GNinja && ninja"
     %APPVEYOR_BUILD_FOLDER%\build\kem.exe
