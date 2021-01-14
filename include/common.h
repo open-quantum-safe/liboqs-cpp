@@ -46,7 +46,7 @@ https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
  * \class oqs::internal::Singleton
  * \brief Singleton class using CRTP pattern
  * \note Code from
- * https://github.com/vsoftco/qpp/blob/master/include/internal/classes/singleton.h
+ * https://github.com/softwareqinc/qpp/blob/main/include/internal/classes/singleton.hpp
  * \tparam T Class type of which instance will become a Singleton
  */
 template <typename T>

@@ -48,5 +48,4 @@ script:
   - ./sig
 
   # Run the unit tests
-  - make test
-  -
+  - make test ARGS='-V'

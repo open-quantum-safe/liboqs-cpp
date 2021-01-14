@@ -1,7 +1,7 @@
 @echo off
 IF %COMPILER%==msvc2019 (
-    ctest
+    ctest -V
 )
 IF %COMPILER%==msys2 (
-    ctest
+    ctest -V
 )
