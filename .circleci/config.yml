@@ -27,14 +27,16 @@ jobs:
             cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
       - run:
           name: Run the examples
-          command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build && ./kem &&
-            ./sig && ./rand
+          command: |-
+            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            - ./kem
+            - ./sig
+            - ./rand
       - run:
           name: Run the unit tests
-          command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build &&
-            make test ARGS='-V'
+          command: |-
+            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            - make test ARGS='-V'
 
   macOS:
     description: A template for running liboqs-cpp tests on macOS
@@ -57,14 +59,16 @@ jobs:
             ninja install
       - run:
           name: Run the examples
-          command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build && ./kem && ./sig
-            && ./rand
+          command: |-
+            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            - ./kem
+            - ./sig
+            - ./rand
       - run:
           name: Run the unit tests
-          command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build &&
-            make test ARGS='-V'
+          command: |-
+            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            - make test ARGS='-V'
 
 workflows:
   build:
