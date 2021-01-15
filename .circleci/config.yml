@@ -1,0 +1,77 @@
+version: 2.1
+
+jobs:
+  ubuntu_bionic:
+    description: A template for building and testing liboqs-cpp on Ubuntu Linux
+    docker:
+      - image: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
+    steps:
+      - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
+      - run:
+          name: Authenticate to Docker
+          command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
+      - run:
+          name: Build and install liboqs
+          command: |
+            git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs &&
+            cd liboqs && mkdir build && cd build &&
+            cmake .. -GNinja -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON &&
+            ninja install
+      - run:
+          name: Build the examples and the unit tests
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && mkdir build && cd build &&
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
+      - run:
+          name: Run the examples
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build && ./kem && ./sig
+            && ./rand
+      -run:
+        name: Run the unit tests
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build &&
+            make test ARGS='-V
+
+  macOS:
+    description: A template for running liboqs-cpp tests on macOS
+    macos:
+      xcode: "11.3.0"
+    steps:
+      - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
+      - run:
+          name: Install dependencies
+          command: |
+            brew update && brew install gcc6 ninja cmake &&
+            export CXX="g++-6" CC="gcc-6" &&
+            sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
+      - run:
+          name: Build and install liboqs
+          command: |
+            git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs &&
+            cd liboqs && mkdir build && cd build &&
+            cmake .. -GNinja -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON &&
+            ninja install
+      - run:
+          name: Run the examples
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build && ./kem && ./sig
+            && ./rand
+      -run:
+        name: Run the unit tests
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build &&
+            make test ARGS='-V
+
+workflows:
+  build:
+    jobs:
+      - ubuntu_bionic:
+          name: ubuntu-bionic
+          context: openquantumsafe
+      - macOS:
+          name: macOS-base
+          context: openquantumsafe
