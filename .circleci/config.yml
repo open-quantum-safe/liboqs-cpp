@@ -16,27 +16,27 @@ jobs:
       - run:
           name: Build and install liboqs
           command: |
-            git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs &&
-            cd liboqs && mkdir build && cd build &&
-            cmake .. -GNinja -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON &&
+            git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs
+            cd liboqs && mkdir build && cd build
+            cmake .. -GNinja -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
             ninja install
       - run:
           name: Build the examples and the unit tests
           command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && mkdir build && cd build &&
+            export LD_LIBRARY_PATH=/usr/local/lib && mkdir build && cd build
             cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
       - run:
           name: Run the examples
-          command: |-
-            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
-            - ./kem
-            - ./sig
-            - ./rand
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            ./kem
+            ./sig
+            ./rand
       - run:
           name: Run the unit tests
-          command: |-
-            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
-            - make test ARGS='-V'
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            make test ARGS='-V'
 
   macOS:
     description: A template for running liboqs-cpp tests on macOS
@@ -47,28 +47,27 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            brew update && brew install gcc6 ninja cmake &&
-            export CXX="g++-6" CC="gcc-6" &&
+            brew update && brew install ninja cmake
             sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
       - run:
           name: Build and install liboqs
           command: |
-            git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs &&
-            cd liboqs && mkdir build && cd build &&
-            cmake .. -GNinja -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON &&
+            git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs
+            cd liboqs && mkdir build && cd build
+            cmake .. -GNinja -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
             ninja install
       - run:
           name: Run the examples
-          command: |-
-            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
-            - ./kem
-            - ./sig
-            - ./rand
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            ./kem
+            ./sig
+            ./rand
       - run:
           name: Run the unit tests
-          command: |-
-            - export LD_LIBRARY_PATH=/usr/local/lib && cd build
-            - make test ARGS='-V'
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            make test ARGS='-V'
 
 workflows:
   build:
