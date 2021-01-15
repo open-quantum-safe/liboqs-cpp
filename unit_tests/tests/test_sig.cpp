@@ -12,8 +12,8 @@
 
 // no_thread_sig_patterns lists sig patterns that have issues running in a
 // separate thread
-static std::vector<std::string> no_thread_sig_patterns{"Rainbow-IIIc",
-                                                       "Rainbow-Vc"};
+static std::vector<std::string> no_thread_sig_patterns{"Rainbow-III",
+                                                       "Rainbow-V"};
 
 // used for thread-safe console output
 static std::mutex mu;
