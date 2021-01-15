@@ -30,8 +30,8 @@ jobs:
           command: |
             export LD_LIBRARY_PATH=/usr/local/lib && cd build && ./kem &&
             ./sig && ./rand
-      -run:
-        name: Run the unit tests
+      - run:
+          name: Run the unit tests
           command: |
             export LD_LIBRARY_PATH=/usr/local/lib && cd build &&
             make test ARGS='-V
