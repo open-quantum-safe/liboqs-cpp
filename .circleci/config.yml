@@ -12,7 +12,8 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Authenticate to Docker
-          command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
+          command: |
+            echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
       - run:
           name: Build and install liboqs
           command: |
@@ -51,7 +52,6 @@ jobs:
           name: Install dependencies
           command: |
             brew update && brew install ninja cmake
-            sudo softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.1"
       - run:
           name: Build and install liboqs
           command: |
@@ -59,6 +59,12 @@ jobs:
             cd liboqs && mkdir build && cd build
             cmake .. -GNinja -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
             ninja install
+      - run:
+          name: Build the examples and the unit tests
+          command: |
+            export LD_LIBRARY_PATH=/usr/local/lib
+            mkdir build && cd build
+            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
       - run:
           name: Run the examples
           command: |
