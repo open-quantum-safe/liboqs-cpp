@@ -34,7 +34,7 @@ jobs:
           name: Run the unit tests
           command: |
             export LD_LIBRARY_PATH=/usr/local/lib && cd build &&
-            make test ARGS='-V
+            make test ARGS='-V'
 
   macOS:
     description: A template for running liboqs-cpp tests on macOS
@@ -64,7 +64,7 @@ jobs:
           name: Run the unit tests
           command: |
             export LD_LIBRARY_PATH=/usr/local/lib && cd build &&
-            make test ARGS='-V
+            make test ARGS='-V'
 
 workflows:
   build:
