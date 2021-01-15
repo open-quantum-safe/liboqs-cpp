@@ -23,19 +23,22 @@ jobs:
       - run:
           name: Build the examples and the unit tests
           command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && mkdir build && cd build
+            export LD_LIBRARY_PATH=/usr/local/lib
+            mkdir build && cd build
             cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j4
       - run:
           name: Run the examples
           command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            export LD_LIBRARY_PATH=/usr/local/lib
+            cd build
             ./kem
             ./sig
             ./rand
       - run:
           name: Run the unit tests
           command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            export LD_LIBRARY_PATH=/usr/local/lib
+            cd build
             make test ARGS='-V'
 
   macOS:
@@ -59,14 +62,16 @@ jobs:
       - run:
           name: Run the examples
           command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            export LD_LIBRARY_PATH=/usr/local/lib
+            cd build
             ./kem
             ./sig
             ./rand
       - run:
           name: Run the unit tests
           command: |
-            export LD_LIBRARY_PATH=/usr/local/lib && cd build
+            export LD_LIBRARY_PATH=/usr/local/lib
+            cd build
             make test ARGS='-V'
 
 workflows:
