@@ -18,7 +18,7 @@ IF %COMPILER%==msys2 (
     bash -lc 'ls /c/%LIBOQS_INCLUDE_DIR%'
     mkdir build
     cd build
-    bash -lc "cmake ..  -DLIBOQS_INCLUDE_DIR=/c/%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=/c/%LIBOQS_LIB_DIR% -GNinja && ninja"
+    bash -lc "cmake .. -DLIBOQS_INCLUDE_DIR=/c/%LIBOQS_INCLUDE_DIR% -DLIBOQS_LIB_DIR=/c/%LIBOQS_LIB_DIR% -GNinja && ninja"
     %APPVEYOR_BUILD_FOLDER%\build\kem.exe
     %APPVEYOR_BUILD_FOLDER%\build\rand.exe
     %APPVEYOR_BUILD_FOLDER%\build\sig.exe
