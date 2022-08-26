@@ -9,6 +9,8 @@
 
 int main() {
     std::cout << std::boolalpha;
+    std::cout << "liboqs version: " << oqs::oqs_version() << '\n';
+    std::cout << "liboqs-cpp version: " << oqs::oqs_cpp_version() << '\n';
     std::cout << "Enabled signatures:\n" << oqs::Sigs::get_enabled_sigs();
 
     oqs::bytes message = "This is the message to sign"_bytes;

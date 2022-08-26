@@ -6,7 +6,7 @@ if (MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif ()
 
-add_subdirectory(lib/googletest-release-1.10.0)
+add_subdirectory(lib/googletest-release-1.12.1)
 
 aux_source_directory(tests TEST_FILES)
 

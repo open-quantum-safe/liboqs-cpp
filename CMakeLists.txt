@@ -1,21 +1,26 @@
 cmake_minimum_required(VERSION 3.10)
-project(oqs_cpp VERSION 0.7.1 LANGUAGES CXX)
+set(OQS_CPP_VERSION_NUM 0.7.2)
+set(OQS_CPP_VERSION_STR "${OQS_CPP_VERSION_NUM}")
+project(oqs_cpp VERSION ${OQS_CPP_VERSION_NUM} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
-# add all examples
+# liboqs-cpp version number
+add_definitions(-DOQS_CPP_VERSION="${OQS_CPP_VERSION_STR}")
+
+# Add all examples
 aux_source_directory(examples EXAMPLE_FILES)
 
-# path to liboqs include and lib, modify as needed
+# Path to liboqs include and lib, modify as needed
 if (NOT WIN32)
     set(LIBOQS_INCLUDE_DIR "/usr/local/include" CACHE PATH
             "Path to liboqs include directory")
     set(LIBOQS_LIB_DIR "/usr/local/lib" CACHE PATH
             "Path to liboqs lib directory")
 else ()
-    # increase the stack size to 8MB on Windows
+    # Increase the stack size to 8MB on Windows
     if (MSVC)
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:8388608")
     elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
@@ -47,7 +52,7 @@ include_directories("include")
 include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 link_directories("${LIBOQS_LIB_DIR}")
 
-# default build type
+# Default build type
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING
             "Choose the type of build, options are: \
@@ -58,13 +63,13 @@ endif ()
 #### Unit testing
 add_subdirectory(unit_tests/)
 
-# enable all warnings for GNU gcc and Clang/AppleClang
+# Enable all warnings for GNU gcc and Clang/AppleClang
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
         STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
 endif ()
 
-# build all executables in ${EXAMPLE_FILES}
+# Build all executables in ${EXAMPLE_FILES}
 foreach (FILE ${EXAMPLE_FILES})
     get_filename_component(TARGET_NAME ${FILE} NAME_WE)
     add_executable(${TARGET_NAME} ${FILE})

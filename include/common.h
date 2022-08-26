@@ -27,6 +27,18 @@ using bytes = std::vector<byte>;  ///< vector of bytes (unsigned)
 using OQS_STATUS = C::OQS_STATUS; ///< bring OQS_STATUS into the oqs namespace
 
 /**
+ * \brief liboqs version string
+ * \return liboqs version string
+ */
+inline std::string oqs_version() { return oqs::C::OQS_version(); }
+
+/**
+ * \brief liboqs-cpp version string
+ * \return liboqs-cpp version string
+ */
+inline std::string oqs_cpp_version() { return OQS_CPP_VERSION; }
+
+/**
  * \brief Sets to zero the content of \a v by invoking the liboqs
  * OQS_MEM_cleanse() function. Use it to clean "hot" memory areas, such as
  * secret keys etc.

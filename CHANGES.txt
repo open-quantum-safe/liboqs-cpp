@@ -1,3 +1,10 @@
+Version 0.7.2 - September 1, 2022
+    - Added library version retrieval functions
+          std::string oqs::oqs_version()
+          std::string oqs::oqs_cpp_version()
+    - Bumped GoogleTest version to 1.12.1
+          https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850
+
 Version 0.7.1 - January 5, 2022
     - Release numbering updated to match liboqs
     - Integrated the unit tests with the main project, so now the unit tests

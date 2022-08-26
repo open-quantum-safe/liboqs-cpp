@@ -710,7 +710,16 @@ class Init final : public internal::Singleton<const Init> {
      * \brief Private default constructor
      * \note Use oqs::internal::Init::get_instance() to create an instance
      */
-    Init() { C::OQS_init(); }
+    Init() {
+        C::OQS_init();
+        std::string oqs_ver = oqs_version();
+        std::string oqs_cpp_ver = oqs_cpp_version();
+        if (oqs_ver != oqs_cpp_ver) {
+            std::cerr << "Warning! liboqs version " << oqs_ver
+                      << " differs from liboqs-python version " << oqs_cpp_ver
+                      << std::endl;
+        }
+    }
 };
 static const Init& init_ = Init::get_instance(); ///< liboqs initialization
 // instantiate the KEMs and Sigs singletons (if ever needed)
