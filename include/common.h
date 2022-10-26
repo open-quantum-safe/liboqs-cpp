@@ -13,6 +13,7 @@
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace oqs {
@@ -95,8 +96,9 @@ class Singleton {
  */
 class HexChop {
     bytes v_; ///< vector of byes
-    std::size_t start_,
-        end_; ///< number of hex bytes taken from the start and from the end
+    std::size_t from_start_,
+        from_end_; ///< number of hex bytes taken from the start and from the
+                   ///< end
     /**
      * \brief std::ostream manipulator
      * \param os Output stream
@@ -140,12 +142,13 @@ class HexChop {
     /**
      * \brief Constructs an instance of oqs::internal::HexChop
      * \param v Vector of bytes
-     * \param start Number of hex characters displayed from the beginning of
-     * the vector
-     * \param end  Number of hex characters displayed from the end of the vector
+     * \param from_start Number of hex characters displayed from the beginning
+     * of the vector
+     * \param from_end  Number of hex characters displayed from
+     * the from_end of the vector
      */
-    explicit HexChop(const oqs::bytes& v, std::size_t start, std::size_t end)
-        : v_{v}, start_{start}, end_{end} {}
+    explicit HexChop(oqs::bytes v, std::size_t from_start, std::size_t from_end)
+        : v_{std::move(v)}, from_start_{from_start}, from_end_{from_end} {}
 
     /**
      * \brief std::ostream extraction operator for oqs::internal::HexChop
@@ -155,11 +158,11 @@ class HexChop {
      */
     friend std::ostream& operator<<(std::ostream& os, const HexChop& rhs) {
 
-        bool is_short = rhs.start_ + rhs.end_ >= rhs.v_.size();
+        bool is_short = rhs.from_start_ + rhs.from_end_ >= rhs.v_.size();
         if (is_short)
             rhs.manipulate_ostream_(os, rhs.v_.size(), 0, true);
         else
-            rhs.manipulate_ostream_(os, rhs.start_, rhs.end_, false);
+            rhs.manipulate_ostream_(os, rhs.from_start_, rhs.from_end_, false);
 
         return os;
     }
@@ -255,14 +258,15 @@ class Timer {
 /**
  * \brief Constructs an instance of oqs::internal::HexChop
  * \param v Vector of bytes
- * \param start Number of hex characters displayed from the beginning of
+ * \param from_start Number of hex characters displayed from the beginning of
  * the vector
- * \param end  Number of hex characters displayed from the end of the vector
+ * \param from_end  Number of hex characters displayed from the from_end of the
+ * vector
  * \return Instance of oqs::internal::HexChop
  */
-inline internal::HexChop hex_chop(const bytes& v, std::size_t start = 8,
-                                  std::size_t end = 8) {
-    return internal::HexChop(v, start, end);
+inline internal::HexChop hex_chop(const bytes& v, std::size_t from_start = 8,
+                                  std::size_t from_end = 8) {
+    return internal::HexChop{v, from_start, from_end};
 }
 } // namespace oqs
 
@@ -284,7 +288,7 @@ inline std::ostream& operator<<(std::ostream& os, const oqs::bytes& rhs) {
  */
 inline std::ostream& operator<<(std::ostream& os,
                                 const std::vector<std::string>& rhs) {
-    std::string sep = "";
+    std::string sep;
     for (auto&& elem : rhs) {
         os << sep << elem;
         sep = " ";

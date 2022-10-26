@@ -192,8 +192,8 @@ class KeyEncapsulation {
      * \param secret_key Secret key (optional)
      */
     explicit KeyEncapsulation(const std::string& alg_name,
-                              const bytes& secret_key = {})
-        : secret_key_{secret_key} {
+                              bytes secret_key = {})
+        : secret_key_{std::move(secret_key)} {
         // KEM not enabled
         if (!KEMs::is_KEM_enabled(alg_name)) {
             // perhaps it's supported
@@ -509,8 +509,8 @@ class Signature {
      * \param secret_key Secret key (optional)
      */
     explicit Signature(const std::string& alg_name,
-                       const bytes& secret_key = {})
-        : secret_key_{secret_key} {
+                       bytes  secret_key = {})
+        : secret_key_{std::move(secret_key)} {
         // signature not enabled
         if (!Sigs::is_sig_enabled(alg_name)) {
             // perhaps it's supported
@@ -665,7 +665,7 @@ class Signature {
                                            message.size(), signature.data(),
                                            signature.size(), public_key.data());
 
-        return rv_ == OQS_STATUS::OQS_SUCCESS ? true : false;
+        return rv_ == OQS_STATUS::OQS_SUCCESS;
     }
 
     /**
