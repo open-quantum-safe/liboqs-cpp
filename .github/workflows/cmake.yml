@@ -1,4 +1,4 @@
-name: Go
+name: GitHub actions
 
 on:
   push:
@@ -8,8 +8,6 @@ on:
 
 env:
   LD_LIBRARY_PATH: /usr/local/lib
-  WIN_PKG_CONFIG_PATH: C:/Strawberry/c/lib/pkgconfig
-
 
 jobs:
   build:
