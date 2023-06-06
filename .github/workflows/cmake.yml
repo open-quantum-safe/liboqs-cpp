@@ -29,17 +29,20 @@ jobs:
           sudo cmake --build liboqs/build --parallel 4 --target install
 
       - name: Build the examples and unit tests POSIX
+        if: matrix.os != 'windows-latest'
         run: |
           cmake -B build
           cmake --build build --parallel 4
 
       - name: Run examples POSIX
+        if: matrix.os != 'windows-latest'
         run: |
           ./build/kem
           ./build/sig
           ./build/rand
 
       - name: Run unit tests POSIX
+        if: matrix.os != 'windows-latest'
         run: GTEST_COLOR=1 ctest -V --test-dir build
 
       - name: Install liboqs Windows
@@ -51,6 +54,8 @@ jobs:
           cmake --build liboqs\build --parallel 4 --target INSTALL
 
       - name: Build examples and unit tests Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
         run: |
           cmake -B build
           cmake --build build --parallel 4
