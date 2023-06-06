@@ -1,0 +1,52 @@
+name: Go
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+env:
+  LD_LIBRARY_PATH: /usr/local/lib
+  WIN_PKG_CONFIG_PATH: C:/Strawberry/c/lib/pkgconfig
+
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install liboqs
+        shell: bash
+        run: |
+          git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs
+          cmake -S liboqs -B liboqs/build -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake --build liboqs/build --parallel 4 --target INSTALL
+          else
+            sudo cmake --build liboqs/build --parallel 4 --target install
+          fi
+
+      - name: Configure pkgconfig (Windows only)
+        if: matrix.os == 'windows-latest'
+        run: |
+          copy ./.config/liboqs.pc.win64 ${{env.WIN_PKG_CONFIG_PATH}}/liboqs.pc 
+
+      - name: Build the examples and the unit tests
+        run: |
+          cmake -B build 
+          cmake --build build --parallel 4
+
+      - name: Run the examples
+        run: |
+          ./build/kem
+          ./build/sig
+          ./build/rand
+
+      - name: Run the unit tests
+        run: GTEST_COLOR=1 ctest -V --test-dir build
