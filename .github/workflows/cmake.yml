@@ -50,7 +50,7 @@ jobs:
         run: |
           git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs
           cmake -S liboqs -B liboqs\build -DCMAKE_INSTALL_PREFIX=${{env.WIN_LIBOQS_INSTALL_PATH}} -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
-          cmake --build liboqs\build --parallel 4 --target INSTALL
+          cmake --build liboqs\build --parallel 4 --target install
 
       - name: Build examples and unit tests Windows
         if: matrix.os == 'windows-latest'
@@ -65,12 +65,11 @@ jobs:
         shell: cmd
         run: |
           set "PATH=${{env.WIN_LIBOQS_INSTALL_PATH}}\bin;%PATH%"
-          .\build\kem.exe
+          .\build\Debug\kem.exe
           echo.
-          .\build\sig.exe
+          .\build\Debug\sig.exe
           echo.
-          .\build\rand.exe
-          echo.
+          .\build\Debug\rand.exe
 
       - name: Run unit tests Windows
         shell: cmd
