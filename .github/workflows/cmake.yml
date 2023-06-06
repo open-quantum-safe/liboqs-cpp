@@ -8,6 +8,8 @@ on:
 
 env:
   LD_LIBRARY_PATH: /usr/local/lib
+  WIN_LIBOQS_INSTALL_PATH: C:\liboqs
+  WIN_LIBOQS_DLL_DIR: C:\liboqs\bin
 
 jobs:
   build:
@@ -19,32 +21,55 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install liboqs
-        shell: bash
+      - name: Install liboqs POSIX
+        if: matrix.os != 'windows-latest'
         run: |
           git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs
           cmake -S liboqs -B liboqs/build -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake --build liboqs/build --parallel 4 --target INSTALL
-          else
-            sudo cmake --build liboqs/build --parallel 4 --target install
-          fi
+          sudo cmake --build liboqs/build --parallel 4 --target install
 
-      - name: Configure pkgconfig (Windows only)
-        if: matrix.os == 'windows-latest'
+      - name: Build the examples and unit tests POSIX
         run: |
-          copy ./.config/liboqs.pc.win64 ${{env.WIN_PKG_CONFIG_PATH}}/liboqs.pc 
-
-      - name: Build the examples and the unit tests
-        run: |
-          cmake -B build 
+          cmake -B build
           cmake --build build --parallel 4
 
-      - name: Run the examples
+      - name: Run examples POSIX
         run: |
           ./build/kem
           ./build/sig
           ./build/rand
 
-      - name: Run the unit tests
+      - name: Run unit tests POSIX
         run: GTEST_COLOR=1 ctest -V --test-dir build
+
+      - name: Install liboqs Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          git clone --branch main --single-branch --depth 1 https://github.com/open-quantum-safe/liboqs
+          cmake -S liboqs -B liboqs\build -DCMAKE_INSTALL_PREFIX=${{env.WIN_LIBOQS_INSTALL_PATH}} -DBUILD_SHARED_LIBS=ON -DOQS_BUILD_ONLY_LIB=ON
+          cmake --build liboqs\build --parallel 4 --target INSTALL
+
+      - name: Build examples and unit tests Windows
+        run: |
+          cmake -B build
+          cmake --build build --parallel 4
+
+      - name: Run examples Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          set "PATH=${{env.WIN_LIBOQS_DLL_DIR}};%PATH%"
+          .\build\kem.exe
+          echo.
+          .\build\sig.exe
+          echo.
+          .\build\rand.exe
+          echo.
+
+      - name: Run unit tests Windows
+        shell: cmd
+        if: matrix.os == 'windows-latest'
+        run: |
+          set "PATH=${{env.WIN_LIBOQS_DLL_DIR}};%PATH%"
+          run: GTEST_COLOR=1 ctest -V --test-dir build
