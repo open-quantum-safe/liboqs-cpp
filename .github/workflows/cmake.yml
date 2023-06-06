@@ -9,7 +9,6 @@ on:
 env:
   LD_LIBRARY_PATH: /usr/local/lib
   WIN_LIBOQS_INSTALL_PATH: C:\liboqs
-  WIN_LIBOQS_DLL_DIR: C:\liboqs\bin
 
 jobs:
   build:
@@ -57,14 +56,14 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
-          cmake -B build
+          cmake -B build -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include
           cmake --build build --parallel 4
 
       - name: Run examples Windows
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
-          set "PATH=${{env.WIN_LIBOQS_DLL_DIR}};%PATH%"
+          set "PATH=${{env.WIN_LIBOQS_INSTALL_PATH}}\bin;%PATH%"
           .\build\kem.exe
           echo.
           .\build\sig.exe
@@ -76,5 +75,5 @@ jobs:
         shell: cmd
         if: matrix.os == 'windows-latest'
         run: |
-          set "PATH=${{env.WIN_LIBOQS_DLL_DIR}};%PATH%"
+          set "PATH=${{env.WIN_LIBOQS_INSTALL_PATH}}\bin;%PATH%"
           run: GTEST_COLOR=1 ctest -V --test-dir build
