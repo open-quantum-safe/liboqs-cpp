@@ -76,4 +76,5 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           set "PATH=${{env.WIN_LIBOQS_INSTALL_PATH}}\bin;%PATH%"
-          GTEST_COLOR=1 ctest -V --test-dir build
+          set GTEST_COLOR=1 
+          ctest -V --test-dir build
