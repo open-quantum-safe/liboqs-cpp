@@ -508,8 +508,7 @@ class Signature {
      * \param alg_name Cryptographic algorithm name
      * \param secret_key Secret key (optional)
      */
-    explicit Signature(const std::string& alg_name,
-                       bytes  secret_key = {})
+    explicit Signature(const std::string& alg_name, bytes secret_key = {})
         : secret_key_{std::move(secret_key)} {
         // signature not enabled
         if (!Sigs::is_sig_enabled(alg_name)) {
