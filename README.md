@@ -1,8 +1,7 @@
 liboqs-cpp: C++ bindings for liboqs
 ===================================
 
-[![Build status - CircleCI Linux/macOS](https://circleci.com/gh/open-quantum-safe/liboqs-cpp.svg?style=svg)](https://circleci.com/gh/open-quantum-safe/liboqs-cpp)
-[![Build status - Windows](https://ci.appveyor.com/api/projects/status/v7b5ner85txm8u77?svg=true)](https://ci.appveyor.com/project/vsoftco/liboqs-cpp)
+[![GitHub actions](https://github.com/open-quantum-safe/liboqs-cpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/open-quantum-safe/liboqs-cpp/actions)
 
 ---
 
@@ -86,40 +85,39 @@ ran `sudo ninja install` after building liboqs).
 
 Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The
 wrapper contains a CMake build system for both examples and unit tests. To
-compile and run the examples, create a `build` directory inside the root
-directory of the project, change directory to `build`, then type
+compile and run the examples, execute from the project's root directory
 
-	cmake .. -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
-	make -j4
+```bash
+cmake -B build -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
+cmake --build build --parallel 4
+```
 
 The above commands build all examples in `examples`, together with the unit
 tests suite, assuming the CMake build system is available on your platform.
 The `-DLIBOQS_INCLUDE_DIR` and `-DLIBOQS_LIB_DIR` flags specify the location to
 the liboqs headers and compiled library, respectively. You may omit those flags
-and simply type `cmake .. && make -j4` in case you installed liboqs
-in `/usr/local` (true if you ran `sudo ninja install` after building liboqs).
-You may replace the `-j4` flag with your processor's number of cores, e.g.
-use `-j8` if your system has 8 cores. To build only a specific example,
-e.g. `examples/kem`, specify the target as the argument of the `make` command,
+in case you installed liboqs in `/usr/local` (true if you
+ran `sudo ninja install` after building liboqs). You may replace
+the `--parallel 4` flag with your processor's number of cores, e.g.
+use `--parallel 8` if your system has 8 cores. To build only a specific example,
+e.g. `examples/kem`, specify the target as the argument of the `cmake` command,
 such as
 
-	make kem
+```bash
+cmake --build build --target kem
+```
 
-To run the unit tests, type
+To run the unit tests, execute from the root's project
 
-	make test # or ctest 
+```bash
+	ctest --test-dir build
+```
 
-after building the project. Use `GTEST_COLOR=1 ARGS="-V" make test` or
-`GTEST_COLOR=1 ctest -V` for coloured verbose testing output.
+after building the project. Use `GTEST_COLOR=1 ctest -V --test-dir build` for
+coloured verbose testing output.
 
 Building on Windows
 -------------------
-
-We provide CMake support for Visual Studio. We recommend using Visual Studio
-2017 or later (preferably Visual Studio 2019). For comprehensive details about
-using CMake with Visual Studio please
-read [this page](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019)
-.
 
 Ensure that the liboqs shared library `oqs.dll` is visible system-wide. Use
 the "Edit the system environment variables" Control Panel tool or type in a
@@ -128,6 +126,8 @@ Command Prompt
 	set PATH="%PATH%;C:\some\dir\liboqs\build\bin"
 
 of course replacing the paths with the ones corresponding to your system.
+
+Then follow the same building instructions as for POSIX systems.
 
 Documentation
 -------------

@@ -43,7 +43,7 @@ endif ()
 if (LIBOQS_LIB_DIR STREQUAL "")
     message(FATAL_ERROR "Please specify the path to the liboqs lib directory\
     by setting the LIBOQS_LIB_DIR cmake flag, i.e.
-    cmake -DLIBOQS_LIB_DIR=/path/to/liboqs/include")
+    cmake -DLIBOQS_LIB_DIR=/path/to/liboqs/lib")
 elseif (NOT IS_DIRECTORY ${LIBOQS_LIB_DIR})
     message(FATAL_ERROR "Invalid path to the liboqs lib directory")
 endif ()
