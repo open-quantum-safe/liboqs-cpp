@@ -36,8 +36,10 @@ jobs:
       - name: Run examples POSIX
         if: matrix.os != 'windows-latest'
         run: |
-          ./build/kem
+          ./build/kem 
+          echo
           ./build/sig
+          echo
           ./build/rand
 
       - name: Run unit tests POSIX
