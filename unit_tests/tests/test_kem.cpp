@@ -8,8 +8,8 @@
 
 #include <gtest/gtest.h>
 
-#include "oqs_cpp.h"
-#include "rand/rand.h"
+#include "oqs_cpp.hpp"
+#include "rand/rand.hpp"
 
 // no_thread_KEM_patterns lists KEM patterns that have issues running in a
 // separate thread

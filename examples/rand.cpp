@@ -5,7 +5,7 @@
 #include <iostream>
 
 // RNG support
-#include "rand/rand.h"
+#include "rand/rand.hpp"
 
 // CustomRNG provides a (trivial) custom random number generator; the memory is
 // provided by the caller, i.e. oqs::rand::randombytes()

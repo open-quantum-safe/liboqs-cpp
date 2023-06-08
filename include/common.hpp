@@ -3,8 +3,8 @@
  * \brief Type definitions and utility functions
  */
 
-#ifndef COMMON_H_
-#define COMMON_H_
+#ifndef COMMON_HPP_
+#define COMMON_HPP_
 
 #include <chrono>
 #include <cstdint>
@@ -315,4 +315,4 @@ inline oqs::bytes operator""_bytes(const char* c_str, std::size_t length) {
 }
 } // namespace oqs_literals
 
-#endif // COMMON_H_
+#endif // COMMON_HPP_

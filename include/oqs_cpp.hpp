@@ -3,8 +3,8 @@
  * \brief Main header file for the liboqs C++ wrapper
  */
 
-#ifndef OQS_CPP_H_
-#define OQS_CPP_H_
+#ifndef OQS_CPP_HPP_
+#define OQS_CPP_HPP_
 
 #include <algorithm>
 #include <cstdlib>
@@ -15,7 +15,7 @@
 #include <utility>
 #include <vector>
 
-#include "common.h"
+#include "common.hpp"
 
 /**
  * \namespace oqs
@@ -729,4 +729,4 @@ static const Sigs& sigs_ =
 } // namespace internal
 } // namespace oqs
 
-#endif // OQS_CPP_H_
+#endif // OQS_CPP_HPP_
