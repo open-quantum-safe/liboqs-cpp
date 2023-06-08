@@ -31,9 +31,5 @@ on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.8.0.
 
 ## What's New
 
-This is the 11th release of liboqs-cpp.
-
-This is an incremental minor change release.
-
-For a list of changes
+This is the 11th release of liboqs-cpp. For a list of changes
 see [CHANGES.txt](https://github.com/open-quantum-safe/liboqs-cpp/blob/main/CHANGES.txt).
