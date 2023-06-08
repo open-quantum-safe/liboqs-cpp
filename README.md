@@ -238,7 +238,7 @@ by [Douglas Stebila](https://www.douglas.stebila.ca/research/)
 and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University
 of Waterloo.
 
-liboqs-cpp was developed by [Vlad Gheorghiu](http://vsoftco.github.io) at
+liboqs-cpp was developed by [Vlad Gheorghiu](https://vsoftco.github.io) at
 softwareQ Inc. and University of Waterloo.
 
 ---

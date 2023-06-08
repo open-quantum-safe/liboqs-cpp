@@ -36,7 +36,7 @@ endif ()
 
 if (LIBOQS_INCLUDE_DIR STREQUAL "")
     message(FATAL_ERROR "Please specify the path to the liboqs include directory\
-    by setting the LIBOQS_INCLUDE_DIR cmake flag, i.e.
+    by setting the LIBOQS_INCLUDE_DIR CMake flag, i.e.
     cmake -DLIBOQS_INCLUDE_DIR=/path/to/liboqs/include")
 elseif (NOT IS_DIRECTORY ${LIBOQS_INCLUDE_DIR})
     message(FATAL_ERROR "Invalid path to the liboqs include directory")
@@ -44,7 +44,7 @@ endif ()
 
 if (LIBOQS_LIB_DIR STREQUAL "")
     message(FATAL_ERROR "Please specify the path to the liboqs lib directory\
-    by setting the LIBOQS_LIB_DIR cmake flag, i.e.
+    by setting the LIBOQS_LIB_DIR CMake flag, i.e.
     cmake -DLIBOQS_LIB_DIR=/path/to/liboqs/lib")
 elseif (NOT IS_DIRECTORY ${LIBOQS_LIB_DIR})
     message(FATAL_ERROR "Invalid path to the liboqs lib directory")
