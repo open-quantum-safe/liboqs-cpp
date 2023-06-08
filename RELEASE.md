@@ -1,4 +1,4 @@
-liboqs-cpp version 0.7.2
+liboqs-cpp version 0.8.0
 ========================
 
 About
@@ -29,7 +29,7 @@ on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.7.2.
 What's New
 ----------
 
-This is the 10th release of liboqs-cpp.
+This is the 11th release of liboqs-cpp.
 
 This is an incremental minor change release.
 

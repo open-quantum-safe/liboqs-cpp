@@ -78,7 +78,9 @@ under `/usr/local/include` and `/usr/local/lib` on Linux/macOS).
 You may need to set the `LD_LIBRARY_PATH` (`DYLD_LIBRARY_PATH` on macOS)
 environment variable to point to the path to liboqs' library directory, e.g.
 
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+```shell
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+```
 
 assuming `liboqs.so.*` were installed in `/usr/local/lib` (true if you
 ran `sudo ninja install` after building liboqs).
@@ -87,7 +89,7 @@ Next, to use the wrapper, you simply `#include "oqs_cpp.h"` in your program. The
 wrapper contains a CMake build system for both examples and unit tests. To
 compile and run the examples, execute from the project's root directory
 
-```bash
+```shell
 cmake -B build -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib
 cmake --build build --parallel 4
 ```
@@ -103,13 +105,13 @@ use `--parallel 8` if your system has 8 cores. To build only a specific example,
 e.g. `examples/kem`, specify the target as the argument of the `cmake` command,
 such as
 
-```bash
+```shell
 cmake --build build --target kem
 ```
 
 To run the unit tests, execute from the root's project
 
-```bash
+```shell
 	ctest --test-dir build
 ```
 
@@ -123,11 +125,12 @@ Ensure that the liboqs shared library `oqs.dll` is visible system-wide. Use
 the "Edit the system environment variables" Control Panel tool or type in a
 Command Prompt
 
-	set PATH="%PATH%;C:\some\dir\liboqs\build\bin"
+```shell
+set PATH="%PATH%;C:\some\dir\liboqs\build\bin"
+```
 
-of course replacing the paths with the ones corresponding to your system.
-
-Then follow the same building instructions as for POSIX systems.
+of course replacing the paths with the ones corresponding to your system. Then
+follow the same building instructions as for POSIX systems.
 
 Documentation
 -------------
@@ -144,7 +147,7 @@ with the browser of your choice.
 
 To generate a PDF file of the documentation, run
 
-```bash
+```shell
 latexmk -pdf refman.tex
 ```
 
