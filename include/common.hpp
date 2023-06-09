@@ -37,7 +37,7 @@ inline std::string oqs_version() { return oqs::C::OQS_version(); }
  * \brief liboqs-cpp version string
  * \return liboqs-cpp version string
  */
-inline std::string oqs_cpp_version() { return OQS_CPP_VERSION; }
+inline std::string oqs_cpp_version() { return LIBOQS_CPP_VERSION; }
 
 /**
  * \brief Sets to zero the content of \a v by invoking the liboqs

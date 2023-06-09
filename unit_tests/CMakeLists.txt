@@ -1,5 +1,5 @@
 include(GoogleTest)
-set(TARGET_NAME "oqs_cpp_testing")
+set(TARGET_NAME "liboqs_cpp_testing")
 
 #### Link Google Test dynamically if using MSVC
 if (MSVC)

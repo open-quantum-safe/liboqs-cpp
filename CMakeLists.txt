@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-set(OQS_CPP_VERSION_NUM 0.8.0)
-set(OQS_CPP_VERSION_STR "${OQS_CPP_VERSION_NUM}")
-project(oqs_cpp VERSION ${OQS_CPP_VERSION_NUM} LANGUAGES CXX)
+set(LIBOQS_CPP_VERSION_NUM 0.8.0)
+set(LIBOQS_CPP_VERSION_STR "${LIBOQS_CPP_VERSION_NUM}")
+project(liboqs-cpp VERSION ${LIBOQS_CPP_VERSION_NUM} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,7 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 enable_testing()
 
 # liboqs-cpp version number
-add_definitions(-DOQS_CPP_VERSION="${OQS_CPP_VERSION_STR}")
+add_definitions(-DLIBOQS_CPP_VERSION="${LIBOQS_CPP_VERSION_STR}")
 
 # Add all examples
 aux_source_directory(examples EXAMPLE_FILES)
