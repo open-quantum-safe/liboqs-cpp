@@ -58,7 +58,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
-          set "PATH=${{env.WIN_LIBOQS_INSTALL_PATH}}\bin;%PATH%"
+          set "PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin"
           cmake -B build -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include -DLIBOQS_LIB_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\lib
           cmake --build build --parallel 4
 
@@ -66,7 +66,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
-          set "PATH=${{env.WIN_LIBOQS_INSTALL_PATH}}\bin;%PATH%"
+          set "PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin"
           .\build\Debug\kem.exe
           echo.
           .\build\Debug\sig.exe
@@ -77,6 +77,6 @@ jobs:
         shell: cmd
         if: matrix.os == 'windows-latest'
         run: |
-          set "PATH=${{env.WIN_LIBOQS_INSTALL_PATH}}\bin;%PATH%"
+          set "PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin"
           set GTEST_COLOR=1 
           ctest -V --test-dir build
