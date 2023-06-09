@@ -1,5 +1,5 @@
 /**
- * \file rand/rand.h
+ * \file rand/rand.hpp
  * \brief Provides support for various RNG-related functions
  */
 

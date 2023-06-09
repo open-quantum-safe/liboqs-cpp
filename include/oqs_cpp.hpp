@@ -1,5 +1,5 @@
 /**
- * \file oqs_cpp.h
+ * \file oqs_cpp.hpp
  * \brief Main header file for the liboqs C++ wrapper
  */
 
