@@ -67,7 +67,7 @@ variable are being set. Use the "Edit the system environment variables" Control
 Panel tool or execute in a Command Prompt, e.g.,
 
 ```shell
-set PATH="%PATH%;C:\Program Files (x86)\liboqs\bin"
+set PATH=%PATH%;C:\Program Files (x86)\liboqs\bin
 ```
 
 You can change liboqs' installation directory by configuring the build to use an
