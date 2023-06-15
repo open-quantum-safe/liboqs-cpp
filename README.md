@@ -15,6 +15,16 @@ that you have access to a C++11 compliant compiler. liboqs-cpp has been
 extensively tested on Linux, macOS and Windows platforms. Continuous integration
 is provided via GitHub actions.
 
+The project contains the following files and directories:
+
+- **`include/oqs_cpp.hpp`: main header file for the wrapper**
+- `include/common.hpp`: utility code
+- `include/rand/rand.hpp`: support for RNGs from `<oqs/rand.h>`
+- `examples/kem.cpp`: key encapsulation example
+- `examples/rand.cpp`: RNG example
+- `examples/sig.cpp`: signature example
+- `unit_tests`: unit tests written using Google Test (included)
+
 ---
 
 ## Pre-requisites
@@ -140,16 +150,6 @@ to
 ``` 
 
 in your application, and have liboqs library installed as described above.
-
-The project contains the following files and directories:
-
-- **`include/oqs_cpp.hpp`: main header file for the wrapper**
-- `include/common.hpp`: utility code
-- `include/rand/rand.hpp`: support for RNGs from `<oqs/rand.h>`
-- `examples/kem.cpp`: key encapsulation example
-- `examples/rand.cpp`: RNG example
-- `examples/sig.cpp`: signature example
-- `unit_tests`: unit tests written using Google Test (included)
 
 To avoid namespace pollution, liboqs-cpp includes all of its code inside the
 namespace `oqs`. All the liboqs C API is located in the namespace `oqs::C`,
