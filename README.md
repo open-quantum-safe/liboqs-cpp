@@ -15,16 +15,6 @@ that you have access to a C++11 compliant compiler. liboqs-cpp has been
 extensively tested on Linux, macOS and Windows platforms. Continuous integration
 is provided via GitHub actions.
 
-liboqs-cpp is a header-only wrapper. The project contains the following files
-and directories:
-
-- **`include/oqs_cpp.h`: main header file for the wrapper**
-- `include/rand/rand.h`: support for RNGs from `<oqs/rand.h>`
-- `examples/kem.cpp`: key encapsulation example
-- `examples/rand.cpp`: RNG example
-- `examples/sig.cpp`: signature example
-- `unit_tests`: unit tests written using Google Test (included)
-
 ---
 
 ## Pre-requisites
@@ -77,7 +67,7 @@ alternative path, e.g., `C:\liboqs`, by replacing the first CMake line above by
 cmake -S liboqs -B liboqs/build -DCMAKE_INSTALL_PREFIX="C:\liboqs" -DBUILD_SHARED_LIBS=ON
 ```
 
-### Configure and build the wrapper
+### Configure the wrapper
 
 Execute in a Terminal/Console/Administrator Command Prompt
 
@@ -86,13 +76,15 @@ git clone --depth=1 https://github.com/open-quantum-safe/liboqs-cpp
 cmake -S liboqs-cpp -B liboqs-cpp/build
 ```
 
-followed, on UNIX-like platforms, by
+### Build the examples
+
+Execute, on UNIX-like platforms
 
 ```shell
 cmake --build liboqs-cpp/build --parallel 8
 ```
 
-and, on Windows platforms, by
+and, on Windows platforms
 
 ```shell
 cmake --build liboqs-cpp/build -DLIBOQS_INCLUDE_DIR="C:\Program Files (x86)\liboqs\include" -DLIBOQS_LIB_DIR="C:\Program Files (x86)\liboqs\lib" --parallel 8
@@ -109,13 +101,9 @@ argument of the `cmake` command, e.g.,
 cmake --build liboqs-cpp/build --target kem
 ```
 
-### Run the unit tests
-
-```shell
-ctest --test-dir liboqs-cpp/build
-```
-
 ### Run the examples
+
+Execute
 
 ```shell
 ./liboqs-cpp/build/kem
@@ -123,15 +111,32 @@ ctest --test-dir liboqs-cpp/build
 ./liboqs-cpp/build/rand
 ```
 
-Note that on Windows platforms, the location of the built examples may be
-slightly different, e.g., `./liboqs-cpp/build/Debug/kem`.
+Note that on Windows platforms, the location and the names of the built examples
+may be slightly different, e.g., `./liboqs-cpp/build/Debug/kem.exe`.
+
+### Build and run the unit tests
+
+Execute
+
+```shell
+ctest --build liboqs-cpp/build --parallel 8 --target unit_tests 
+```
+
+followed by
+
+```shell
+ctest --test-dir liboqs-cpp/build
+```
 
 ---
 
-## Usage
+## Usage in standalone applications
 
-liboqs-cpp is a header-only wrapper. The project contains the following files
-and directories:
+liboqs-cpp is a header-only wrapper. To use liboqs-cpp, you only need
+to `#include "oqs_cpp.hpp"` in your application, and have liboqs library
+installed as described above.
+
+The project contains the following files and directories:
 
 - **`include/oqs_cpp.hpp`: main header file for the wrapper**
 - `include/common.hpp`: utility code
@@ -158,7 +163,7 @@ string identifying one of mechanisms supported by liboqs; these can be
 enumerated using the `oqs::KEMs::get_enabled_KEM_mechanisms()`
 and `oqs::Sigs::get_enabled_sig_mechanisms()` member functions.
 
-Support for alternative RNGs is provided by the `include/rand/rand.h` header
+Support for alternative RNGs is provided by the `include/rand/rand.hpp` header
 file, which exports its functions in `namespace oqs::rand`. This header file
 must be explicitly included in order to activate the support for alternative
 RNGs.
@@ -167,7 +172,8 @@ The wrapper also defines a high resolution timing class, `oqs::Timer<>`.
 
 The examples in
 the [`examples`](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/examples)
-directory are self-explanatory and provide more details about the wrapper's API.
+directory are self-explanatory stand-alone applications and provide more details
+about the wrapper's API and its usage.
 
 ---
 
