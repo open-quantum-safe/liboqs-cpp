@@ -106,13 +106,13 @@ cmake --build liboqs-cpp/build --target kem
 Execute
 
 ```shell
-./liboqs-cpp/build/kem
-./liboqs-cpp/build/sig
-./liboqs-cpp/build/rand
+liboqs-cpp/build/kem
+liboqs-cpp/build/sig
+liboqs-cpp/build/rand
 ```
 
 Note that on Windows platforms, the location and the names of the built examples
-may be slightly different, e.g., `./liboqs-cpp/build/Debug/kem.exe`.
+may be slightly different, e.g., `liboqs-cpp/build/Debug/kem.exe`.
 
 ### Build and run the unit tests
 
@@ -133,8 +133,13 @@ ctest --test-dir liboqs-cpp/build
 ## Usage in standalone applications
 
 liboqs-cpp is a header-only wrapper. To use liboqs-cpp, you only need
-to `#include "oqs_cpp.hpp"` in your application, and have liboqs library
-installed as described above.
+to
+
+```c
+#include "oqs_cpp.hpp"
+``` 
+
+in your application, and have liboqs library installed as described above.
 
 The project contains the following files and directories:
 
