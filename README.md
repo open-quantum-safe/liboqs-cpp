@@ -208,6 +208,31 @@ under your specific operating system.
 
 ---
 
+## Docker
+
+A self-explanatory minimalistic Docker file is provided
+in [[`Dockerfile`](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/Dockerfile)].
+
+Build the image by executing
+
+```shell
+docker build -t oqs-cpp .
+```
+
+Run, e.g., the key encapsulation example by executing
+
+```shell
+docker run -it oqs-cpp sh -c "liboqs-cpp/build/kem"
+```
+
+Or, run the unit tests with
+
+```shell
+docker run -it oqs-cpp sh -c "ctest --test-dir liboqs-cpp/build"
+```
+
+---
+
 ## Limitations and security
 
 liboqs is designed for prototyping and evaluating quantum-resistant
