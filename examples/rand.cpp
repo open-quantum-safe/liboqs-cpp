@@ -15,15 +15,15 @@ void custom_RNG(uint8_t* random_array, std::size_t bytes_to_read) {
 }
 
 int main() {
-    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
-    oqs::bytes entropy_seed(48);
-    entropy_seed[0] = 100;
-    entropy_seed[20] = 200;
-    entropy_seed[47] = 150;
-    oqs::rand::randombytes_nist_kat_init_256bit(entropy_seed);
-
     std::cout << "liboqs version: " << oqs::oqs_version() << '\n';
     std::cout << "liboqs-cpp version: " << oqs::oqs_cpp_version() << '\n';
+    
+    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
+    // set the entropy seed to some values
+    oqs::bytes entropy_seed(48);
+    for (std::size_t i = 0; i < 48; ++i)
+        entropy_seed[i] = i;
+    oqs::rand::randombytes_nist_kat_init_256bit(entropy_seed);
 
     std::cout << std::setw(18) << std::left;
     std::cout << "NIST-KAT: " << oqs::rand::randombytes(32) << '\n';
@@ -32,7 +32,7 @@ int main() {
     std::cout << std::setw(18) << std::left;
     std::cout << "Custom RNG: " << oqs::rand::randombytes(32) << '\n';
 
-// we do not yet support OpenSSL under Windows
+// We do not yet support OpenSSL on Windows
 #ifndef _WIN32
     oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_openssl);
     std::cout << std::setw(18) << std::left;
