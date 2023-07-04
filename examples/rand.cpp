@@ -17,7 +17,7 @@ void custom_RNG(uint8_t* random_array, std::size_t bytes_to_read) {
 int main() {
     std::cout << "liboqs version: " << oqs::oqs_version() << '\n';
     std::cout << "liboqs-cpp version: " << oqs::oqs_cpp_version() << '\n';
-    
+
     oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
     // set the entropy seed to some values
     oqs::bytes entropy_seed(48);
