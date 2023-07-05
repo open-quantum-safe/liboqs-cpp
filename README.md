@@ -80,7 +80,7 @@ alternative path, e.g., `C:\liboqs`, by replacing the first CMake line above by
 cmake -S liboqs -B liboqs/build -DCMAKE_INSTALL_PREFIX="C:\liboqs" -DBUILD_SHARED_LIBS=ON
 ```
 
-### Configure the wrapper
+### Configure and install the wrapper
 
 Execute in a Terminal/Console/Administrator Command Prompt
 
@@ -148,7 +148,7 @@ ctest --test-dir liboqs-cpp/build
 liboqs-cpp is a header-only wrapper. To use liboqs-cpp, you only need
 to
 
-```c
+```c++
 #include "oqs_cpp.hpp"
 ``` 
 
@@ -232,6 +232,14 @@ Or, run the unit tests with
 
 ```shell
 docker run -it oqs-cpp sh -c "ctest --test-dir liboqs-cpp/build"
+```
+
+In case you want to use the Docker container as development environment, mount
+your current project in the Docker
+container with
+
+```shell
+docker run --rm -it --workdir=/app -v ${PWD}:/app oqs-cpp /bin/bash 
 ```
 
 ---
