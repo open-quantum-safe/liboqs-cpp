@@ -214,7 +214,7 @@ under your specific operating system.
 ## Docker
 
 A self-explanatory minimalistic Docker file is provided
-in [[`Dockerfile`](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/Dockerfile)].
+in [`Dockerfile`](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/Dockerfile).
 
 Build the image by executing
 
