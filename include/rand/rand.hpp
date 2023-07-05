@@ -1,10 +1,10 @@
 /**
- * \file rand/rand.h
+ * \file rand/rand.hpp
  * \brief Provides support for various RNG-related functions
  */
 
-#ifndef RAND_RAND_H_
-#define RAND_RAND_H_
+#ifndef RAND_RAND_HPP_
+#define RAND_RAND_HPP_
 
 #include <cstdint>
 #include <cstdlib>
@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-#include "common.h"
+#include "common.hpp"
 
 namespace oqs {
 namespace C {
@@ -108,4 +108,4 @@ inline void randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t*,
 } // namespace rand
 } // namespace oqs
 
-#endif // RAND_RAND_H_
+#endif // RAND_RAND_HPP_

@@ -5,7 +5,7 @@
 #include <string>
 
 // liboqs C++ wrapper
-#include "oqs_cpp.h"
+#include "oqs_cpp.hpp"
 
 int main() {
     std::cout << std::boolalpha;

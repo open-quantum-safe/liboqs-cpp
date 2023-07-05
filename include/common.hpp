@@ -1,10 +1,10 @@
 /**
- * \file common.h
+ * \file common.hpp
  * \brief Type definitions and utility functions
  */
 
-#ifndef COMMON_H_
-#define COMMON_H_
+#ifndef COMMON_HPP_
+#define COMMON_HPP_
 
 #include <chrono>
 #include <cstdint>
@@ -37,7 +37,7 @@ inline std::string oqs_version() { return oqs::C::OQS_version(); }
  * \brief liboqs-cpp version string
  * \return liboqs-cpp version string
  */
-inline std::string oqs_cpp_version() { return OQS_CPP_VERSION; }
+inline std::string oqs_cpp_version() { return LIBOQS_CPP_VERSION; }
 
 /**
  * \brief Sets to zero the content of \a v by invoking the liboqs
@@ -315,4 +315,4 @@ inline oqs::bytes operator""_bytes(const char* c_str, std::size_t length) {
 }
 } // namespace oqs_literals
 
-#endif // COMMON_H_
+#endif // COMMON_HPP_

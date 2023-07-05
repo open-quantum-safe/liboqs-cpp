@@ -31,13 +31,24 @@
 *.out
 *.app
 
-# vim
+# Vim
 *.swp
+
+# Emacs
+\#*\#
+*~
+
+# clangd
+.cache/
+compile_commands.json
 
 # MSVC
 .vs/
 /out*
 CMakeSettings.json
+
+# VS Code
+.vscode/
 
 # CLion
 .idea/
@@ -46,3 +57,8 @@ cmake-build*/
 
 # Documentation source files
 doc/
+
+# Misc
+.DS_Store
+.cmake/
+Testing/
