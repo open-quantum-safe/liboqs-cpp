@@ -34,6 +34,7 @@ jobs:
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           cmake --build build --parallel 4
+          cmake --build build --target unit_tests --parallel 4
 
       - name: Run examples POSIX
         if: matrix.os != 'windows-latest'
@@ -64,6 +65,7 @@ jobs:
           set PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin
           cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include -DLIBOQS_LIB_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\lib
           cmake --build build --parallel 4
+          cmake --build build --target unit_tests --parallel 4
 
       - name: Run examples Windows
         if: matrix.os == 'windows-latest'

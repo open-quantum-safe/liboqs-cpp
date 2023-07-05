@@ -6,6 +6,9 @@
 
 ## About
 
+The **Open Quantum Safe (OQS) project** has the goal of developing and
+prototyping quantum-resistant cryptography.
+
 **liboqs-cpp** offers a C++ wrapper for
 the [Open Quantum Safe](https://openquantumsafe.org/) [liboqs](https://github.com/open-quantum-safe/liboqs/)
 C library, which is a C library for quantum-resistant cryptographic algorithms.
