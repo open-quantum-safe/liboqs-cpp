@@ -234,7 +234,7 @@ Or, run the unit tests with
 docker run -it oqs-cpp sh -c "ctest --test-dir liboqs-cpp/build"
 ```
 
-In case you want to use the Docker container as development environment, mount
+In case you want to use the Docker container as a development environment, mount
 your current project in the Docker
 container with
 
