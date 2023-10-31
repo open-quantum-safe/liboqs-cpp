@@ -16,6 +16,6 @@ foreach (FILE ${TEST_FILES})
     target_sources(${TARGET_NAME} PUBLIC ${FILE})
 endforeach ()
 
-target_link_libraries(${TARGET_NAME} gmock oqs)
+target_link_libraries(${TARGET_NAME} gmock liboqs-cpp oqs)
 
 gtest_discover_tests(${TARGET_NAME})

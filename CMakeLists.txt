@@ -12,68 +12,84 @@ enable_testing()
 # liboqs-cpp version number
 add_definitions(-DLIBOQS_CPP_VERSION="${LIBOQS_CPP_VERSION_STR}")
 
-# Add all examples
-aux_source_directory(examples EXAMPLE_FILES)
+# Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    message(FATAL_ERROR "In-source builds not allowed. Please instruct CMake to use an out-of-source build, e.g.,
+    cmake --build build [...]
+You may need to remove CMakeCache.txt.")
+endif ()
 
-# Path to liboqs include and lib, modify as needed
-if (NOT WIN32)
-    set(LIBOQS_INCLUDE_DIR "/usr/local/include" CACHE PATH
-            "Path to liboqs include directory")
-    set(LIBOQS_LIB_DIR "/usr/local/lib" CACHE PATH
-            "Path to liboqs lib directory")
-else ()
-    # Increase the stack size to 8MB on Windows
-    if (MSVC)
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:8388608")
-    elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
-            STREQUAL "GNU")
-        set(CMAKE_EXE_LINKER_FLAGS
-                "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,8388608")
+add_library(liboqs-cpp INTERFACE)
+target_include_directories(liboqs-cpp INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+        $<INSTALL_INTERFACE:include/>)
+target_compile_definitions(liboqs-cpp INTERFACE -DLIBOQS_CPP_VERSION_NUM=${LIBOQS_CPP_VERSION_NUM})
+target_compile_definitions(liboqs-cpp INTERFACE -DLIBOQS_CPP_VERSION_STR="${LIBOQS_CPP_VERSION_STR}")
+target_compile_definitions(liboqs-cpp INTERFACE -DLIBOQS_CPP_VERSION="${LIBOQS_CPP_VERSION_STR}")
+
+# BEGIN LOCAL stuff, you don't need those in standalone projects
+option(WITH_EXAMPLES "Enable example compilation" OFF)
+
+# Dependencies
+include(cmake/liboqs-cpp_dependencies.cmake)
+
+# Unit testing
+include(cmake/liboqs-cpp_unit_tests.cmake)
+
+#### Enable all warnings for GNU gcc and Clang/AppleClang
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
+        STREQUAL "GNU")
+    add_compile_options("-pedantic" "-Wall" "-Wextra" "-Weffc++")
+    if (${SANITIZE})
+        if (NOT (${CMAKE_CXX_COMPILER_ID} MATCHES "AppleClang"))
+            list(APPEND SANITIZE_OPTIONS -fsanitize=undefined)
+            add_compile_options("${SANITIZE_OPTIONS}")
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${SANITIZE_OPTIONS}")
+        endif ()
     endif ()
-    set(LIBOQS_INCLUDE_DIR "" CACHE PATH "Path to liboqs include directory")
-    set(LIBOQS_LIB_DIR "" CACHE PATH "Path to liboqs lib directory")
 endif ()
 
-if (LIBOQS_INCLUDE_DIR STREQUAL "")
-    message(FATAL_ERROR "Please specify the path to the liboqs include directory\
-    by setting the LIBOQS_INCLUDE_DIR CMake flag, i.e.
-    cmake -DLIBOQS_INCLUDE_DIR=/path/to/liboqs/include")
-elseif (NOT IS_DIRECTORY ${LIBOQS_INCLUDE_DIR})
-    message(FATAL_ERROR "Invalid path to the liboqs include directory")
-endif ()
+# Examples
+#if (${WITH_EXAMPLES})
+    include(cmake/liboqs-cpp_examples.cmake)
+#endif ()
+# END LOCAL stuff
 
-if (LIBOQS_LIB_DIR STREQUAL "")
-    message(FATAL_ERROR "Please specify the path to the liboqs lib directory\
-    by setting the LIBOQS_LIB_DIR CMake flag, i.e.
-    cmake -DLIBOQS_LIB_DIR=/path/to/liboqs/lib")
-elseif (NOT IS_DIRECTORY ${LIBOQS_LIB_DIR})
-    message(FATAL_ERROR "Invalid path to the liboqs lib directory")
-endif ()
-
-include_directories("include")
 include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
 link_directories("${LIBOQS_LIB_DIR}")
 
-# Default build type
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE STRING
-            "Choose the type of build, options are: \
-         None Debug Release MinSizeRel RelWithDebInfo."
-            FORCE)
+#### Installation
+set(LIBOQS_CPP_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}")
+install(DIRECTORY include/ DESTINATION ${LIBOQS_CPP_INSTALL_DIR})
+install(TARGETS liboqs-cpp EXPORT liboqs-cpp_targets)
+install(EXPORT liboqs-cpp_targets DESTINATION "lib/cmake/${PROJECT_NAME}")
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+        "cmake/liboqs-cppConfig.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/liboqs-cppConfig.cmake"
+        INSTALL_DESTINATION "lib/cmake/${PROJECT_NAME}"
+)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/liboqs-cppConfig.cmake" DESTINATION "lib/cmake/${PROJECT_NAME}")
+install(FILES "${CMAKE_SOURCE_DIR}/cmake/liboqs-cpp_dependencies.cmake" DESTINATION "lib/cmake/${PROJECT_NAME}")
+
+#### Uninstall
+#### https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
+#### UNIX/Linux: sudo cmake --build build --target uninstall
+#### Windows:    cmake --build build --target uninstall
+if (NOT TARGET uninstall)
+    configure_file(
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/liboqs-cpp_uninstall.cmake.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+            IMMEDIATE @ONLY)
+    if (NOT MSVC)
+        add_custom_target(uninstall
+                COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+                COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME}"
+                COMMAND ${CMAKE_COMMAND} -E remove_directory "${LIBOQS_CPP_INSTALL_DIR}"
+        )
+    else ()
+        add_custom_target(uninstall
+                COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+                COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_INSTALL_PREFIX}"
+        )
+    endif ()
 endif ()
-
-#### Unit testing
-add_subdirectory(unit_tests/)
-
-# Enable all warnings for GNU gcc and Clang/AppleClang
-if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
-        STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Weffc++")
-endif ()
-
-# Build all executables in ${EXAMPLE_FILES}
-foreach (FILE ${EXAMPLE_FILES})
-    get_filename_component(TARGET_NAME ${FILE} NAME_WE)
-    add_executable(${TARGET_NAME} ${FILE})
-    target_link_libraries(${TARGET_NAME} oqs)
-endforeach ()
