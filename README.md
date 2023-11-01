@@ -154,7 +154,7 @@ to
 ``` 
 
 See
-the [examples/standalone](https://github.com/open-quantum-safe/liboqs-cpp/tree/install/examples/standalone)
+the [examples/standalone](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/examples/standalone)
 for a standalone example.
 
 in your application, and have liboqs library installed as described above.
