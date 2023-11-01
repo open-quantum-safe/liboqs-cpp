@@ -153,11 +153,10 @@ to
 #include <liboqs-cpp/oqs_cpp.hpp>
 ``` 
 
-See
-the [examples/standalone](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/examples/standalone)
-for a standalone example.
-
 in your application, and have liboqs library installed as described above.
+
+See [examples/standalone](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/examples/standalone)
+for a standalone example.
 
 To avoid namespace pollution, liboqs-cpp includes all of its code inside the
 namespace `oqs`. All the liboqs C API is located in the namespace `oqs::C`,
