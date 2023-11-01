@@ -84,7 +84,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include -DLIBOQS_LIB_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\lib
           cmake --build build --target install
 
       - name: Build standalone example Windows
