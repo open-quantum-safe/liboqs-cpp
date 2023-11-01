@@ -40,20 +40,20 @@ jobs:
       - name: Build standalone example POSIX
         if: matrix.os != 'windows-latest'
         run: |
-          cmake -B examples/standalone/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          cmake --build examples/standalone/build --target standalone
+          cmake -S examples/standalone -B examples/standalone/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build examples/standalone/build
 
       - name: Run standalone example POSIX
         if: matrix.os != 'windows-latest'
         run: |
           ./examples/standalone/build/standalone
 
-      - name: Build the examples POSIX
+      - name: Build examples POSIX
         if: matrix.os != 'windows-latest'
         run: |
           cmake --build build --target examples --parallel 4
 
-      - name: Build the unit tests POSIX
+      - name: Build unit tests POSIX
         if: matrix.os != 'windows-latest'
         run: |
           cmake --build build --target unit_tests --parallel 4          
@@ -92,7 +92,7 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin
-          cmake -B examples\standalone\build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake -S examples\standalone -B examples\standalone\build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           cmake --build examples\standalone\build --target standalone
 
       - name: Run standalone example Windows
