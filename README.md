@@ -87,7 +87,7 @@ Execute in a Terminal/Console/Administrator Command Prompt
 ```shell
 git clone --depth=1 https://github.com/open-quantum-safe/liboqs-cpp
 cmake -S liboqs-cpp -B liboqs-cpp/build
-cmake -S liboqs-cpp -B liboqs-cpp/build --target install
+cmake --build liboqs-cpp/build --target install
 ```
 
 ### Build the examples
