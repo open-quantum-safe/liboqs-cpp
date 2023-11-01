@@ -20,6 +20,11 @@ WORKDIR /home/oqs
 # Get liboqs-cpp
 RUN git clone --depth 1 --branch main https://github.com/open-quantum-safe/liboqs-cpp.git
 
-# Build liboqs-cpp
-RUN cmake -S liboqs-cpp -B liboqs-cpp/build && \
-    cmake --build liboqs-cpp/build --target all --target unit_tests --parallel 4
+# Configure and install liboqs-cpp
+RUN cmake -S liboqs-cpp -B liboqs-cpp/build
+USER root
+RUN cmake --build liboqs-cpp/build --target install
+USER oqs
+
+# Build liboqs-cpp examples and unit tests
+RUN cmake --build liboqs-cpp/build --target examples --target unit_tests --parallel 4
