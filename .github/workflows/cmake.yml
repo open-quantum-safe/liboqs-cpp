@@ -31,7 +31,7 @@ jobs:
           cmake --build liboqs/build --parallel 4
           sudo cmake --build liboqs/build --target install
 
-      - name: Install liboqs-cpp POSIX
+      - name: Configure and install liboqs-cpp POSIX
         if: matrix.os != 'windows-latest'
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -80,7 +80,7 @@ jobs:
           cmake --build liboqs\build --parallel 4
           cmake --build liboqs\build --target install
 
-      - name: Install liboqs-cpp Windows
+      - name: Configure and install liboqs-cpp Windows
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
@@ -107,7 +107,6 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin
-          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include -DLIBOQS_LIB_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\lib
           cmake --build build --target examples --parallel 4
 
       - name: Build unit tests Windows
@@ -115,7 +114,6 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin
-          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include -DLIBOQS_LIB_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\lib
           cmake --build build --target unit_tests --parallel 4 
 
       - name: Run examples Windows
