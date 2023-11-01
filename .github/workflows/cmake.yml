@@ -92,7 +92,7 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin
-          cmake -S examples\standalone -B examples\standalone\build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake -S examples\standalone -B examples\standalone\build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include -DLIBOQS_LIB_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\lib
           cmake --build examples\standalone\build --target standalone
 
       - name: Run standalone example Windows
