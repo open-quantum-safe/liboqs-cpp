@@ -84,6 +84,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           cmake --build build --target install
 
       - name: Build standalone example Windows
