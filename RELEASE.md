@@ -24,7 +24,7 @@ See in particular limitations on intended use.
 
 ## Release notes
 
-This release of liboqs-cpp was released on October 31, 2023. Its release page
+This release of liboqs-cpp was released on November 1, 2023. Its release page
 on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.9.1.
 
 ---
