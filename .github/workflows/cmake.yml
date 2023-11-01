@@ -31,11 +31,26 @@ jobs:
           cmake --build liboqs/build --parallel 4
           sudo cmake --build liboqs/build --target install
 
-      - name: Build the examples and unit tests POSIX
+      - name: Install liboqs-cpp POSIX
         if: matrix.os != 'windows-latest'
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          cmake --build build --parallel 4
+          sudo cmake --build build --target install
+
+      - name: Build standalone example POSIX
+        if: matrix.os != 'windows-latest'
+        run: |
+          cmake --build examples/standalone/build --target standalone
+
+      - name: Run standalone example POSIX
+        if: matrix.os != 'windows-latest'
+        run: |
+          ./examples/standalone/build/standalone
+
+      - name: Build the examples and unit tests POSIX
+        if: matrix.os != 'windows-latest'
+        run: |
+          cmake --build build --target examples --parallel 4
           cmake --build build --target unit_tests --parallel 4
 
       - name: Run examples POSIX
@@ -60,13 +75,31 @@ jobs:
           cmake --build liboqs\build --parallel 4
           cmake --build liboqs\build --target install
 
+      - name: Install liboqs-cpp Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          cmake --build build --target install
+
+      - name: Build standalone example Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          cmake --build examples\standalone\build --target standalone
+
+      - name: Run standalone example Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          .\examples\standalone\build\${{env.BUILD_TYPE}}\standalone.exe
+
       - name: Build examples and unit tests Windows
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
           set PATH=%PATH%;${{env.WIN_LIBOQS_INSTALL_PATH}}\bin
           cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DLIBOQS_INCLUDE_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\include -DLIBOQS_LIB_DIR=${{env.WIN_LIBOQS_INSTALL_PATH}}\lib
-          cmake --build build --parallel 4
+          cmake --build build --target examples --parallel 4
           cmake --build build --target unit_tests --parallel 4
 
       - name: Run examples Windows
