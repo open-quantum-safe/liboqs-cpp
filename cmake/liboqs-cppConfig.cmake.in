@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/liboqs-cpp_targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/liboqs-cpp_dependencies.cmake")
+message(STATUS "Found liboqs-cpp in @LIBOQS_CPP_INSTALL_DIR@")

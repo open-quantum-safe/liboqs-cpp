@@ -1,4 +1,4 @@
-# liboqs-cpp version 0.9.0
+# liboqs-cpp version 0.9.1
 
 ---
 
@@ -6,7 +6,7 @@
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and
 prototyping quantum-resistant cryptography. More information on OQS can be found
-on our website: https://openquantumsafe.org/ and on Github
+on our website: https://openquantumsafe.org/ and on GitHub
 at https://github.com/open-quantum-safe/.
 
 **liboqs** is an open source C library for quantum-resistant cryptographic
@@ -24,12 +24,12 @@ See in particular limitations on intended use.
 
 ## Release notes
 
-This release of liboqs-cpp was released on October 30, 2023. Its release page
-on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.9.0.
+This release of liboqs-cpp was released on October 31, 2023. Its release page
+on GitHub is https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.9.1.
 
 ---
 
 ## What's New
 
-This is the 12th release of liboqs-cpp. For a list of changes
+This is the 13th release of liboqs-cpp. For a list of changes
 see [CHANGES.txt](https://github.com/open-quantum-safe/liboqs-cpp/blob/main/CHANGES.txt).

@@ -87,6 +87,7 @@ Execute in a Terminal/Console/Administrator Command Prompt
 ```shell
 git clone --depth=1 https://github.com/open-quantum-safe/liboqs-cpp
 cmake -S liboqs-cpp -B liboqs-cpp/build
+cmake -S liboqs-cpp -B liboqs-cpp/build --target install
 ```
 
 ### Build the examples
@@ -94,13 +95,13 @@ cmake -S liboqs-cpp -B liboqs-cpp/build
 Execute, on UNIX-like platforms
 
 ```shell
-cmake --build liboqs-cpp/build --parallel 8
+cmake --build liboqs-cpp/build --target examples --parallel 8
 ```
 
 and, on Windows platforms
 
 ```shell
-cmake --build liboqs-cpp/build -DLIBOQS_INCLUDE_DIR="C:\Program Files (x86)\liboqs\include" -DLIBOQS_LIB_DIR="C:\Program Files (x86)\liboqs\lib" --parallel 8
+cmake --build liboqs-cpp/build --target examples -DLIBOQS_INCLUDE_DIR="C:\Program Files (x86)\liboqs\include" -DLIBOQS_LIB_DIR="C:\Program Files (x86)\liboqs\lib" --parallel 8
 ```
 
 Note that you may need to change the flags `-DLIBOQS_INCLUDE_DIR`
@@ -143,14 +144,18 @@ ctest --test-dir liboqs-cpp/build
 
 ---
 
-## Usage in standalone applications
+## Installing liboqs-cpp and usage in standalone applications
 
 liboqs-cpp is a header-only wrapper. To use liboqs-cpp, you only need
 to
 
 ```c++
-#include "oqs_cpp.hpp"
+#include <liboqs-cpp/oqs_cpp.hpp>
 ``` 
+
+See
+the [examples/standalone](https://github.com/open-quantum-safe/liboqs-cpp/tree/install/examples/standalone)
+for a standalone example.
 
 in your application, and have liboqs library installed as described above.
 
