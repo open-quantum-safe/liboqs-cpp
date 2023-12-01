@@ -34,7 +34,7 @@ option(WITH_EXAMPLES "Enable example compilation" OFF)
 include(cmake/liboqs-cpp_dependencies.cmake)
 
 # Unit testing
-include(cmake/liboqs-cpp_unit_tests.cmake)
+add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/)
 
 #### Enable all warnings for GNU gcc and Clang/AppleClang
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
@@ -50,9 +50,7 @@ if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
 endif ()
 
 # Examples
-#if (${WITH_EXAMPLES})
-    include(cmake/liboqs-cpp_examples.cmake)
-#endif ()
+include(cmake/examples.cmake)
 # END LOCAL stuff
 
 include_directories(SYSTEM "${LIBOQS_INCLUDE_DIR}")
