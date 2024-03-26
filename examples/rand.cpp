@@ -18,15 +18,9 @@ int main() {
     std::cout << "liboqs version: " << oqs::oqs_version() << '\n';
     std::cout << "liboqs-cpp version: " << oqs::oqs_cpp_version() << '\n';
 
-    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_nist_kat);
-    // set the entropy seed to some values
-    oqs::bytes entropy_seed(48);
-    for (std::size_t i = 0; i < 48; ++i)
-        entropy_seed[i] = i;
-    oqs::rand::randombytes_nist_kat_init_256bit(entropy_seed);
-
+    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_system);
     std::cout << std::setw(18) << std::left;
-    std::cout << "NIST-KAT: " << oqs::rand::randombytes(32) << '\n';
+    std::cout << "System (default): " << oqs::rand::randombytes(32) << '\n';
 
     oqs::rand::randombytes_custom_algorithm(custom_RNG);
     std::cout << std::setw(18) << std::left;
@@ -38,8 +32,4 @@ int main() {
     std::cout << std::setw(18) << std::left;
     std::cout << "OpenSSL: " << oqs::rand::randombytes(32) << '\n';
 #endif
-
-    oqs::rand::randombytes_switch_algorithm(OQS_RAND_alg_system);
-    std::cout << std::setw(18) << std::left;
-    std::cout << "System (default): " << oqs::rand::randombytes(32) << '\n';
 }

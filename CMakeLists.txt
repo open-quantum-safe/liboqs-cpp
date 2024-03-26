@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
-set(LIBOQS_CPP_VERSION_NUM 0.9.1)
+set(LIBOQS_CPP_VERSION_NUM 0.10.0)
 set(LIBOQS_CPP_VERSION_STR "${LIBOQS_CPP_VERSION_NUM}")
 project(
   liboqs-cpp
   VERSION ${LIBOQS_CPP_VERSION_NUM}
   LANGUAGES CXX)
-
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -19,8 +18,9 @@ add_definitions(-DLIBOQS_CPP_VERSION="${LIBOQS_CPP_VERSION_STR}")
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(
     FATAL_ERROR
-      "In-source builds not allowed. Please instruct CMake to use an out-of-source build, e.g.,
-    cmake --build build [...]
+      "In-source builds not allowed. Please instruct CMake to use an\
+      out-of-source build, e.g.,
+      cmake -B build && cmake --build build
 You may need to remove CMakeCache.txt.")
 endif()
 
@@ -35,14 +35,11 @@ target_compile_definitions(
 target_compile_definitions(
   liboqs-cpp INTERFACE -DLIBOQS_CPP_VERSION="${LIBOQS_CPP_VERSION_STR}")
 
-# BEGIN LOCAL stuff, you don't need those in standalone projects
-option(WITH_EXAMPLES "Enable example compilation" OFF)
-
 # Dependencies
 include(cmake/liboqs-cpp_dependencies.cmake)
 
 # Unit testing
-add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/)
+add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/ EXCLUDE_FROM_ALL SYSTEM)
 
 # Enable all warnings for GNU gcc and Clang/AppleClang
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}

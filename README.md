@@ -26,7 +26,7 @@ The project contains the following files and directories:
 - `examples/kem.cpp`: key encapsulation example
 - `examples/rand.cpp`: RNG example
 - `examples/sig.cpp`: signature example
-- `unit_tests`: unit tests written using Google Test (included)
+- `unit_tests`: unit tests written using GoogleTest
 
 ---
 
@@ -133,7 +133,7 @@ may be slightly different, e.g., `liboqs-cpp/build/Debug/kem.exe`.
 Execute
 
 ```shell
-ctest --build liboqs-cpp/build --parallel 8 --target unit_tests 
+ctest --build liboqs-cpp/build --parallel 8 --target unit_tests
 ```
 
 followed by
@@ -144,14 +144,14 @@ ctest --test-dir liboqs-cpp/build
 
 ---
 
-## Installing liboqs-cpp and usage in standalone applications
+## Installing liboqs-cpp and using it in standalone applications
 
 liboqs-cpp is a header-only wrapper. To use liboqs-cpp, you only need
 to
 
-```c++
+```cpp
 #include <liboqs-cpp/oqs_cpp.hpp>
-``` 
+```
 
 in your application, and have liboqs library installed as described above.
 See [examples/standalone](https://github.com/open-quantum-safe/liboqs-cpp/tree/main/examples/standalone)
@@ -242,7 +242,7 @@ your current project in the Docker
 container with
 
 ```shell
-docker run --rm -it --workdir=/app -v ${PWD}:/app oqs-cpp /bin/bash 
+docker run --rm -it --workdir=/app -v ${PWD}:/app oqs-cpp /bin/bash
 ```
 
 ---
@@ -285,11 +285,11 @@ for details.
 
 The Open Quantum Safe project is led
 by [Douglas Stebila](https://www.douglas.stebila.ca/research/)
-and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University
+and [Michele Mosca](https://faculty.iqc.uwaterloo.ca/mmosca/) at the University
 of Waterloo.
 
 liboqs-cpp was developed by [Vlad Gheorghiu](https://vsoftco.github.io) at
-softwareQ Inc. and University of Waterloo.
+[softwareQ Inc.](https://www.softwareq.ca) and at the University of Waterloo.
 
 ---
 

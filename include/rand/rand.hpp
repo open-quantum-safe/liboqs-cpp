@@ -60,39 +60,13 @@ inline void randombytes(bytes& random_array, std::size_t bytes_to_read) {
 /**
  * \brief Switches the core OQS_randombytes to use the specified algorithm
  * \see <oqs/rand.h> liboqs header for more details.
- * \param alg_name Algorithm name, possible values are "system", "NIST-KAT", and
- * "OpenSSL", or the corresponding macros OQS_RAND_alg_system,
- * OQS_RAND_alg_nist_kat, and OQS_RAND_alg_openssl, respectively.
+ * \param alg_name Algorithm name, possible values are "system", "OpenSSL", or
+ * the corresponding macros OQS_RAND_alg_system and OQS_RAND_alg_openssl,
+ * respectively.
  */
 inline void randombytes_switch_algorithm(const std::string& alg_name) {
     if (C::OQS_randombytes_switch_algorithm(alg_name.c_str()) != C::OQS_SUCCESS)
         throw std::runtime_error("Can not switch algorithm");
-}
-
-/**
- * \brief Initializes the NIST DRBG with the \a entropy_input seed. The security
- * parameter is 256 bits.
- * \param entropy_input Entropy input seed, must be exactly 48 bytes long
- * \param personalization_string Optional personalization string, which, if
- * non-empty, must be at least 48 bytes long
- */
-inline void
-randombytes_nist_kat_init_256bit(const bytes& entropy_input,
-                                 const bytes& personalization_string = {}) {
-    std::size_t len_str = personalization_string.size();
-
-    if (entropy_input.size() != 48)
-        throw std::out_of_range(
-            "The entropy source must be exactly 48 bytes long");
-    if (len_str > 0) {
-        if (len_str < 48)
-            throw std::out_of_range("The personalization string must be either "
-                                    "empty or at least 48 bytes long");
-        C::OQS_randombytes_nist_kat_init_256bit(entropy_input.data(),
-                                                personalization_string.data());
-        return;
-    }
-    C::OQS_randombytes_nist_kat_init_256bit(entropy_input.data(), nullptr);
 }
 
 /**
