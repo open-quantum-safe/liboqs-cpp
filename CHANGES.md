@@ -1,6 +1,6 @@
 # Version 0.10.0 - March 26, 2024
 
-- Replaced `["CHANGES"]` by `["CHANGES.md"]`, as we now use Markdown format to
+- Replaced ["CHANGES"] by ["CHANGES.md"], as we now use Markdown format to
   keep track of changes in new releases
 - Removed GoogleTest dependency; if not detected, it is installed automatically
   as build dependency by CMake
