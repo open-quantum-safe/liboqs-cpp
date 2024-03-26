@@ -6,7 +6,8 @@
   as build dependency by CMake
 - Bumped GoogleTest version to HEAD latest, as
   [recommended by Google](https://github.com/google/googletest?tab=readme-ov-file#live-at-head)
-- Removed the NIST PRNG as the later is no longer exposed by liboqs' public API
+- Removed the NIST PRNG as the latter is no longer exposed by liboqs' public
+  API
 
 # Version 0.9.1 - November 1, 2023
 
