@@ -18,7 +18,7 @@
 
 namespace oqs {
 namespace C {
-// everything in liboqs has C linkage
+// Everything in liboqs has C linkage
 extern "C" {
 #include <oqs/common.h>
 }

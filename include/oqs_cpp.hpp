@@ -29,7 +29,7 @@ namespace oqs {
  * pollute the oqs namespace
  */
 namespace C {
-// everything in liboqs has C linkage
+// Everything in liboqs has C linkage
 extern "C" {
 #include <oqs/oqs.h>
 }
@@ -167,7 +167,7 @@ class KeyEncapsulation {
     std::shared_ptr<C::OQS_KEM> kem_{nullptr, [](C::OQS_KEM* p) {
                                          C::OQS_KEM_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_KEM
-    bytes secret_key_{}; ///< secret key
+    bytes secret_key_{};                 ///< secret key
   public:
     /**
      * \brief KEM algorithm details
@@ -197,7 +197,7 @@ class KeyEncapsulation {
         : secret_key_{std::move(secret_key)} {
         // KEM not enabled
         if (!KEMs::is_KEM_enabled(alg_name)) {
-            // perhaps it's supported
+            // Perhaps it's supported
             if (KEMs::is_KEM_supported(alg_name))
                 throw MechanismNotEnabledError(alg_name);
             else
@@ -235,10 +235,10 @@ class KeyEncapsulation {
      */
     KeyEncapsulation(KeyEncapsulation&& rhs) noexcept
         : kem_{std::move(rhs.kem_)}, alg_details_{std::move(rhs.alg_details_)} {
-        // paranoid move via copy/clean/resize, see
+        // Paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
-        // clean (zero)
+        // Clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
         rhs.secret_key_.resize(0); // resize
     }
@@ -252,10 +252,10 @@ class KeyEncapsulation {
         kem_ = std::move(rhs.kem_);
         alg_details_ = std::move(rhs.alg_details_);
 
-        // paranoid move via copy/clean/resize, see
+        // Paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
-        // clean (zero)
+        // Clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
         rhs.secret_key_.resize(0); // resize
 
@@ -484,7 +484,7 @@ class Signature {
     std::shared_ptr<C::OQS_SIG> sig_{nullptr, [](C::OQS_SIG* p) {
                                          C::OQS_SIG_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_SIG
-    bytes secret_key_{}; ///< secret key
+    bytes secret_key_{};                 ///< secret key
 
   public:
     /**
@@ -550,10 +550,10 @@ class Signature {
      */
     Signature(Signature&& rhs) noexcept
         : sig_{std::move(rhs.sig_)}, alg_details_{std::move(rhs.alg_details_)} {
-        // paranoid move via copy/clean/resize, see
+        // Paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
-        // clean (zero)
+        // Clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
         rhs.secret_key_.resize(0); // resize
     }
@@ -567,10 +567,10 @@ class Signature {
         sig_ = std::move(rhs.sig_);
         alg_details_ = std::move(rhs.alg_details_);
 
-        // paranoid move via copy/clean/resize, see
+        // Paranoid move via copy/clean/resize, see
         // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
         secret_key_ = rhs.secret_key_; // copy
-        // clean (zero)
+        // Clean (zero)
         C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
         rhs.secret_key_.resize(0); // resize
 
@@ -722,7 +722,7 @@ class Init final : public internal::Singleton<const Init> {
     }
 };
 static const Init& init_ = Init::get_instance(); ///< liboqs initialization
-// instantiate the KEMs and Sigs singletons (if ever needed)
+// Instantiate the KEMs and Sigs singletons (if ever needed)
 static const KEMs& kems_ =
     KEMs::get_instance(); ///< instantiates the KEMs singleton
 static const Sigs& sigs_ =
