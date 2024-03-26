@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <iostream>
 #include <memory>
 #include <ostream>
 #include <stdexcept>
@@ -166,7 +167,7 @@ class KeyEncapsulation {
     std::shared_ptr<C::OQS_KEM> kem_{nullptr, [](C::OQS_KEM* p) {
                                          C::OQS_KEM_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_KEM
-    bytes secret_key_{};                 ///< secret key
+    bytes secret_key_{}; ///< secret key
   public:
     /**
      * \brief KEM algorithm details
@@ -483,7 +484,7 @@ class Signature {
     std::shared_ptr<C::OQS_SIG> sig_{nullptr, [](C::OQS_SIG* p) {
                                          C::OQS_SIG_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_SIG
-    bytes secret_key_{};                 ///< secret key
+    bytes secret_key_{}; ///< secret key
 
   public:
     /**
