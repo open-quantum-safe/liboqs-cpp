@@ -1,4 +1,4 @@
-# Version 0.10.0 - March 26, 2024
+# Version 0.10.0 - March 27, 2024
 
 - Replaced ["CHANGES"] by ["CHANGES.md"], as we now use Markdown format to
   keep track of changes in new releases
