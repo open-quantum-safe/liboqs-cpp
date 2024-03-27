@@ -133,7 +133,7 @@ may be slightly different, e.g., `liboqs-cpp/build/Debug/kem.exe`.
 Execute
 
 ```shell
-ctest --build liboqs-cpp/build --parallel 8 --target unit_tests
+cmake --build liboqs-cpp/build/unit_tests --target unit_tests --parallel 8
 ```
 
 followed by
