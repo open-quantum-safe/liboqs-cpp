@@ -33,6 +33,7 @@ The project contains the following files and directories:
 ## Pre-requisites
 
 - [liboqs](https://github.com/open-quantum-safe/liboqs)
+- [git](https://git-scm.com/)
 - [CMake](https://cmake.org/)
 - C++11 compliant compiler, e.g., [gcc](https://gcc.gnu.org/)
   , [clang](https://clang.llvm.org)
