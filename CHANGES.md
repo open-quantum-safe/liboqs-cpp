@@ -1,6 +1,11 @@
 # Version 0.12.0 - xx January, 2024
 
-- New API
+- Fixes #51. The API that NIST has introduced in FIPS 204 for ML-DSA includes a
+  context string of length >= 0. Added new API for signing with context:
+  - `bytes Signature::sign_with_ctx_str(const bytes& message, 
+const bytes& context) const`
+  - `bool Signature::verify_with_ctx_str(const bytes& message, 
+const bytes& signature, const bytes& context, const bytes& public_key) const`
 
 # Version 0.10.0 - March 27, 2024
 

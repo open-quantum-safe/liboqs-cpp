@@ -167,7 +167,7 @@ class KeyEncapsulation {
     std::shared_ptr<C::OQS_KEM> kem_{nullptr, [](C::OQS_KEM* p) {
                                          C::OQS_KEM_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_KEM
-    bytes secret_key_{};                 ///< secret key
+    bytes secret_key_{}; ///< secret key
   public:
     /**
      * \brief KEM algorithm details
@@ -484,7 +484,7 @@ class Signature {
     std::shared_ptr<C::OQS_SIG> sig_{nullptr, [](C::OQS_SIG* p) {
                                          C::OQS_SIG_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_SIG
-    bytes secret_key_{};                 ///< secret key
+    bytes secret_key_{}; ///< secret key
 
   public:
     /**
@@ -644,6 +644,60 @@ class Signature {
         signature.resize(len_sig);
 
         return signature;
+    }
+
+    /**
+     * \brief Sign message with context string
+     * \param message Message
+     * \param context Context string
+     * \return Message signature
+     */
+    bytes sign_with_ctx_str(const bytes& message, const bytes& context) const {
+        if (secret_key_.size() != alg_details_.length_secret_key)
+            throw std::runtime_error(
+                "Incorrect secret key length, make sure you "
+                "specify one in the constructor or run "
+                "oqs::Signature::generate_keypair()");
+
+        bytes signature(alg_details_.max_length_signature, 0);
+
+        std::size_t len_sig;
+        OQS_STATUS rv_ = C::OQS_SIG_sign_with_ctx_str(
+            sig_.get(), signature.data(), &len_sig, message.data(),
+            message.size(), context.data(), context.size(), secret_key_.data());
+
+        if (rv_ != OQS_STATUS::OQS_SUCCESS)
+            throw std::runtime_error(
+                "Can not sign message with context string");
+
+        signature.resize(len_sig);
+
+        return signature;
+    }
+
+    /**
+     * \brief Verify signature with context string
+     * \param message Message
+     * \param signature Signature
+     * \param context Context string
+     * \param public_key Public key
+     * \return True if the signature is valid, false otherwise
+     */
+    bool verify_with_ctx_str(const bytes& message, const bytes& signature,
+                             const bytes& context,
+                             const bytes& public_key) const {
+        if (public_key.size() != alg_details_.length_public_key)
+            throw std::runtime_error("Incorrect public key length");
+
+        if (signature.size() > alg_details_.max_length_signature)
+            throw std::runtime_error("Incorrect signature size");
+
+        OQS_STATUS rv_ = C::OQS_SIG_verify_with_ctx_str(
+            sig_.get(), message.data(), message.size(), signature.data(),
+            signature.size(), context.data(), context.size(),
+            public_key.data());
+
+        return rv_ == OQS_STATUS::OQS_SUCCESS;
     }
 
     /**
