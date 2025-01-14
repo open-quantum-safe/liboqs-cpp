@@ -1,4 +1,4 @@
-# liboqs-cpp version 0.10.0
+# liboqs-cpp version 0.12.0
 
 ---
 
@@ -24,13 +24,13 @@ See in particular limitations on intended use.
 
 ## Release notes
 
-This release of liboqs-cpp was released on March 27, 2024. Its release page
+This release of liboqs-cpp was released on January 14, 2025. Its release page
 on GitHub is
-https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.10.0.
+https://github.com/open-quantum-safe/liboqs-cpp/releases/tag/0.12.0.
 
 ---
 
 ## What's New
 
-This is the 14th release of liboqs-cpp. For a list of changes see
+This is the 15th release of liboqs-cpp. For a list of changes see
 [CHANGES.md](https://github.com/open-quantum-safe/liboqs-cpp/blob/main/CHANGES.md).
