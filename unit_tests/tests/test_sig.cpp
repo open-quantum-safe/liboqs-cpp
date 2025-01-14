@@ -35,14 +35,15 @@ void test_sig_correctness(const std::string& sig_name, const oqs::bytes& msg) {
 
 void test_sig_correctness_with_ctx_str(const std::string& sig_name,
                                        const oqs::bytes& msg) {
-    if (sig_name.substr(0, 6) != "ML-DSA")
+    oqs::Signature signer{sig_name};
+    if (!signer.get_details().sig_with_ctx_support) {
         return;
+    }
     {
         std::lock_guard<std::mutex> lg{mu};
         std::cout << "Correctness with context string - " << sig_name
                   << std::endl;
     }
-    oqs::Signature signer{sig_name};
     oqs::bytes context_str{"some context"_bytes};
     oqs::bytes signer_public_key = signer.generate_keypair();
     oqs::bytes signature = signer.sign_with_ctx_str(msg, context_str);

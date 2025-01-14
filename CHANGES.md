@@ -1,9 +1,9 @@
-# Version 0.12.0 - 14 January, 2025
+# Version 0.12.0 - January 14, 2025
 
 - Fixes https://github.com/open-quantum-safe/liboqs-cpp/issues/21. The API that
   NIST has introduced in [FIPS 204](https://csrc.nist.gov/pubs/fips/204/final)
   for ML-DSA includes a context string of length >= 0. Added new API for
-  signing with a context string:
+  signing with a context string
   - `bytes Signature::sign_with_ctx_str(const bytes& message,
 const bytes& context) const`
   - `bool Signature::verify_with_ctx_str(const bytes& message,

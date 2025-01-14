@@ -495,6 +495,7 @@ class Signature {
         std::string version;
         std::size_t claimed_nist_level;
         bool is_euf_cma;
+        bool sig_with_ctx_support;
         std::size_t length_public_key;
         std::size_t length_secret_key;
         std::size_t max_length_signature;
@@ -527,6 +528,7 @@ class Signature {
         alg_details_.version = sig_->alg_version;
         alg_details_.claimed_nist_level = sig_->claimed_nist_level;
         alg_details_.is_euf_cma = sig_->euf_cma;
+        alg_details_.sig_with_ctx_support = sig_->sig_with_ctx_support;
         alg_details_.length_public_key = sig_->length_public_key;
         alg_details_.length_secret_key = sig_->length_secret_key;
         alg_details_.max_length_signature = sig_->length_signature;
@@ -676,6 +678,28 @@ class Signature {
     }
 
     /**
+     * \brief Verify signature
+     * \param message Message
+     * \param signature Signature
+     * \param public_key Public key
+     * \return True if the signature is valid, false otherwise
+     */
+    bool verify(const bytes& message, const bytes& signature,
+                const bytes& public_key) const {
+        if (public_key.size() != alg_details_.length_public_key)
+            throw std::runtime_error("Incorrect public key length");
+
+        if (signature.size() > alg_details_.max_length_signature)
+            throw std::runtime_error("Incorrect signature size");
+
+        OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
+                                           message.size(), signature.data(),
+                                           signature.size(), public_key.data());
+
+        return rv_ == OQS_STATUS::OQS_SUCCESS;
+    }
+
+    /**
      * \brief Verify signature with context string
      * \param message Message
      * \param signature Signature
@@ -701,28 +725,6 @@ class Signature {
     }
 
     /**
-     * \brief Verify signature
-     * \param message Message
-     * \param signature Signature
-     * \param public_key Public key
-     * \return True if the signature is valid, false otherwise
-     */
-    bool verify(const bytes& message, const bytes& signature,
-                const bytes& public_key) const {
-        if (public_key.size() != alg_details_.length_public_key)
-            throw std::runtime_error("Incorrect public key length");
-
-        if (signature.size() > alg_details_.max_length_signature)
-            throw std::runtime_error("Incorrect signature size");
-
-        OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
-                                           message.size(), signature.data(),
-                                           signature.size(), public_key.data());
-
-        return rv_ == OQS_STATUS::OQS_SUCCESS;
-    }
-
-    /**
      * \brief std::ostream extraction operator for the signature algorithm
      * details
      * \param os Output stream
@@ -735,6 +737,7 @@ class Signature {
         os << "Version: " << rhs.version << '\n';
         os << "Claimed NIST level: " << rhs.claimed_nist_level << '\n';
         os << "Is EUF_CMA: " << rhs.is_euf_cma << '\n';
+        os << "Supports context string: " << rhs.sig_with_ctx_support << '\n';
         os << "Length public key (bytes): " << rhs.length_public_key << '\n';
         os << "Length secret key (bytes): " << rhs.length_secret_key << '\n';
         os << "Maximum length signature (bytes): " << rhs.max_length_signature;
