@@ -676,6 +676,28 @@ class Signature {
     }
 
     /**
+     * \brief Verify signature
+     * \param message Message
+     * \param signature Signature
+     * \param public_key Public key
+     * \return True if the signature is valid, false otherwise
+     */
+    bool verify(const bytes& message, const bytes& signature,
+                const bytes& public_key) const {
+        if (public_key.size() != alg_details_.length_public_key)
+            throw std::runtime_error("Incorrect public key length");
+
+        if (signature.size() > alg_details_.max_length_signature)
+            throw std::runtime_error("Incorrect signature size");
+
+        OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
+                                           message.size(), signature.data(),
+                                           signature.size(), public_key.data());
+
+        return rv_ == OQS_STATUS::OQS_SUCCESS;
+    }
+
+    /**
      * \brief Verify signature with context string
      * \param message Message
      * \param signature Signature
@@ -696,28 +718,6 @@ class Signature {
             sig_.get(), message.data(), message.size(), signature.data(),
             signature.size(), context.data(), context.size(),
             public_key.data());
-
-        return rv_ == OQS_STATUS::OQS_SUCCESS;
-    }
-
-    /**
-     * \brief Verify signature
-     * \param message Message
-     * \param signature Signature
-     * \param public_key Public key
-     * \return True if the signature is valid, false otherwise
-     */
-    bool verify(const bytes& message, const bytes& signature,
-                const bytes& public_key) const {
-        if (public_key.size() != alg_details_.length_public_key)
-            throw std::runtime_error("Incorrect public key length");
-
-        if (signature.size() > alg_details_.max_length_signature)
-            throw std::runtime_error("Incorrect signature size");
-
-        OQS_STATUS rv_ = C::OQS_SIG_verify(sig_.get(), message.data(),
-                                           message.size(), signature.data(),
-                                           signature.size(), public_key.data());
 
         return rv_ == OQS_STATUS::OQS_SUCCESS;
     }
