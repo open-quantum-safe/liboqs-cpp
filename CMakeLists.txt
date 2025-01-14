@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-set(LIBOQS_CPP_VERSION_NUM 0.10.0)
+set(LIBOQS_CPP_VERSION_NUM 0.12.0)
 set(LIBOQS_CPP_VERSION_STR "${LIBOQS_CPP_VERSION_NUM}")
 project(
   liboqs-cpp

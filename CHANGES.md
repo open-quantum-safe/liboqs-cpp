@@ -1,3 +1,14 @@
+# Version 0.12.0 - 14 January, 2024
+
+- Fixes https://github.com/open-quantum-safe/liboqs-cpp/issues/21. The API that
+  NIST has introduced in [FIPS 204](https://csrc.nist.gov/pubs/fips/204/final)
+  for ML-DSA includes a context string of length >= 0. Added new API for
+  signing with a context string:
+  - `bytes Signature::sign_with_ctx_str(const bytes& message,
+const bytes& context) const`
+  - `bool Signature::verify_with_ctx_str(const bytes& message,
+const bytes& signature, const bytes& context, const bytes& public_key) const`
+
 # Version 0.10.0 - March 27, 2024
 
 - Replaced CHANGES by
@@ -25,6 +36,7 @@
 - Minimalistic Docker support
 - Removed AppVeyor and CircleCI, all continuous integration is now done via
   GitHub actions
+- Changed header files extension from `.h` to `.hpp`
 
 # Version 0.7.2 - September 1, 2022
 
@@ -67,7 +79,7 @@
 
 # Version 0.2.0 - October 8, 2019
 
-- Minor changes to accomodate for liboqs API changes
+- Minor changes to accommodate for liboqs API changes
 
 # Version 0.1.2 - July 9, 2019
 
@@ -77,7 +89,7 @@
 
 # Version 0.1.1 - May 29, 2019
 
-- Minor API change in `oqs_cpp.h`: `Signature::alg_details_::length_signature`
+- Minor API change: `Signature::alg_details_::length_signature`
   is replaced by `Signature::alg_details_::max_length_signature`
 
 # Version 0.1.0 - April 23, 2019
