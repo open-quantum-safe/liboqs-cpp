@@ -1,4 +1,4 @@
-# Version 0.12.0 - 14 January, 2024
+# Version 0.12.0 - 14 January, 2025
 
 - Fixes https://github.com/open-quantum-safe/liboqs-cpp/issues/21. The API that
   NIST has introduced in [FIPS 204](https://csrc.nist.gov/pubs/fips/204/final)
