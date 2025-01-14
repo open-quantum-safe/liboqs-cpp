@@ -655,6 +655,10 @@ class Signature {
      * \return Message signature
      */
     bytes sign_with_ctx_str(const bytes& message, const bytes& context) const {
+        if (!context.empty() && !alg_details_.sig_with_ctx_support)
+            throw std::runtime_error(
+                "Signing with context string not supported");
+
         if (secret_key_.size() != alg_details_.length_secret_key)
             throw std::runtime_error(
                 "Incorrect secret key length, make sure you "
@@ -710,6 +714,10 @@ class Signature {
     bool verify_with_ctx_str(const bytes& message, const bytes& signature,
                              const bytes& context,
                              const bytes& public_key) const {
+        if (!context.empty() && !alg_details_.sig_with_ctx_support)
+            throw std::runtime_error(
+                "Verifying with context string not supported");
+
         if (public_key.size() != alg_details_.length_public_key)
             throw std::runtime_error("Incorrect public key length");
 

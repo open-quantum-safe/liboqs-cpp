@@ -15,8 +15,8 @@ C library, which is a C library for quantum-resistant cryptographic algorithms.
 
 The wrapper is written in standard C++11, hence in the following it is assumed
 that you have access to a C++11 compliant compiler. liboqs-cpp has been
-extensively tested on Linux, macOS and Windows platforms. Continuous integration
-is provided via GitHub actions.
+extensively tested on Linux, macOS, FreeBSD and Windows platforms. Continuous
+integration is provided via GitHub actions.
 
 The project contains the following files and directories:
 
