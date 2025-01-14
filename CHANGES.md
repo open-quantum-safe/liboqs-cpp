@@ -1,3 +1,7 @@
+# Version 0.12.0 - xx January, 2024
+
+- New API
+
 # Version 0.10.0 - March 27, 2024
 
 - Replaced CHANGES by
