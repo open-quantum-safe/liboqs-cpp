@@ -1,4 +1,4 @@
-# Version 0.12.0 - January 14, 2025
+# Version 0.12.0 - January 15, 2025
 
 - Fixes https://github.com/open-quantum-safe/liboqs-cpp/issues/21. The API that
   NIST has introduced in [FIPS 204](https://csrc.nist.gov/pubs/fips/204/final)
@@ -8,6 +8,7 @@
 const bytes& context) const`
   - `bool Signature::verify_with_ctx_str(const bytes& message,
 const bytes& signature, const bytes& context, const bytes& public_key) const`
+- Updated examples to use `ML-KEM` and `ML-DSA` as the defaults
 
 # Version 0.10.0 - March 27, 2024
 
