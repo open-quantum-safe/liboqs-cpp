@@ -52,18 +52,20 @@ void test_kem_wrong_ciphertext(const std::string& kem_name) {
     oqs::bytes wrong_ciphertext = oqs::rand::randombytes(ciphertext.size());
     oqs::bytes shared_secret_client;
     try {
+        // this line should throw
         shared_secret_client = client.decap_secret(wrong_ciphertext);
+        // if not, test should fail
+        bool is_valid = (shared_secret_client == shared_secret_server);
+        if (is_valid)
+            std::cerr << kem_name << ": shared secrets should not coincide"
+                      << std::endl;
+        EXPECT_FALSE(is_valid);
     } catch (std::exception& e) {
         if (e.what() == std::string{"Can not decapsulate secret"})
             return;
         else
             throw; // this is another un-expected exception
     }
-    bool is_valid = (shared_secret_client == shared_secret_server);
-    if (is_valid)
-        std::cerr << kem_name << ": shared secrets should not coincide"
-                  << std::endl;
-    EXPECT_FALSE(is_valid);
 }
 
 TEST(oqs_KeyEncapsulation, Correctness) {
