@@ -14,7 +14,7 @@ int main() {
     std::cout << "liboqs-cpp version: " << oqs::oqs_cpp_version() << '\n';
     std::cout << "Enabled KEMs:\n" << oqs::KEMs::get_enabled_KEMs();
 
-    std::string kem_name = "Kyber512";
+    std::string kem_name = "ML-KEM-512";
     oqs::KeyEncapsulation client{kem_name};
     std::cout << "\n\nKEM details:\n" << client.get_details();
 
