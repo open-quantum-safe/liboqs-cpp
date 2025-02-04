@@ -1,3 +1,12 @@
+# Pre-release
+
+- Added a utility function for de-structuring version strings in `<common.hpp>`
+  - `std::tuple<std::string, std::string, std::string>
+oqs::version(const std::string& version)` - Returns a tuple containing the
+    (major, minor, patch) versions
+- A warning is issued only if the liboqs-cpp version's major and minor numbers
+  differ from those of liboqs, ignoring the patch version
+
 # Version 0.12.0 - January 15, 2025
 
 - Fixes https://github.com/open-quantum-safe/liboqs-cpp/issues/21. The API that

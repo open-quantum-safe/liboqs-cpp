@@ -13,6 +13,7 @@
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -38,6 +39,22 @@ inline std::string oqs_version() { return oqs::C::OQS_version(); }
  * \return liboqs-cpp version string
  */
 inline std::string oqs_cpp_version() { return LIBOQS_CPP_VERSION; }
+
+/**
+ * \brief De-structure version string as a tuple (major, minor, patch)
+ * \return Version string as a tuple (major, minor, patch)
+ */
+inline std::tuple<std::string, std::string, std::string>
+version(const std::string& version_str) {
+    std::stringstream ss(version_str);
+    std::string major, minor, patch;
+
+    std::getline(ss, major, '.');
+    std::getline(ss, minor, '.');
+    std::getline(ss, patch, '.');
+
+    return std::make_tuple(major, minor, patch);
+}
 
 /**
  * \brief Sets to zero the content of \a v by invoking the liboqs

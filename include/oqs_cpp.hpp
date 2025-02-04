@@ -778,9 +778,16 @@ class Init final : public internal::Singleton<const Init> {
     Init() {
         C::OQS_init();
         std::string oqs_ver = oqs_version();
+        std::string oqs_ver_major = std::get<0>(version(oqs_ver));
+        std::string oqs_ver_minor = std::get<1>(version(oqs_ver));
+
         std::string oqs_cpp_ver = oqs_cpp_version();
-        if (oqs_ver != oqs_cpp_ver) {
-            std::cerr << "Warning! liboqs version " << oqs_ver
+        std::string oqs_cpp_ver_major = std::get<0>(version(oqs_cpp_ver));
+        std::string oqs_cpp_ver_minor = std::get<1>(version(oqs_cpp_ver));
+
+        if (!(oqs_ver_major == oqs_cpp_ver_major &&
+              oqs_ver_minor == oqs_cpp_ver_minor)) {
+            std::cerr << "Warning! liboqs version (major, minor) " << oqs_ver
                       << " differs from liboqs-cpp version " << oqs_cpp_ver
                       << std::endl;
         }
