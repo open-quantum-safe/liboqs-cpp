@@ -38,6 +38,28 @@ void test_kem_correctness(const std::string& kem_name) {
     EXPECT_TRUE(is_valid);
 }
 
+void test_kem_derand_correctness(const std::string& kem_name) {
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << "Derand correctness ML-KEM - " << kem_name << std::endl;
+    }
+    oqs::KeyEncapsulation client{kem_name};
+    if (kem_name.compare(0, 6, "ML-KEM") != 0)
+        return;
+
+    oqs::bytes client_public_key = client.generate_keypair_derand("42"_bytes);
+    oqs::KeyEncapsulation server{kem_name};
+    oqs::bytes ciphertext, shared_secret_server;
+    std::tie(ciphertext, shared_secret_server) =
+        server.encap_secret(client_public_key);
+    oqs::bytes shared_secret_client = client.decap_secret(ciphertext);
+    bool is_valid = (shared_secret_client == shared_secret_server);
+    if (!is_valid)
+        std::cerr << kem_name << ": shared secrets do not coincide"
+                  << std::endl;
+    EXPECT_TRUE(is_valid);
+}
+
 void test_kem_wrong_ciphertext(const std::string& kem_name) {
     {
         std::lock_guard<std::mutex> lg{mu};

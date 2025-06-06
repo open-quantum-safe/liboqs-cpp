@@ -20,8 +20,13 @@ int main() {
 
     oqs::Timer<std::chrono::milliseconds> t;
     oqs::bytes client_public_key = client.generate_keypair();
+    // For de-randomized key generation (ML-KEM only), use, e.g.,
+    // oqs::bytes client_public_key =
+    // client.generate_keypair_derand("42"_bytes);
     t.toc();
     std::cout << "\n\nClient public key:\n" << oqs::hex_chop(client_public_key);
+    std::cout << "\nClient secret key:\n"
+              << oqs::hex_chop(client.export_secret_key());
     std::cout << "\n\nIt took " << t << " millisecs to generate the key pair";
 
     oqs::KeyEncapsulation server{kem_name};

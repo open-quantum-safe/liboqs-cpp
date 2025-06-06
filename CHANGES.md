@@ -1,5 +1,9 @@
-# Pre-release
+# Version 0.13.0 - June 6, 2025
 
+- Bumped required C++ standard version to C++17
+- Introduced new de-randomized public key/secret key generation algorithm for
+  ML-KEM algorithms
+  - `bytes oqs::KeyEncapsulation generate_keypair(const bytes& seed)`
 - Added a utility function for de-structuring version strings in `<common.hpp>`
   - `std::tuple<std::string, std::string, std::string>
 oqs::version(const std::string& version)` - Returns a tuple containing the

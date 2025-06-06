@@ -284,7 +284,7 @@ class KeyEncapsulation {
 
     /**
      * \brief Generate public key/secret key pair
-     * \return Public key
+     * \return Public key; the secret key is stored inside the current instance
      */
     bytes generate_keypair() {
         bytes public_key(alg_details_.length_public_key, 0);
@@ -294,6 +294,30 @@ class KeyEncapsulation {
                                             secret_key_.data());
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
+
+        return public_key;
+    }
+
+    /**
+     * \brief Generate deterministic public key/secret key pair
+     * \note Currently only enabled for ML-KEM
+     *
+     * \param seed The input randomness represented as a byte string
+     * \return Public key; the secret key is stored inside the current instance
+     */
+    bytes generate_keypair_derand(const bytes& seed) {
+        if (alg_details_.name.compare(0, 6, "ML-KEM") != 0)
+            throw std::runtime_error(
+                "Determinisitc keypair generation enabled only for ML-KEM");
+
+        bytes public_key(alg_details_.length_public_key, 0);
+        secret_key_ = bytes(alg_details_.length_secret_key, 0);
+
+        OQS_STATUS rv_ = C::OQS_KEM_keypair_derand(
+            kem_.get(), public_key.data(), secret_key_.data(), seed.data());
+
+        if (rv_ != OQS_STATUS::OQS_SUCCESS)
+            throw std::runtime_error("Can not generate deterministic keypair");
 
         return public_key;
     }
