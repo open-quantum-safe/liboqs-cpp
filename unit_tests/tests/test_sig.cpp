@@ -23,14 +23,18 @@ void test_sig_correctness(const std::string& sig_name, const oqs::bytes& msg) {
         std::lock_guard<std::mutex> lg{mu};
         std::cout << "Correctness - " << sig_name << std::endl;
     }
-    oqs::Signature signer{sig_name};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes signature = signer.sign(msg);
-    oqs::Signature verifier{sig_name};
-    bool is_valid = verifier.verify(msg, signature, signer_public_key);
-    if (!is_valid)
-        std::cerr << sig_name << ": signature verification failed" << std::endl;
-    EXPECT_TRUE(is_valid);
+    try {
+        oqs::Signature signer{sig_name};
+        oqs::bytes signer_public_key = signer.generate_keypair();
+        oqs::bytes signature = signer.sign(msg);
+        oqs::Signature verifier{sig_name};
+        bool is_valid = verifier.verify(msg, signature, signer_public_key);
+        if (!is_valid)
+            std::cerr << sig_name << ": signature verification failed" << std::endl;
+        EXPECT_TRUE(is_valid);
+    } catch (const std::exception& e) {
+        FAIL() << "Exception thrown during correctness test for " << sig_name << ": " << e.what();
+    }
 }
 
 void test_sig_correctness_with_ctx_str(const std::string& sig_name,
@@ -44,17 +48,21 @@ void test_sig_correctness_with_ctx_str(const std::string& sig_name,
         std::cout << "Correctness with context string - " << sig_name
                   << std::endl;
     }
-    oqs::bytes context_str{"some context"_bytes};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes signature = signer.sign_with_ctx_str(msg, context_str);
-    oqs::Signature verifier{sig_name};
-    bool is_valid = verifier.verify_with_ctx_str(msg, signature, context_str,
-                                                 signer_public_key);
-    if (!is_valid)
-        std::cerr << sig_name
-                  << ": signature with context string verification failed"
-                  << std::endl;
-    EXPECT_TRUE(is_valid);
+    try {
+        oqs::bytes context_str{"some context"_bytes};
+        oqs::bytes signer_public_key = signer.generate_keypair();
+        oqs::bytes signature = signer.sign_with_ctx_str(msg, context_str);
+        oqs::Signature verifier{sig_name};
+        bool is_valid = verifier.verify_with_ctx_str(msg, signature, context_str,
+                                                     signer_public_key);
+        if (!is_valid)
+            std::cerr << sig_name
+                      << ": signature with context string verification failed"
+                      << std::endl;
+        EXPECT_TRUE(is_valid);
+    } catch (const std::exception& e) {
+        FAIL() << "Exception thrown during correctness_with_ctx_str test for " << sig_name << ": " << e.what();
+    }
 }
 
 void test_sig_wrong_signature(const std::string& sig_name,
@@ -63,16 +71,20 @@ void test_sig_wrong_signature(const std::string& sig_name,
         std::lock_guard<std::mutex> lg{mu};
         std::cout << "Wrong signature - " << sig_name << std::endl;
     }
-    oqs::Signature signer{sig_name};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes signature = signer.sign(msg);
-    oqs::bytes wrong_signature = oqs::rand::randombytes(signature.size());
-    oqs::Signature verifier{sig_name};
-    bool is_valid = verifier.verify(msg, wrong_signature, signer_public_key);
-    if (is_valid)
-        std::cerr << sig_name << ": signature verification should have failed"
-                  << std::endl;
-    EXPECT_FALSE(is_valid);
+    try {
+        oqs::Signature signer{sig_name};
+        oqs::bytes signer_public_key = signer.generate_keypair();
+        oqs::bytes signature = signer.sign(msg);
+        oqs::bytes wrong_signature = oqs::rand::randombytes(signature.size());
+        oqs::Signature verifier{sig_name};
+        bool is_valid = verifier.verify(msg, wrong_signature, signer_public_key);
+        if (is_valid)
+            std::cerr << sig_name << ": signature verification should have failed"
+                      << std::endl;
+        EXPECT_FALSE(is_valid);
+    } catch (const std::exception& e) {
+        FAIL() << "Exception thrown during wrong_signature test for " << sig_name << ": " << e.what();
+    }
 }
 
 void test_sig_wrong_public_key(const std::string& sig_name,
@@ -81,17 +93,21 @@ void test_sig_wrong_public_key(const std::string& sig_name,
         std::lock_guard<std::mutex> lg{mu};
         std::cout << "Wrong public key - " << sig_name << std::endl;
     }
-    oqs::Signature signer{sig_name};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes wrong_public_key =
-        oqs::rand::randombytes(signer_public_key.size());
-    oqs::bytes signature = signer.sign(msg);
-    oqs::Signature verifier{sig_name};
-    bool is_valid = verifier.verify(msg, signature, wrong_public_key);
-    if (is_valid)
-        std::cerr << sig_name << ": signature verification should have failed"
-                  << std::endl;
-    EXPECT_FALSE(is_valid);
+    try {
+        oqs::Signature signer{sig_name};
+        oqs::bytes signer_public_key = signer.generate_keypair();
+        oqs::bytes wrong_public_key =
+            oqs::rand::randombytes(signer_public_key.size());
+        oqs::bytes signature = signer.sign(msg);
+        oqs::Signature verifier{sig_name};
+        bool is_valid = verifier.verify(msg, signature, wrong_public_key);
+        if (is_valid)
+            std::cerr << sig_name << ": signature verification should have failed"
+                      << std::endl;
+        EXPECT_FALSE(is_valid);
+    } catch (const std::exception& e) {
+        FAIL() << "Exception thrown during wrong_public_key test for " << sig_name << ": " << e.what();
+    }
 }
 
 TEST(oqs_Signature, Correctness) {
