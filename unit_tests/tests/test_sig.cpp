@@ -13,28 +13,32 @@
 // no_thread_sig_patterns lists sig patterns that have issues running in a
 // separate thread
 static std::vector<std::string> no_thread_sig_patterns{
-    "cross-rsdp", "cross-rsdpg", "SPHINCS+", "Falcon", "MAYO"};
+    "cross-rsdp", "cross-rsdpg", "SPHINCS+", "Falcon", "MAYO", "SNOVA"};
 
 // used for thread-safe console output
 static std::mutex mu;
+
+// the ML-DSA-*-extmu variants sign an externally computed mu, which must be
+// exactly 64 bytes, rather than an arbitrary message
+oqs::bytes test_message(const std::string& sig_name) {
+    if (sig_name.find("-extmu") != std::string::npos)
+        return oqs::rand::randombytes(64);
+    return "This is our favourite message to sign"_bytes;
+}
 
 void test_sig_correctness(const std::string& sig_name, const oqs::bytes& msg) {
     {
         std::lock_guard<std::mutex> lg{mu};
         std::cout << "Correctness - " << sig_name << std::endl;
     }
-    try {
-        oqs::Signature signer{sig_name};
-        oqs::bytes signer_public_key = signer.generate_keypair();
-        oqs::bytes signature = signer.sign(msg);
-        oqs::Signature verifier{sig_name};
-        bool is_valid = verifier.verify(msg, signature, signer_public_key);
-        if (!is_valid)
-            std::cerr << sig_name << ": signature verification failed" << std::endl;
-        EXPECT_TRUE(is_valid);
-    } catch (const std::exception& e) {
-        FAIL() << "Exception thrown during correctness test for " << sig_name << ": " << e.what();
-    }
+    oqs::Signature signer{sig_name};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes signature = signer.sign(msg);
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify(msg, signature, signer_public_key);
+    if (!is_valid)
+        std::cerr << sig_name << ": signature verification failed" << std::endl;
+    EXPECT_TRUE(is_valid);
 }
 
 void test_sig_correctness_with_ctx_str(const std::string& sig_name,
@@ -48,21 +52,17 @@ void test_sig_correctness_with_ctx_str(const std::string& sig_name,
         std::cout << "Correctness with context string - " << sig_name
                   << std::endl;
     }
-    try {
-        oqs::bytes context_str{"some context"_bytes};
-        oqs::bytes signer_public_key = signer.generate_keypair();
-        oqs::bytes signature = signer.sign_with_ctx_str(msg, context_str);
-        oqs::Signature verifier{sig_name};
-        bool is_valid = verifier.verify_with_ctx_str(msg, signature, context_str,
-                                                     signer_public_key);
-        if (!is_valid)
-            std::cerr << sig_name
-                      << ": signature with context string verification failed"
-                      << std::endl;
-        EXPECT_TRUE(is_valid);
-    } catch (const std::exception& e) {
-        FAIL() << "Exception thrown during correctness_with_ctx_str test for " << sig_name << ": " << e.what();
-    }
+    oqs::bytes context_str{"some context"_bytes};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes signature = signer.sign_with_ctx_str(msg, context_str);
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify_with_ctx_str(msg, signature, context_str,
+                                                 signer_public_key);
+    if (!is_valid)
+        std::cerr << sig_name
+                  << ": signature with context string verification failed"
+                  << std::endl;
+    EXPECT_TRUE(is_valid);
 }
 
 void test_sig_wrong_signature(const std::string& sig_name,
@@ -71,20 +71,16 @@ void test_sig_wrong_signature(const std::string& sig_name,
         std::lock_guard<std::mutex> lg{mu};
         std::cout << "Wrong signature - " << sig_name << std::endl;
     }
-    try {
-        oqs::Signature signer{sig_name};
-        oqs::bytes signer_public_key = signer.generate_keypair();
-        oqs::bytes signature = signer.sign(msg);
-        oqs::bytes wrong_signature = oqs::rand::randombytes(signature.size());
-        oqs::Signature verifier{sig_name};
-        bool is_valid = verifier.verify(msg, wrong_signature, signer_public_key);
-        if (is_valid)
-            std::cerr << sig_name << ": signature verification should have failed"
-                      << std::endl;
-        EXPECT_FALSE(is_valid);
-    } catch (const std::exception& e) {
-        FAIL() << "Exception thrown during wrong_signature test for " << sig_name << ": " << e.what();
-    }
+    oqs::Signature signer{sig_name};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes signature = signer.sign(msg);
+    oqs::bytes wrong_signature = oqs::rand::randombytes(signature.size());
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify(msg, wrong_signature, signer_public_key);
+    if (is_valid)
+        std::cerr << sig_name << ": signature verification should have failed"
+                  << std::endl;
+    EXPECT_FALSE(is_valid);
 }
 
 void test_sig_wrong_public_key(const std::string& sig_name,
@@ -93,25 +89,33 @@ void test_sig_wrong_public_key(const std::string& sig_name,
         std::lock_guard<std::mutex> lg{mu};
         std::cout << "Wrong public key - " << sig_name << std::endl;
     }
+    oqs::Signature signer{sig_name};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes wrong_public_key =
+        oqs::rand::randombytes(signer_public_key.size());
+    oqs::bytes signature = signer.sign(msg);
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify(msg, signature, wrong_public_key);
+    if (is_valid)
+        std::cerr << sig_name << ": signature verification should have failed"
+                  << std::endl;
+    EXPECT_FALSE(is_valid);
+}
+
+// runs a test in a separate thread; an exception escaping a std::thread calls
+// std::terminate() and aborts the whole test run, so report it as a failure
+void test_sig_in_thread(void (*test)(const std::string&, const oqs::bytes&),
+                        const std::string& sig_name, const oqs::bytes& msg) {
     try {
-        oqs::Signature signer{sig_name};
-        oqs::bytes signer_public_key = signer.generate_keypair();
-        oqs::bytes wrong_public_key =
-            oqs::rand::randombytes(signer_public_key.size());
-        oqs::bytes signature = signer.sign(msg);
-        oqs::Signature verifier{sig_name};
-        bool is_valid = verifier.verify(msg, signature, wrong_public_key);
-        if (is_valid)
-            std::cerr << sig_name << ": signature verification should have failed"
-                      << std::endl;
-        EXPECT_FALSE(is_valid);
+        test(sig_name, msg);
     } catch (const std::exception& e) {
-        FAIL() << "Exception thrown during wrong_public_key test for " << sig_name << ": " << e.what();
+        ADD_FAILURE() << sig_name << ": unexpected exception: " << e.what();
+    } catch (...) {
+        ADD_FAILURE() << sig_name << ": unexpected exception";
     }
 }
 
 TEST(oqs_Signature, Correctness) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -120,7 +124,7 @@ TEST(oqs_Signature, Correctness) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_correctness(sig_name, message);
+                test_sig_correctness(sig_name, test_message(sig_name));
             }
         }
     }
@@ -134,7 +138,8 @@ TEST(oqs_Signature, Correctness) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_correctness, sig_name, message);
+            thread_pool.emplace_back(test_sig_in_thread, test_sig_correctness,
+                                     sig_name, test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
@@ -142,7 +147,6 @@ TEST(oqs_Signature, Correctness) {
 }
 
 TEST(oqs_Signature, CorrectnessWithContextString) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -151,7 +155,8 @@ TEST(oqs_Signature, CorrectnessWithContextString) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_correctness_with_ctx_str(sig_name, message);
+                test_sig_correctness_with_ctx_str(sig_name,
+                                                  test_message(sig_name));
             }
         }
     }
@@ -165,8 +170,9 @@ TEST(oqs_Signature, CorrectnessWithContextString) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_correctness_with_ctx_str,
-                                     sig_name, message);
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_correctness_with_ctx_str,
+                                     sig_name, test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
@@ -174,7 +180,6 @@ TEST(oqs_Signature, CorrectnessWithContextString) {
 }
 
 TEST(oqs_Signature, WrongSignature) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -183,7 +188,7 @@ TEST(oqs_Signature, WrongSignature) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_wrong_signature(sig_name, message);
+                test_sig_wrong_signature(sig_name, test_message(sig_name));
             }
         }
     }
@@ -197,8 +202,9 @@ TEST(oqs_Signature, WrongSignature) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_wrong_signature, sig_name,
-                                     message);
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_wrong_signature, sig_name,
+                                     test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
@@ -206,7 +212,6 @@ TEST(oqs_Signature, WrongSignature) {
 }
 
 TEST(oqs_Signature, WrongPublicKey) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -215,7 +220,7 @@ TEST(oqs_Signature, WrongPublicKey) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_wrong_public_key(sig_name, message);
+                test_sig_wrong_public_key(sig_name, test_message(sig_name));
             }
         }
     }
@@ -229,8 +234,9 @@ TEST(oqs_Signature, WrongPublicKey) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_wrong_public_key, sig_name,
-                                     message);
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_wrong_public_key, sig_name,
+                                     test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
