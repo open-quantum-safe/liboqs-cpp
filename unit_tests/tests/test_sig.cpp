@@ -13,10 +13,18 @@
 // no_thread_sig_patterns lists sig patterns that have issues running in a
 // separate thread
 static std::vector<std::string> no_thread_sig_patterns{
-    "cross-rsdp", "cross-rsdpg", "SPHINCS+", "Falcon", "MAYO"};
+    "cross-rsdp", "cross-rsdpg", "SPHINCS+", "Falcon", "MAYO", "SNOVA"};
 
 // used for thread-safe console output
 static std::mutex mu;
+
+// the ML-DSA-*-extmu variants sign an externally computed mu, which must be
+// exactly 64 bytes, rather than an arbitrary message
+oqs::bytes test_message(const std::string& sig_name) {
+    if (sig_name.find("-extmu") != std::string::npos)
+        return oqs::rand::randombytes(64);
+    return "This is our favourite message to sign"_bytes;
+}
 
 void test_sig_correctness(const std::string& sig_name, const oqs::bytes& msg) {
     {
@@ -94,8 +102,20 @@ void test_sig_wrong_public_key(const std::string& sig_name,
     EXPECT_FALSE(is_valid);
 }
 
+// runs a test in a separate thread; an exception escaping a std::thread calls
+// std::terminate() and aborts the whole test run, so report it as a failure
+void test_sig_in_thread(void (*test)(const std::string&, const oqs::bytes&),
+                        const std::string& sig_name, const oqs::bytes& msg) {
+    try {
+        test(sig_name, msg);
+    } catch (const std::exception& e) {
+        ADD_FAILURE() << sig_name << ": unexpected exception: " << e.what();
+    } catch (...) {
+        ADD_FAILURE() << sig_name << ": unexpected exception";
+    }
+}
+
 TEST(oqs_Signature, Correctness) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -104,7 +124,7 @@ TEST(oqs_Signature, Correctness) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_correctness(sig_name, message);
+                test_sig_correctness(sig_name, test_message(sig_name));
             }
         }
     }
@@ -118,7 +138,8 @@ TEST(oqs_Signature, Correctness) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_correctness, sig_name, message);
+            thread_pool.emplace_back(test_sig_in_thread, test_sig_correctness,
+                                     sig_name, test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
@@ -126,7 +147,6 @@ TEST(oqs_Signature, Correctness) {
 }
 
 TEST(oqs_Signature, CorrectnessWithContextString) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -135,7 +155,8 @@ TEST(oqs_Signature, CorrectnessWithContextString) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_correctness_with_ctx_str(sig_name, message);
+                test_sig_correctness_with_ctx_str(sig_name,
+                                                  test_message(sig_name));
             }
         }
     }
@@ -149,8 +170,9 @@ TEST(oqs_Signature, CorrectnessWithContextString) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_correctness_with_ctx_str,
-                                     sig_name, message);
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_correctness_with_ctx_str,
+                                     sig_name, test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
@@ -158,7 +180,6 @@ TEST(oqs_Signature, CorrectnessWithContextString) {
 }
 
 TEST(oqs_Signature, WrongSignature) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -167,7 +188,7 @@ TEST(oqs_Signature, WrongSignature) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_wrong_signature(sig_name, message);
+                test_sig_wrong_signature(sig_name, test_message(sig_name));
             }
         }
     }
@@ -181,8 +202,9 @@ TEST(oqs_Signature, WrongSignature) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_wrong_signature, sig_name,
-                                     message);
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_wrong_signature, sig_name,
+                                     test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
@@ -190,7 +212,6 @@ TEST(oqs_Signature, WrongSignature) {
 }
 
 TEST(oqs_Signature, WrongPublicKey) {
-    oqs::bytes message = "This is our favourite message to sign"_bytes;
     std::vector<std::thread> thread_pool;
     std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
     // first test sigs that belong to no_thread_sig_patterns[] in the main
@@ -199,7 +220,7 @@ TEST(oqs_Signature, WrongPublicKey) {
     for (auto&& sig_name : enabled_sigs) {
         for (auto&& no_thread_sig : no_thread_sig_patterns) {
             if (sig_name.find(no_thread_sig) != std::string::npos) {
-                test_sig_wrong_public_key(sig_name, message);
+                test_sig_wrong_public_key(sig_name, test_message(sig_name));
             }
         }
     }
@@ -213,8 +234,9 @@ TEST(oqs_Signature, WrongPublicKey) {
             }
         }
         if (test_in_thread)
-            thread_pool.emplace_back(test_sig_wrong_public_key, sig_name,
-                                     message);
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_wrong_public_key, sig_name,
+                                     test_message(sig_name));
     }
     // join the rest of the threads
     for (auto&& elem : thread_pool)
