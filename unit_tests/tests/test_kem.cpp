@@ -4,6 +4,7 @@
 #include <mutex>
 #include <thread>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -131,4 +132,26 @@ TEST(oqs_KeyEncapsulation, WrongCiphertext) {
 TEST(oqs_KeyEncapsulation, NotSupported) {
     EXPECT_THROW(oqs::KeyEncapsulation{"unsupported_kem"},
                  oqs::MechanismNotSupportedError);
+}
+
+TEST(oqs_KeyEncapsulation, SecretKeyLifecycle) {
+    const auto enabled_kems = oqs::KEMs::get_enabled_KEMs();
+    if (enabled_kems.empty())
+        return;
+
+    oqs::KeyEncapsulation source{enabled_kems.front()};
+    source.generate_keypair();
+    oqs::KeyEncapsulation target{enabled_kems.front()};
+    target.generate_keypair();
+
+    target = source;
+    EXPECT_EQ(target.export_secret_key(), source.export_secret_key());
+
+    target = std::move(source);
+    EXPECT_EQ(target.export_secret_key().size(),
+              target.get_details().length_secret_key);
+
+    target.generate_keypair();
+    EXPECT_EQ(target.export_secret_key().size(),
+              target.get_details().length_secret_key);
 }

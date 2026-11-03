@@ -3,6 +3,7 @@
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <utility>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -246,4 +247,26 @@ TEST(oqs_Signature, WrongPublicKey) {
 TEST(oqs_Signature, NotSupported) {
     EXPECT_THROW(oqs::Signature{"unsupported_sig"},
                  oqs::MechanismNotSupportedError);
+}
+
+TEST(oqs_Signature, SecretKeyLifecycle) {
+    const auto enabled_sigs = oqs::Sigs::get_enabled_sigs();
+    if (enabled_sigs.empty())
+        return;
+
+    oqs::Signature source{enabled_sigs.front()};
+    source.generate_keypair();
+    oqs::Signature target{enabled_sigs.front()};
+    target.generate_keypair();
+
+    target = source;
+    EXPECT_EQ(target.export_secret_key(), source.export_secret_key());
+
+    target = std::move(source);
+    EXPECT_EQ(target.export_secret_key().size(),
+              target.get_details().length_secret_key);
+
+    target.generate_keypair();
+    EXPECT_EQ(target.export_secret_key().size(),
+              target.get_details().length_secret_key);
 }

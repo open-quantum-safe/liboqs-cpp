@@ -168,6 +168,12 @@ class KeyEncapsulation {
                                          C::OQS_KEM_free(p);
                                      }}; ///< liboqs smart pointer to C::OQS_KEM
     bytes secret_key_{}; ///< secret key
+
+    static void cleanse_secret_key(bytes& secret_key) {
+        if (!secret_key.empty())
+            C::OQS_MEM_cleanse(secret_key.data(), secret_key.size());
+    }
+
   public:
     /**
      * \brief KEM algorithm details
@@ -194,27 +200,34 @@ class KeyEncapsulation {
      */
     explicit KeyEncapsulation(const std::string& alg_name,
                               bytes secret_key = {})
-        : secret_key_{std::move(secret_key)} {
-        // KEM not enabled
-        if (!KEMs::is_KEM_enabled(alg_name)) {
-            // Perhaps it's supported
-            if (KEMs::is_KEM_supported(alg_name))
-                throw MechanismNotEnabledError(alg_name);
-            else
-                throw MechanismNotSupportedError(alg_name);
+        : secret_key_{} {
+        try {
+            // KEM not enabled
+            if (!KEMs::is_KEM_enabled(alg_name)) {
+                // Perhaps it's supported
+                if (KEMs::is_KEM_supported(alg_name))
+                    throw MechanismNotEnabledError(alg_name);
+                else
+                    throw MechanismNotSupportedError(alg_name);
+            }
+
+            kem_.reset(C::OQS_KEM_new(alg_name.c_str()),
+                       [](C::OQS_KEM* p) { C::OQS_KEM_free(p); });
+
+            alg_details_.name = kem_->method_name;
+            alg_details_.version = kem_->alg_version;
+            alg_details_.claimed_nist_level = kem_->claimed_nist_level;
+            alg_details_.is_ind_cca = kem_->ind_cca;
+            alg_details_.length_public_key = kem_->length_public_key;
+            alg_details_.length_secret_key = kem_->length_secret_key;
+            alg_details_.length_ciphertext = kem_->length_ciphertext;
+            alg_details_.length_shared_secret = kem_->length_shared_secret;
+
+            secret_key_ = std::move(secret_key);
+        } catch (...) {
+            cleanse_secret_key(secret_key);
+            throw;
         }
-
-        kem_.reset(C::OQS_KEM_new(alg_name.c_str()),
-                   [](C::OQS_KEM* p) { C::OQS_KEM_free(p); });
-
-        alg_details_.name = kem_->method_name;
-        alg_details_.version = kem_->alg_version;
-        alg_details_.claimed_nist_level = kem_->claimed_nist_level;
-        alg_details_.is_ind_cca = kem_->ind_cca;
-        alg_details_.length_public_key = kem_->length_public_key;
-        alg_details_.length_secret_key = kem_->length_secret_key;
-        alg_details_.length_ciphertext = kem_->length_ciphertext;
-        alg_details_.length_shared_secret = kem_->length_shared_secret;
     }
 
     /**
@@ -223,10 +236,19 @@ class KeyEncapsulation {
     KeyEncapsulation(const KeyEncapsulation&) = default;
 
     /**
-     * \brief Default copy assignment operator
+     * \brief Copy assignment operator
      * \return Reference to the current instance
      */
-    KeyEncapsulation& operator=(const KeyEncapsulation&) = default;
+    KeyEncapsulation& operator=(const KeyEncapsulation& rhs) {
+        if (this != &rhs) {
+            bytes copied_secret_key = rhs.secret_key_;
+            alg_details_ = rhs.alg_details_;
+            kem_ = rhs.kem_;
+            cleanse_secret_key(secret_key_);
+            secret_key_ = std::move(copied_secret_key);
+        }
+        return *this;
+    }
 
     /**
      * \brief Move constructor, guarantees that the rvalue secret key is always
@@ -249,6 +271,10 @@ class KeyEncapsulation {
      * \return Reference to the current instance
      */
     KeyEncapsulation& operator=(KeyEncapsulation&& rhs) noexcept {
+        if (this == &rhs)
+            return *this;
+
+        cleanse_secret_key(secret_key_);
         kem_ = std::move(rhs.kem_);
         alg_details_ = std::move(rhs.alg_details_);
 
@@ -266,8 +292,7 @@ class KeyEncapsulation {
      * \brief Virtual default destructor
      */
     virtual ~KeyEncapsulation() {
-        if (!secret_key_.empty())
-            C::OQS_MEM_cleanse(secret_key_.data(), secret_key_.size());
+        cleanse_secret_key(secret_key_);
     }
 
     /**
@@ -288,6 +313,7 @@ class KeyEncapsulation {
      */
     bytes generate_keypair() {
         bytes public_key(alg_details_.length_public_key, 0);
+        cleanse_secret_key(secret_key_);
         secret_key_ = bytes(alg_details_.length_secret_key, 0);
 
         OQS_STATUS rv_ = C::OQS_KEM_keypair(kem_.get(), public_key.data(),
@@ -486,6 +512,11 @@ class Signature {
                                      }}; ///< liboqs smart pointer to C::OQS_SIG
     bytes secret_key_{}; ///< secret key
 
+    static void cleanse_secret_key(bytes& secret_key) {
+        if (!secret_key.empty())
+            C::OQS_MEM_cleanse(secret_key.data(), secret_key.size());
+    }
+
   public:
     /**
      * \brief Signature algorithm details
@@ -511,27 +542,34 @@ class Signature {
      * \param secret_key Secret key (optional)
      */
     explicit Signature(const std::string& alg_name, bytes secret_key = {})
-        : secret_key_{std::move(secret_key)} {
-        // signature not enabled
-        if (!Sigs::is_sig_enabled(alg_name)) {
-            // perhaps it's supported
-            if (Sigs::is_sig_supported(alg_name))
-                throw MechanismNotEnabledError(alg_name);
-            else
-                throw MechanismNotSupportedError(alg_name);
+        : secret_key_{} {
+        try {
+            // signature not enabled
+            if (!Sigs::is_sig_enabled(alg_name)) {
+                // perhaps it's supported
+                if (Sigs::is_sig_supported(alg_name))
+                    throw MechanismNotEnabledError(alg_name);
+                else
+                    throw MechanismNotSupportedError(alg_name);
+            }
+
+            sig_.reset(C::OQS_SIG_new(alg_name.c_str()),
+                       [](C::OQS_SIG* p) { C::OQS_SIG_free(p); });
+
+            alg_details_.name = sig_->method_name;
+            alg_details_.version = sig_->alg_version;
+            alg_details_.claimed_nist_level = sig_->claimed_nist_level;
+            alg_details_.is_euf_cma = sig_->euf_cma;
+            alg_details_.sig_with_ctx_support = sig_->sig_with_ctx_support;
+            alg_details_.length_public_key = sig_->length_public_key;
+            alg_details_.length_secret_key = sig_->length_secret_key;
+            alg_details_.max_length_signature = sig_->length_signature;
+
+            secret_key_ = std::move(secret_key);
+        } catch (...) {
+            cleanse_secret_key(secret_key);
+            throw;
         }
-
-        sig_.reset(C::OQS_SIG_new(alg_name.c_str()),
-                   [](C::OQS_SIG* p) { C::OQS_SIG_free(p); });
-
-        alg_details_.name = sig_->method_name;
-        alg_details_.version = sig_->alg_version;
-        alg_details_.claimed_nist_level = sig_->claimed_nist_level;
-        alg_details_.is_euf_cma = sig_->euf_cma;
-        alg_details_.sig_with_ctx_support = sig_->sig_with_ctx_support;
-        alg_details_.length_public_key = sig_->length_public_key;
-        alg_details_.length_secret_key = sig_->length_secret_key;
-        alg_details_.max_length_signature = sig_->length_signature;
     }
 
     /**
@@ -540,10 +578,19 @@ class Signature {
     Signature(const Signature&) = default;
 
     /**
-     * \brief Default copy assignment operator
+     * \brief Copy assignment operator
      * \return Reference to the current instance
      */
-    Signature& operator=(const Signature&) = default;
+    Signature& operator=(const Signature& rhs) {
+        if (this != &rhs) {
+            bytes copied_secret_key = rhs.secret_key_;
+            alg_details_ = rhs.alg_details_;
+            sig_ = rhs.sig_;
+            cleanse_secret_key(secret_key_);
+            secret_key_ = std::move(copied_secret_key);
+        }
+        return *this;
+    }
 
     /**
      * \brief Move constructor, guarantees that the rvalue secret key is always
@@ -566,6 +613,10 @@ class Signature {
      * \return Reference to the current instance
      */
     Signature& operator=(Signature&& rhs) noexcept {
+        if (this == &rhs)
+            return *this;
+
+        cleanse_secret_key(secret_key_);
         sig_ = std::move(rhs.sig_);
         alg_details_ = std::move(rhs.alg_details_);
 
@@ -583,8 +634,7 @@ class Signature {
      * \brief Virtual default destructor
      */
     virtual ~Signature() {
-        if (!secret_key_.empty())
-            C::OQS_MEM_cleanse(secret_key_.data(), secret_key_.size());
+        cleanse_secret_key(secret_key_);
     }
 
     /**
@@ -605,6 +655,7 @@ class Signature {
      */
     bytes generate_keypair() {
         bytes public_key(get_details().length_public_key, 0);
+        cleanse_secret_key(secret_key_);
         secret_key_ = bytes(alg_details_.length_secret_key, 0);
 
         OQS_STATUS rv_ = C::OQS_SIG_keypair(sig_.get(), public_key.data(),
