@@ -1,7 +1,6 @@
 // Unit testing oqs::KeyEncapsulation
 
 #include <algorithm>
-#include <exception>
 #include <iostream>
 #include <mutex>
 #include <thread>
@@ -14,10 +13,127 @@
 #include "oqs_cpp.hpp"
 #include "rand/rand.hpp"
 
-// KEMs that need the main thread's larger stack on some platforms.
+// no_thread_KEM_patterns lists KEM patterns that have issues running in a
+// separate thread
 static std::vector<std::string> no_thread_KEM_patterns{"Classic-McEliece",
-                                                    "HQC-256"};
+                                                       "HQC-256"};
+
+// used for thread-safe console output
 static std::mutex mu;
+
+void test_kem_correctness(const std::string& kem_name) {
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << "Correctness - " << kem_name << std::endl;
+    }
+    oqs::KeyEncapsulation client{kem_name};
+    oqs::bytes client_public_key = client.generate_keypair();
+    oqs::KeyEncapsulation server{kem_name};
+    oqs::bytes ciphertext, shared_secret_server;
+    std::tie(ciphertext, shared_secret_server) =
+        server.encap_secret(client_public_key);
+    oqs::bytes shared_secret_client = client.decap_secret(ciphertext);
+    bool is_valid = (shared_secret_client == shared_secret_server);
+    if (!is_valid)
+        std::cerr << kem_name << ": shared secrets do not coincide"
+                  << std::endl;
+    EXPECT_TRUE(is_valid);
+}
+
+void test_kem_wrong_ciphertext(const std::string& kem_name) {
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << "Wrong ciphertext - " << kem_name << std::endl;
+    }
+    oqs::KeyEncapsulation client{kem_name};
+    oqs::bytes client_public_key = client.generate_keypair();
+    oqs::KeyEncapsulation server{kem_name};
+    oqs::bytes ciphertext, shared_secret_server;
+    std::tie(ciphertext, shared_secret_server) =
+        server.encap_secret(client_public_key);
+    oqs::bytes wrong_ciphertext = oqs::rand::randombytes(ciphertext.size());
+    oqs::bytes shared_secret_client;
+    try {
+        // this line should throw
+        shared_secret_client = client.decap_secret(wrong_ciphertext);
+        // if not, test should fail
+        bool is_valid = (shared_secret_client == shared_secret_server);
+        if (is_valid)
+            std::cerr << kem_name << ": shared secrets should not coincide"
+                      << std::endl;
+        EXPECT_FALSE(is_valid);
+    } catch (std::exception& e) {
+        if (e.what() == std::string{"Can not decapsulate secret"})
+            return;
+        else
+            throw; // this is another un-expected exception
+    }
+}
+
+TEST(oqs_KeyEncapsulation, Correctness) {
+    std::vector<std::thread> thread_pool;
+    std::vector<std::string> enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
+    // first test KEMs that belong to no_thread_KEM_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
+    for (auto&& kem_name : enabled_KEMs) {
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_kem_correctness(kem_name);
+            }
+        }
+    }
+    // test the remaining KEMs in separate threads
+    for (auto&& kem_name : enabled_KEMs) {
+        bool test_in_thread = true;
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
+            thread_pool.emplace_back(test_kem_correctness, kem_name);
+    }
+    // join the rest of the threads
+    for (auto&& elem : thread_pool)
+        elem.join();
+}
+
+TEST(oqs_KeyEncapsulation, WrongCiphertext) {
+    std::vector<std::thread> thread_pool;
+    std::vector<std::string> enabled_KEMs = oqs::KEMs::get_enabled_KEMs();
+    // first test KEMs that belong to no_thread_KEM_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
+    for (auto&& kem_name : enabled_KEMs) {
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_kem_wrong_ciphertext(kem_name);
+            }
+        }
+    }
+    // test the remaining KEMs in separate threads
+    for (auto&& kem_name : enabled_KEMs) {
+        bool test_in_thread = true;
+        for (auto&& no_thread_kem : no_thread_KEM_patterns) {
+            if (kem_name.find(no_thread_kem) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
+            thread_pool.emplace_back(test_kem_wrong_ciphertext, kem_name);
+    }
+    // join the rest of the threads
+    for (auto&& elem : thread_pool)
+        elem.join();
+}
+
+TEST(oqs_KeyEncapsulation, NotSupported) {
+    EXPECT_THROW(oqs::KeyEncapsulation{"unsupported_kem"},
+                 oqs::MechanismNotSupportedError);
+}
 
 namespace {
 // Exported key copies belong to the caller. Clean up these test-owned copies,
@@ -39,119 +155,6 @@ class TestSecret {
 };
 } // namespace
 
-void test_kem_correctness(const std::string& kem_name) {
-    {
-        std::lock_guard<std::mutex> lg{mu};
-        std::cout << "Correctness - " << kem_name << std::endl;
-    }
-    oqs::KeyEncapsulation client{kem_name};
-    oqs::bytes client_public_key = client.generate_keypair();
-    oqs::KeyEncapsulation server{kem_name};
-    oqs::bytes ciphertext, shared_secret_server;
-    std::tie(ciphertext, shared_secret_server) =
-        server.encap_secret(client_public_key);
-    TestSecret expected{std::move(shared_secret_server)};
-    TestSecret actual{client.decap_secret(ciphertext)};
-    EXPECT_EQ(actual.get(), expected.get());
-}
-
-void test_kem_wrong_ciphertext(const std::string& kem_name) {
-    {
-        std::lock_guard<std::mutex> lg{mu};
-        std::cout << "Wrong ciphertext - " << kem_name << std::endl;
-    }
-    oqs::KeyEncapsulation client{kem_name};
-    oqs::bytes client_public_key = client.generate_keypair();
-    oqs::KeyEncapsulation server{kem_name};
-    oqs::bytes ciphertext, shared_secret_server;
-    std::tie(ciphertext, shared_secret_server) =
-        server.encap_secret(client_public_key);
-    TestSecret expected{std::move(shared_secret_server)};
-    oqs::bytes wrong_ciphertext = oqs::rand::randombytes(ciphertext.size());
-    try {
-        // Accept either a decapsulation error or a different shared secret.
-        TestSecret actual{client.decap_secret(wrong_ciphertext)};
-        EXPECT_NE(actual.get(), expected.get());
-    } catch (const std::exception& e) {
-        if (std::string{e.what()} != "Can not decapsulate secret")
-            throw;
-    }
-}
-
-// An exception escaping a worker would terminate the entire test process.
-void test_kem_in_thread(void (*test)(const std::string&),
-                        const std::string& kem_name) {
-    try {
-        test(kem_name);
-    } catch (const std::exception& e) {
-        ADD_FAILURE() << kem_name << ": unexpected exception: " << e.what();
-    } catch (...) {
-        ADD_FAILURE() << kem_name << ": unexpected exception";
-    }
-}
-
-TEST(oqs_KeyEncapsulation, Correctness) {
-    const auto& enabled = oqs::KEMs::get_enabled_KEMs();
-    if (enabled.empty())
-        GTEST_SKIP() << "No enabled KEM algorithms";
-
-    std::vector<std::thread> thread_pool;
-    // Run algorithms requiring a larger stack on the main thread first.
-    for (const auto& alg : enabled) {
-        for (const auto& pattern : no_thread_KEM_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_kem_correctness(alg);
-                break;
-            }
-        }
-    }
-    for (const auto& alg : enabled) {
-        bool test_in_thread = true;
-        for (const auto& pattern : no_thread_KEM_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_in_thread = false;
-                break;
-            }
-        }
-        if (test_in_thread)
-            thread_pool.emplace_back(test_kem_in_thread,
-                                     test_kem_correctness, alg);
-    }
-    for (auto& thread : thread_pool)
-        thread.join();
-}
-
-TEST(oqs_KeyEncapsulation, WrongCiphertext) {
-    const auto& enabled = oqs::KEMs::get_enabled_KEMs();
-    if (enabled.empty())
-        GTEST_SKIP() << "No enabled KEM algorithms";
-
-    std::vector<std::thread> thread_pool;
-    // Run algorithms requiring a larger stack on the main thread first.
-    for (const auto& alg : enabled) {
-        for (const auto& pattern : no_thread_KEM_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_kem_wrong_ciphertext(alg);
-                break;
-            }
-        }
-    }
-    for (const auto& alg : enabled) {
-        bool test_in_thread = true;
-        for (const auto& pattern : no_thread_KEM_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_in_thread = false;
-                break;
-            }
-        }
-        if (test_in_thread)
-            thread_pool.emplace_back(test_kem_in_thread,
-                                     test_kem_wrong_ciphertext, alg);
-    }
-    for (auto& thread : thread_pool)
-        thread.join();
-}
-
 namespace {
 void expect_kem_key_works(const oqs::KeyEncapsulation& key,
                           const oqs::bytes& public_key) {
@@ -163,14 +166,9 @@ void expect_kem_key_works(const oqs::KeyEncapsulation& key,
 }
 } // namespace
 
-TEST(oqs_KeyEncapsulation, NotSupported) {
-    EXPECT_THROW(oqs::KeyEncapsulation{"unsupported_kem"},
-                 oqs::MechanismNotSupportedError);
-}
-
 TEST(oqs_KeyEncapsulation, NotSupportedWithSecretKey) {
     // This checks the exception and preservation of a caller-owned lvalue.
-    // Cleansing on failure is tested separately by the instrumented harness.
+    // It does not inspect the constructor's discarded secret allocation.
     const TestSecret caller_key{oqs::bytes(32, 0xa5)};
     EXPECT_THROW((oqs::KeyEncapsulation{"unsupported_kem", caller_key.get()}),
                  oqs::MechanismNotSupportedError);
