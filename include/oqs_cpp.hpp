@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <memory>
+#include <new>
 #include <ostream>
 #include <stdexcept>
 #include <string>
@@ -34,6 +35,22 @@ extern "C" {
 #include <oqs/oqs.h>
 }
 } // namespace C
+
+namespace internal {
+// Guards temporary secret storage, including partially generated keys.
+class SecretKeyGuard {
+    bytes& key_;
+
+  public:
+    explicit SecretKeyGuard(bytes& key) noexcept : key_{key} {}
+    SecretKeyGuard(const SecretKeyGuard&) = delete;
+    SecretKeyGuard& operator=(const SecretKeyGuard&) = delete;
+    ~SecretKeyGuard() noexcept {
+        if (!key_.empty())
+            C::OQS_MEM_cleanse(key_.data(), key_.size());
+    }
+};
+} // namespace internal
 
 /**
  * \class oqs::MechanismNotSupportedError
@@ -164,12 +181,9 @@ class KEMs final : public internal::Singleton<const KEMs> {
  * \brief Key encapsulation mechanisms
  */
 class KeyEncapsulation {
-    std::shared_ptr<C::OQS_KEM> kem_{nullptr, [](C::OQS_KEM* p) {
-                                         C::OQS_KEM_free(p);
-                                     }}; ///< liboqs smart pointer to C::OQS_KEM
-    bytes secret_key_{}; ///< secret key
+    std::shared_ptr<C::OQS_KEM> kem_{}; ///< liboqs object
 
-    static void cleanse_secret_key(bytes& secret_key) {
+    static void cleanse_secret_key(bytes& secret_key) noexcept {
         if (!secret_key.empty())
             C::OQS_MEM_cleanse(secret_key.data(), secret_key.size());
     }
@@ -191,6 +205,16 @@ class KeyEncapsulation {
 
   private:
     KeyEncapsulationDetails alg_details_{}; ///< KEM algorithm details
+    // Keep secret storage last: default copying must finish all potentially
+    // throwing metadata copies before copying any secret bytes.
+    bytes secret_key_{}; ///< secret key
+
+    void swap(KeyEncapsulation& other) noexcept {
+        kem_.swap(other.kem_);
+        using std::swap;
+        swap(alg_details_, other.alg_details_);
+        secret_key_.swap(other.secret_key_);
+    }
 
   public:
     /**
@@ -200,34 +224,34 @@ class KeyEncapsulation {
      */
     explicit KeyEncapsulation(const std::string& alg_name,
                               bytes secret_key = {})
-        : secret_key_{} {
-        try {
-            // KEM not enabled
-            if (!KEMs::is_KEM_enabled(alg_name)) {
-                // Perhaps it's supported
-                if (KEMs::is_KEM_supported(alg_name))
-                    throw MechanismNotEnabledError(alg_name);
-                else
-                    throw MechanismNotSupportedError(alg_name);
-            }
-
-            kem_.reset(C::OQS_KEM_new(alg_name.c_str()),
-                       [](C::OQS_KEM* p) { C::OQS_KEM_free(p); });
-
-            alg_details_.name = kem_->method_name;
-            alg_details_.version = kem_->alg_version;
-            alg_details_.claimed_nist_level = kem_->claimed_nist_level;
-            alg_details_.is_ind_cca = kem_->ind_cca;
-            alg_details_.length_public_key = kem_->length_public_key;
-            alg_details_.length_secret_key = kem_->length_secret_key;
-            alg_details_.length_ciphertext = kem_->length_ciphertext;
-            alg_details_.length_shared_secret = kem_->length_shared_secret;
-
-            secret_key_ = std::move(secret_key);
-        } catch (...) {
-            cleanse_secret_key(secret_key);
-            throw;
+        try : secret_key_{} {
+        // KEM not enabled
+        if (!KEMs::is_KEM_enabled(alg_name)) {
+            // Perhaps it's supported
+            if (KEMs::is_KEM_supported(alg_name))
+                throw MechanismNotEnabledError(alg_name);
+            else
+                throw MechanismNotSupportedError(alg_name);
         }
+
+        kem_.reset(C::OQS_KEM_new(alg_name.c_str()),
+                   [](C::OQS_KEM* p) { C::OQS_KEM_free(p); });
+        if (!kem_)
+            throw std::bad_alloc{};
+
+        alg_details_.name = kem_->method_name;
+        alg_details_.version = kem_->alg_version;
+        alg_details_.claimed_nist_level = kem_->claimed_nist_level;
+        alg_details_.is_ind_cca = kem_->ind_cca;
+        alg_details_.length_public_key = kem_->length_public_key;
+        alg_details_.length_secret_key = kem_->length_secret_key;
+        alg_details_.length_ciphertext = kem_->length_ciphertext;
+        alg_details_.length_shared_secret = kem_->length_shared_secret;
+
+        secret_key_.swap(secret_key);
+    } catch (...) {
+        cleanse_secret_key(secret_key);
+        throw;
     }
 
     /**
@@ -241,55 +265,39 @@ class KeyEncapsulation {
      */
     KeyEncapsulation& operator=(const KeyEncapsulation& rhs) {
         if (this != &rhs) {
-            bytes copied_secret_key = rhs.secret_key_;
-            alg_details_ = rhs.alg_details_;
-            kem_ = rhs.kem_;
-            cleanse_secret_key(secret_key_);
-            secret_key_ = std::move(copied_secret_key);
+            KeyEncapsulation replacement{rhs};
+            swap(replacement);
+            // replacement now owns and cleanses our previous secret key.
         }
         return *this;
     }
 
     /**
-     * \brief Move constructor, guarantees that the rvalue secret key is always
-     * zeroed
-     * \param rhs oqs::KeyEncapsulation instance
+     * \brief Move constructor; transfers key ownership without allocation.
+     * The source no longer owns any secret bytes after the move.
+     * \param rhs KeyEncapsulation instance
      */
     KeyEncapsulation(KeyEncapsulation&& rhs) noexcept
-        : kem_{std::move(rhs.kem_)}, alg_details_{std::move(rhs.alg_details_)} {
-        // Paranoid move via copy/clean/resize, see
-        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
-        secret_key_ = rhs.secret_key_; // copy
-        // Clean (zero)
-        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0); // resize
+        : kem_{std::move(rhs.kem_)},
+          alg_details_{std::move(rhs.alg_details_)} {
+        secret_key_.swap(rhs.secret_key_);
     }
+
     /**
-     * \brief Move assignment operator, guarantees that the rvalue secret key is
-     * always zeroed
-     * \param rhs oqs::KeyEncapsulation instance
+     * \brief Move assignment; cleanses the replaced key and transfers ownership.
+     * \param rhs KeyEncapsulation instance
      * \return Reference to the current instance
      */
     KeyEncapsulation& operator=(KeyEncapsulation&& rhs) noexcept {
-        if (this == &rhs)
-            return *this;
-
-        cleanse_secret_key(secret_key_);
-        kem_ = std::move(rhs.kem_);
-        alg_details_ = std::move(rhs.alg_details_);
-
-        // Paranoid move via copy/clean/resize, see
-        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
-        secret_key_ = rhs.secret_key_; // copy
-        // Clean (zero)
-        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0); // resize
-
+        if (this != &rhs) {
+            KeyEncapsulation replacement{std::move(rhs)};
+            swap(replacement);
+        }
         return *this;
     }
 
     /**
-     * \brief Virtual default destructor
+     * \brief Virtual destructor; cleanses the owned secret key
      */
     virtual ~KeyEncapsulation() {
         cleanse_secret_key(secret_key_);
@@ -313,14 +321,16 @@ class KeyEncapsulation {
      */
     bytes generate_keypair() {
         bytes public_key(alg_details_.length_public_key, 0);
-        cleanse_secret_key(secret_key_);
-        secret_key_ = bytes(alg_details_.length_secret_key, 0);
+        bytes new_secret_key(alg_details_.length_secret_key, 0);
+        internal::SecretKeyGuard guard{new_secret_key};
 
-        OQS_STATUS rv_ = C::OQS_KEM_keypair(kem_.get(), public_key.data(),
-                                            secret_key_.data());
+        OQS_STATUS rv_ = C::OQS_KEM_keypair(
+            kem_.get(), public_key.data(), new_secret_key.data());
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
 
+        // Commit only after success. The guard then cleanses the old key.
+        secret_key_.swap(new_secret_key);
         return public_key;
     }
 
@@ -507,12 +517,9 @@ class Sigs final : public internal::Singleton<const Sigs> {
  * \brief Signature mechanisms
  */
 class Signature {
-    std::shared_ptr<C::OQS_SIG> sig_{nullptr, [](C::OQS_SIG* p) {
-                                         C::OQS_SIG_free(p);
-                                     }}; ///< liboqs smart pointer to C::OQS_SIG
-    bytes secret_key_{}; ///< secret key
+    std::shared_ptr<C::OQS_SIG> sig_{}; ///< liboqs object
 
-    static void cleanse_secret_key(bytes& secret_key) {
+    static void cleanse_secret_key(bytes& secret_key) noexcept {
         if (!secret_key.empty())
             C::OQS_MEM_cleanse(secret_key.data(), secret_key.size());
     }
@@ -534,6 +541,16 @@ class Signature {
 
   private:
     SignatureDetails alg_details_{}; ///< Signature algorithm details
+    // Keep secret storage last: default copying must finish all potentially
+    // throwing metadata copies before copying any secret bytes.
+    bytes secret_key_{}; ///< secret key
+
+    void swap(Signature& other) noexcept {
+        sig_.swap(other.sig_);
+        using std::swap;
+        swap(alg_details_, other.alg_details_);
+        secret_key_.swap(other.secret_key_);
+    }
 
   public:
     /**
@@ -542,34 +559,34 @@ class Signature {
      * \param secret_key Secret key (optional)
      */
     explicit Signature(const std::string& alg_name, bytes secret_key = {})
-        : secret_key_{} {
-        try {
-            // signature not enabled
-            if (!Sigs::is_sig_enabled(alg_name)) {
-                // perhaps it's supported
-                if (Sigs::is_sig_supported(alg_name))
-                    throw MechanismNotEnabledError(alg_name);
-                else
-                    throw MechanismNotSupportedError(alg_name);
-            }
-
-            sig_.reset(C::OQS_SIG_new(alg_name.c_str()),
-                       [](C::OQS_SIG* p) { C::OQS_SIG_free(p); });
-
-            alg_details_.name = sig_->method_name;
-            alg_details_.version = sig_->alg_version;
-            alg_details_.claimed_nist_level = sig_->claimed_nist_level;
-            alg_details_.is_euf_cma = sig_->euf_cma;
-            alg_details_.sig_with_ctx_support = sig_->sig_with_ctx_support;
-            alg_details_.length_public_key = sig_->length_public_key;
-            alg_details_.length_secret_key = sig_->length_secret_key;
-            alg_details_.max_length_signature = sig_->length_signature;
-
-            secret_key_ = std::move(secret_key);
-        } catch (...) {
-            cleanse_secret_key(secret_key);
-            throw;
+        try : secret_key_{} {
+        // signature not enabled
+        if (!Sigs::is_sig_enabled(alg_name)) {
+            // perhaps it's supported
+            if (Sigs::is_sig_supported(alg_name))
+                throw MechanismNotEnabledError(alg_name);
+            else
+                throw MechanismNotSupportedError(alg_name);
         }
+
+        sig_.reset(C::OQS_SIG_new(alg_name.c_str()),
+                   [](C::OQS_SIG* p) { C::OQS_SIG_free(p); });
+        if (!sig_)
+            throw std::bad_alloc{};
+
+        alg_details_.name = sig_->method_name;
+        alg_details_.version = sig_->alg_version;
+        alg_details_.claimed_nist_level = sig_->claimed_nist_level;
+        alg_details_.is_euf_cma = sig_->euf_cma;
+        alg_details_.sig_with_ctx_support = sig_->sig_with_ctx_support;
+        alg_details_.length_public_key = sig_->length_public_key;
+        alg_details_.length_secret_key = sig_->length_secret_key;
+        alg_details_.max_length_signature = sig_->length_signature;
+
+        secret_key_.swap(secret_key);
+    } catch (...) {
+        cleanse_secret_key(secret_key);
+        throw;
     }
 
     /**
@@ -583,55 +600,39 @@ class Signature {
      */
     Signature& operator=(const Signature& rhs) {
         if (this != &rhs) {
-            bytes copied_secret_key = rhs.secret_key_;
-            alg_details_ = rhs.alg_details_;
-            sig_ = rhs.sig_;
-            cleanse_secret_key(secret_key_);
-            secret_key_ = std::move(copied_secret_key);
+            Signature replacement{rhs};
+            swap(replacement);
+            // replacement now owns and cleanses our previous secret key.
         }
         return *this;
     }
 
     /**
-     * \brief Move constructor, guarantees that the rvalue secret key is always
-     * zeroed
-     * \param rhs oqs::Signature instance
+     * \brief Move constructor; transfers key ownership without allocation.
+     * The source no longer owns any secret bytes after the move.
+     * \param rhs Signature instance
      */
     Signature(Signature&& rhs) noexcept
-        : sig_{std::move(rhs.sig_)}, alg_details_{std::move(rhs.alg_details_)} {
-        // Paranoid move via copy/clean/resize, see
-        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
-        secret_key_ = rhs.secret_key_; // copy
-        // Clean (zero)
-        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0); // resize
+        : sig_{std::move(rhs.sig_)},
+          alg_details_{std::move(rhs.alg_details_)} {
+        secret_key_.swap(rhs.secret_key_);
     }
+
     /**
-     * \brief Move assignment operator, guarantees that the rvalue secret key is
-     * always zeroed
-     * \param rhs oqs::Signature instance
+     * \brief Move assignment; cleanses the replaced key and transfers ownership.
+     * \param rhs Signature instance
      * \return Reference to the current instance
      */
     Signature& operator=(Signature&& rhs) noexcept {
-        if (this == &rhs)
-            return *this;
-
-        cleanse_secret_key(secret_key_);
-        sig_ = std::move(rhs.sig_);
-        alg_details_ = std::move(rhs.alg_details_);
-
-        // Paranoid move via copy/clean/resize, see
-        // https://stackoverflow.com/questions/55054187/can-i-resize-a-vector-that-was-moved-from
-        secret_key_ = rhs.secret_key_; // copy
-        // Clean (zero)
-        C::OQS_MEM_cleanse(rhs.secret_key_.data(), rhs.secret_key_.size());
-        rhs.secret_key_.resize(0); // resize
-
+        if (this != &rhs) {
+            Signature replacement{std::move(rhs)};
+            swap(replacement);
+        }
         return *this;
     }
 
     /**
-     * \brief Virtual default destructor
+     * \brief Virtual destructor; cleanses the owned secret key
      */
     virtual ~Signature() {
         cleanse_secret_key(secret_key_);
@@ -654,15 +655,17 @@ class Signature {
      * \return Public key
      */
     bytes generate_keypair() {
-        bytes public_key(get_details().length_public_key, 0);
-        cleanse_secret_key(secret_key_);
-        secret_key_ = bytes(alg_details_.length_secret_key, 0);
+        bytes public_key(alg_details_.length_public_key, 0);
+        bytes new_secret_key(alg_details_.length_secret_key, 0);
+        internal::SecretKeyGuard guard{new_secret_key};
 
-        OQS_STATUS rv_ = C::OQS_SIG_keypair(sig_.get(), public_key.data(),
-                                            secret_key_.data());
+        OQS_STATUS rv_ = C::OQS_SIG_keypair(
+            sig_.get(), public_key.data(), new_secret_key.data());
         if (rv_ != OQS_STATUS::OQS_SUCCESS)
             throw std::runtime_error("Can not generate keypair");
 
+        // Commit only after success. The guard then cleanses the old key.
+        secret_key_.swap(new_secret_key);
         return public_key;
     }
 
