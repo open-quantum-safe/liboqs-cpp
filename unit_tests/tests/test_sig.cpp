@@ -1,7 +1,6 @@
 // Unit testing oqs::Signature
 
 #include <algorithm>
-#include <exception>
 #include <iostream>
 #include <mutex>
 #include <thread>
@@ -13,10 +12,243 @@
 #include "oqs_cpp.hpp"
 #include "rand/rand.hpp"
 
-// Signatures that need the main thread's larger stack on some platforms.
+// no_thread_sig_patterns lists sig patterns that have issues running in a
+// separate thread
 static std::vector<std::string> no_thread_sig_patterns{
     "cross-rsdp", "cross-rsdpg", "SPHINCS+", "Falcon", "MAYO", "SNOVA"};
+
+// used for thread-safe console output
 static std::mutex mu;
+
+// the ML-DSA-*-extmu variants sign an externally computed mu, which must be
+// exactly 64 bytes, rather than an arbitrary message
+oqs::bytes test_message(const std::string& sig_name) {
+    if (sig_name.find("-extmu") != std::string::npos)
+        return oqs::rand::randombytes(64);
+    return "This is our favourite message to sign"_bytes;
+}
+
+void test_sig_correctness(const std::string& sig_name, const oqs::bytes& msg) {
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << "Correctness - " << sig_name << std::endl;
+    }
+    oqs::Signature signer{sig_name};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes signature = signer.sign(msg);
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify(msg, signature, signer_public_key);
+    if (!is_valid)
+        std::cerr << sig_name << ": signature verification failed" << std::endl;
+    EXPECT_TRUE(is_valid);
+}
+
+void test_sig_correctness_with_ctx_str(const std::string& sig_name,
+                                       const oqs::bytes& msg) {
+    oqs::Signature signer{sig_name};
+    if (!signer.get_details().sig_with_ctx_support) {
+        return;
+    }
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << "Correctness with context string - " << sig_name
+                  << std::endl;
+    }
+    oqs::bytes context_str{"some context"_bytes};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes signature = signer.sign_with_ctx_str(msg, context_str);
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify_with_ctx_str(msg, signature, context_str,
+                                                 signer_public_key);
+    if (!is_valid)
+        std::cerr << sig_name
+                  << ": signature with context string verification failed"
+                  << std::endl;
+    EXPECT_TRUE(is_valid);
+}
+
+void test_sig_wrong_signature(const std::string& sig_name,
+                              const oqs::bytes& msg) {
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << "Wrong signature - " << sig_name << std::endl;
+    }
+    oqs::Signature signer{sig_name};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes signature = signer.sign(msg);
+    oqs::bytes wrong_signature = oqs::rand::randombytes(signature.size());
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify(msg, wrong_signature, signer_public_key);
+    if (is_valid)
+        std::cerr << sig_name << ": signature verification should have failed"
+                  << std::endl;
+    EXPECT_FALSE(is_valid);
+}
+
+void test_sig_wrong_public_key(const std::string& sig_name,
+                               const oqs::bytes& msg) {
+    {
+        std::lock_guard<std::mutex> lg{mu};
+        std::cout << "Wrong public key - " << sig_name << std::endl;
+    }
+    oqs::Signature signer{sig_name};
+    oqs::bytes signer_public_key = signer.generate_keypair();
+    oqs::bytes wrong_public_key =
+        oqs::rand::randombytes(signer_public_key.size());
+    oqs::bytes signature = signer.sign(msg);
+    oqs::Signature verifier{sig_name};
+    bool is_valid = verifier.verify(msg, signature, wrong_public_key);
+    if (is_valid)
+        std::cerr << sig_name << ": signature verification should have failed"
+                  << std::endl;
+    EXPECT_FALSE(is_valid);
+}
+
+// runs a test in a separate thread; an exception escaping a std::thread calls
+// std::terminate() and aborts the whole test run, so report it as a failure
+void test_sig_in_thread(void (*test)(const std::string&, const oqs::bytes&),
+                        const std::string& sig_name, const oqs::bytes& msg) {
+    try {
+        test(sig_name, msg);
+    } catch (const std::exception& e) {
+        ADD_FAILURE() << sig_name << ": unexpected exception: " << e.what();
+    } catch (...) {
+        ADD_FAILURE() << sig_name << ": unexpected exception";
+    }
+}
+
+TEST(oqs_Signature, Correctness) {
+    std::vector<std::thread> thread_pool;
+    std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
+    // first test sigs that belong to no_thread_sig_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
+    for (auto&& sig_name : enabled_sigs) {
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_sig_correctness(sig_name, test_message(sig_name));
+            }
+        }
+    }
+    // test the remaining sigs in separate threads
+    for (auto&& sig_name : enabled_sigs) {
+        bool test_in_thread = true;
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
+            thread_pool.emplace_back(test_sig_in_thread, test_sig_correctness,
+                                     sig_name, test_message(sig_name));
+    }
+    // join the rest of the threads
+    for (auto&& elem : thread_pool)
+        elem.join();
+}
+
+TEST(oqs_Signature, CorrectnessWithContextString) {
+    std::vector<std::thread> thread_pool;
+    std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
+    // first test sigs that belong to no_thread_sig_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
+    for (auto&& sig_name : enabled_sigs) {
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_sig_correctness_with_ctx_str(sig_name,
+                                                  test_message(sig_name));
+            }
+        }
+    }
+    // test the remaining sigs in separate threads
+    for (auto&& sig_name : enabled_sigs) {
+        bool test_in_thread = true;
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_correctness_with_ctx_str,
+                                     sig_name, test_message(sig_name));
+    }
+    // join the rest of the threads
+    for (auto&& elem : thread_pool)
+        elem.join();
+}
+
+TEST(oqs_Signature, WrongSignature) {
+    std::vector<std::thread> thread_pool;
+    std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
+    // first test sigs that belong to no_thread_sig_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
+    for (auto&& sig_name : enabled_sigs) {
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_sig_wrong_signature(sig_name, test_message(sig_name));
+            }
+        }
+    }
+    // test the remaining sigs in separate threads
+    for (auto&& sig_name : enabled_sigs) {
+        bool test_in_thread = true;
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_wrong_signature, sig_name,
+                                     test_message(sig_name));
+    }
+    // join the rest of the threads
+    for (auto&& elem : thread_pool)
+        elem.join();
+}
+
+TEST(oqs_Signature, WrongPublicKey) {
+    std::vector<std::thread> thread_pool;
+    std::vector<std::string> enabled_sigs = oqs::Sigs::get_enabled_sigs();
+    // first test sigs that belong to no_thread_sig_patterns[] in the main
+    // thread (stack size is 8Mb on macOS), due to issues with stack size being
+    // too small in macOS (512Kb for threads)
+    for (auto&& sig_name : enabled_sigs) {
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_sig_wrong_public_key(sig_name, test_message(sig_name));
+            }
+        }
+    }
+    // test the remaining sigs in separate threads
+    for (auto&& sig_name : enabled_sigs) {
+        bool test_in_thread = true;
+        for (auto&& no_thread_sig : no_thread_sig_patterns) {
+            if (sig_name.find(no_thread_sig) != std::string::npos) {
+                test_in_thread = false;
+                break;
+            }
+        }
+        if (test_in_thread)
+            thread_pool.emplace_back(test_sig_in_thread,
+                                     test_sig_wrong_public_key, sig_name,
+                                     test_message(sig_name));
+    }
+    // join the rest of the threads
+    for (auto&& elem : thread_pool)
+        elem.join();
+}
+
+TEST(oqs_Signature, NotSupported) {
+    EXPECT_THROW(oqs::Signature{"unsupported_sig"},
+                 oqs::MechanismNotSupportedError);
+}
 
 namespace {
 // Exported key copies belong to the caller. Clean up these test-owned copies,
@@ -38,207 +270,6 @@ class TestSecret {
 };
 } // namespace
 
-// The -extmu variants accept exactly 64 bytes of externally computed mu.
-oqs::bytes test_message(const std::string& sig_name) {
-    if (sig_name.find("-extmu") != std::string::npos)
-        return oqs::rand::randombytes(64);
-    return "This is our favourite message to sign"_bytes;
-}
-
-void test_sig_correctness(const std::string& sig_name, const oqs::bytes& msg) {
-    {
-        std::lock_guard<std::mutex> lg{mu};
-        std::cout << "Correctness - " << sig_name << std::endl;
-    }
-    oqs::Signature signer{sig_name};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes signature = signer.sign(msg);
-    oqs::Signature verifier{sig_name};
-    EXPECT_TRUE(verifier.verify(msg, signature, signer_public_key));
-}
-
-void test_sig_correctness_with_ctx_str(const std::string& sig_name,
-                                       const oqs::bytes& msg) {
-    oqs::Signature signer{sig_name};
-    if (!signer.get_details().sig_with_ctx_support)
-        return;
-    {
-        std::lock_guard<std::mutex> lg{mu};
-        std::cout << "Correctness with context string - " << sig_name
-                  << std::endl;
-    }
-    oqs::bytes context_str{"some context"_bytes};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes signature = signer.sign_with_ctx_str(msg, context_str);
-    oqs::Signature verifier{sig_name};
-    EXPECT_TRUE(verifier.verify_with_ctx_str(msg, signature, context_str,
-                                            signer_public_key));
-}
-
-void test_sig_wrong_signature(const std::string& sig_name,
-                              const oqs::bytes& msg) {
-    {
-        std::lock_guard<std::mutex> lg{mu};
-        std::cout << "Wrong signature - " << sig_name << std::endl;
-    }
-    oqs::Signature signer{sig_name};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes signature = signer.sign(msg);
-    oqs::bytes wrong_signature = oqs::rand::randombytes(signature.size());
-    oqs::Signature verifier{sig_name};
-    EXPECT_FALSE(verifier.verify(msg, wrong_signature, signer_public_key));
-}
-
-void test_sig_wrong_public_key(const std::string& sig_name,
-                               const oqs::bytes& msg) {
-    {
-        std::lock_guard<std::mutex> lg{mu};
-        std::cout << "Wrong public key - " << sig_name << std::endl;
-    }
-    oqs::Signature signer{sig_name};
-    oqs::bytes signer_public_key = signer.generate_keypair();
-    oqs::bytes wrong_public_key =
-        oqs::rand::randombytes(signer_public_key.size());
-    oqs::bytes signature = signer.sign(msg);
-    oqs::Signature verifier{sig_name};
-    EXPECT_FALSE(verifier.verify(msg, signature, wrong_public_key));
-}
-
-void test_sig_in_thread(void (*test)(const std::string&, const oqs::bytes&),
-                        const std::string& sig_name, const oqs::bytes& msg) {
-    try {
-        test(sig_name, msg);
-    } catch (const std::exception& e) {
-        ADD_FAILURE() << sig_name << ": unexpected exception: " << e.what();
-    } catch (...) {
-        ADD_FAILURE() << sig_name << ": unexpected exception";
-    }
-}
-
-TEST(oqs_Signature, Correctness) {
-    const auto& enabled = oqs::Sigs::get_enabled_sigs();
-    if (enabled.empty())
-        GTEST_SKIP() << "No enabled SIG algorithms";
-
-    std::vector<std::thread> thread_pool;
-    // Run algorithms requiring a larger stack on the main thread first.
-    for (const auto& alg : enabled) {
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_sig_correctness(alg, test_message(alg));
-                break;
-            }
-        }
-    }
-    for (const auto& alg : enabled) {
-        bool test_in_thread = true;
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_in_thread = false;
-                break;
-            }
-        }
-        if (test_in_thread)
-            thread_pool.emplace_back(test_sig_in_thread,
-                                     test_sig_correctness, alg, test_message(alg));
-    }
-    for (auto& thread : thread_pool)
-        thread.join();
-}
-
-TEST(oqs_Signature, CorrectnessWithContextString) {
-    const auto& enabled = oqs::Sigs::get_enabled_sigs();
-    if (enabled.empty())
-        GTEST_SKIP() << "No enabled SIG algorithms";
-
-    std::vector<std::thread> thread_pool;
-    // Run algorithms requiring a larger stack on the main thread first.
-    for (const auto& alg : enabled) {
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_sig_correctness_with_ctx_str(alg, test_message(alg));
-                break;
-            }
-        }
-    }
-    for (const auto& alg : enabled) {
-        bool test_in_thread = true;
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_in_thread = false;
-                break;
-            }
-        }
-        if (test_in_thread)
-            thread_pool.emplace_back(test_sig_in_thread,
-                                     test_sig_correctness_with_ctx_str, alg, test_message(alg));
-    }
-    for (auto& thread : thread_pool)
-        thread.join();
-}
-
-TEST(oqs_Signature, WrongSignature) {
-    const auto& enabled = oqs::Sigs::get_enabled_sigs();
-    if (enabled.empty())
-        GTEST_SKIP() << "No enabled SIG algorithms";
-
-    std::vector<std::thread> thread_pool;
-    // Run algorithms requiring a larger stack on the main thread first.
-    for (const auto& alg : enabled) {
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_sig_wrong_signature(alg, test_message(alg));
-                break;
-            }
-        }
-    }
-    for (const auto& alg : enabled) {
-        bool test_in_thread = true;
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_in_thread = false;
-                break;
-            }
-        }
-        if (test_in_thread)
-            thread_pool.emplace_back(test_sig_in_thread,
-                                     test_sig_wrong_signature, alg, test_message(alg));
-    }
-    for (auto& thread : thread_pool)
-        thread.join();
-}
-
-TEST(oqs_Signature, WrongPublicKey) {
-    const auto& enabled = oqs::Sigs::get_enabled_sigs();
-    if (enabled.empty())
-        GTEST_SKIP() << "No enabled SIG algorithms";
-
-    std::vector<std::thread> thread_pool;
-    // Run algorithms requiring a larger stack on the main thread first.
-    for (const auto& alg : enabled) {
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_sig_wrong_public_key(alg, test_message(alg));
-                break;
-            }
-        }
-    }
-    for (const auto& alg : enabled) {
-        bool test_in_thread = true;
-        for (const auto& pattern : no_thread_sig_patterns) {
-            if (alg.find(pattern) != std::string::npos) {
-                test_in_thread = false;
-                break;
-            }
-        }
-        if (test_in_thread)
-            thread_pool.emplace_back(test_sig_in_thread,
-                                     test_sig_wrong_public_key, alg, test_message(alg));
-    }
-    for (auto& thread : thread_pool)
-        thread.join();
-}
-
 namespace {
 void expect_sig_key_works(const oqs::Signature& key,
                           const oqs::bytes& public_key) {
@@ -249,14 +280,9 @@ void expect_sig_key_works(const oqs::Signature& key,
 }
 } // namespace
 
-TEST(oqs_Signature, NotSupported) {
-    EXPECT_THROW(oqs::Signature{"unsupported_sig"},
-                 oqs::MechanismNotSupportedError);
-}
-
 TEST(oqs_Signature, NotSupportedWithSecretKey) {
     // This checks the exception and preservation of a caller-owned lvalue.
-    // Cleansing on failure is tested separately by the instrumented harness.
+    // It does not inspect the constructor's discarded secret allocation.
     const TestSecret caller_key{oqs::bytes(32, 0xa5)};
     EXPECT_THROW((oqs::Signature{"unsupported_sig", caller_key.get()}),
                  oqs::MechanismNotSupportedError);
@@ -267,7 +293,7 @@ TEST(oqs_Signature, NotSupportedWithSecretKey) {
 TEST(oqs_Signature, SecretKeyLifecycle) {
     const auto& enabled = oqs::Sigs::get_enabled_sigs();
     if (enabled.empty())
-        GTEST_SKIP() << "No enabled SIG algorithms";
+        GTEST_SKIP() << "No enabled signature algorithms";
 
     // Prefer a fast standard algorithm for repeated lifecycle operations.
     // Run this test on the main thread, including the fallback algorithm.
@@ -334,7 +360,7 @@ TEST(oqs_Signature, SecretKeyLifecycle) {
 TEST(oqs_Signature, EmptySecretKeyAssignment) {
     const auto& enabled = oqs::Sigs::get_enabled_sigs();
     if (enabled.empty())
-        GTEST_SKIP() << "No enabled SIG algorithms";
+        GTEST_SKIP() << "No enabled signature algorithms";
     const auto preferred = std::find(enabled.begin(), enabled.end(),
                                      "ML-DSA-65");
     const auto& alg = preferred != enabled.end() ? *preferred : enabled.front();
