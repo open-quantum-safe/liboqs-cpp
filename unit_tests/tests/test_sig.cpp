@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <iostream>
 #include <mutex>
+#include <new>
+#include <string>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -11,6 +13,8 @@
 
 #include "oqs_cpp.hpp"
 #include "rand/rand.hpp"
+
+#include "alloc_hooks.hpp"
 
 // no_thread_sig_patterns lists sig patterns that have issues running in a
 // separate thread
@@ -280,14 +284,30 @@ void expect_sig_key_works(const oqs::Signature& key,
 }
 } // namespace
 
-TEST(oqs_Signature, NotSupportedWithSecretKey) {
-    // This checks the exception and preservation of a caller-owned lvalue.
-    // It does not inspect the constructor's discarded secret allocation.
-    const TestSecret caller_key{oqs::bytes(32, 0xa5)};
-    EXPECT_THROW((oqs::Signature{"unsupported_sig", caller_key.get()}),
+namespace {
+// Returns the signature for the secret-key tests: ML-DSA-65 if enabled (it is
+// fast and standard), otherwise the first enabled one, or "" if none is.
+std::string sig_for_secret_key_tests() {
+    const auto& enabled = oqs::Sigs::get_enabled_sigs();
+    if (enabled.empty())
+        return {};
+    const auto preferred =
+        std::find(enabled.begin(), enabled.end(), "ML-DSA-65");
+    return preferred != enabled.end() ? *preferred : enabled.front();
+}
+} // namespace
+
+TEST(oqs_Signature, FailedConstructionCleansesSecretKey) {
+    if (!alloc_hooks::can_inspect_freed_blocks())
+        GTEST_SKIP() << "Freed heap blocks cannot be inspected here";
+
+    // The constructor takes its own copy of the key, which it must cleanse
+    // before releasing when it throws.
+    const TestSecret key{oqs::rand::randombytes(64)};
+    alloc_hooks::FreedSecretWatch watch{key.get()};
+    EXPECT_THROW((oqs::Signature{"unsupported_sig", key.get()}),
                  oqs::MechanismNotSupportedError);
-    EXPECT_TRUE(std::all_of(caller_key.get().begin(), caller_key.get().end(),
-                            [](unsigned char byte) { return byte == 0xa5; }));
+    EXPECT_FALSE(watch.secret_was_freed());
 }
 
 TEST(oqs_Signature, SecretKeyLifecycle) {
@@ -382,4 +402,114 @@ TEST(oqs_Signature, EmptySecretKeyAssignment) {
     EXPECT_TRUE(TestSecret{copied_empty.export_secret_key()}.get().empty());
     const auto public_key = target.generate_keypair();
     expect_sig_key_works(target, public_key);
+}
+
+TEST(oqs_Signature, RegeneratingCleansesReplacedSecretKey) {
+    if (!alloc_hooks::can_inspect_freed_blocks())
+        GTEST_SKIP() << "Freed heap blocks cannot be inspected here";
+    const std::string alg = sig_for_secret_key_tests();
+    if (alg.empty())
+        GTEST_SKIP() << "No enabled signature algorithms";
+    SCOPED_TRACE(alg);
+
+    oqs::Signature sig{alg};
+    sig.generate_keypair();
+    const TestSecret old_key{sig.export_secret_key()};
+    alloc_hooks::FreedSecretWatch watch{old_key.get()};
+    sig.generate_keypair();
+    EXPECT_FALSE(watch.secret_was_freed());
+}
+
+TEST(oqs_Signature, AssignmentCleansesReplacedSecretKey) {
+    if (!alloc_hooks::can_inspect_freed_blocks())
+        GTEST_SKIP() << "Freed heap blocks cannot be inspected here";
+    const std::string alg = sig_for_secret_key_tests();
+    if (alg.empty())
+        GTEST_SKIP() << "No enabled signature algorithms";
+    SCOPED_TRACE(alg);
+
+    oqs::Signature keyed{alg};
+    keyed.generate_keypair();
+    const TestSecret old_key{keyed.export_secret_key()};
+    const oqs::Signature empty{alg};
+
+    // Assigning from a wrapper without a key leaves the old key nothing to be
+    // overwritten by. Destroy the target inside the watch, so that storage
+    // released after the assignment is also inspected.
+    {
+        alloc_hooks::FreedSecretWatch watch{old_key.get()};
+        {
+            oqs::Signature target{alg, old_key.get()};
+            target = empty;
+        }
+        EXPECT_FALSE(watch.secret_was_freed()) << "copy assignment";
+    }
+    {
+        alloc_hooks::FreedSecretWatch watch{old_key.get()};
+        {
+            oqs::Signature target{alg, old_key.get()};
+            target = oqs::Signature{alg};
+        }
+        EXPECT_FALSE(watch.secret_was_freed()) << "move assignment";
+    }
+}
+
+TEST(oqs_Signature, MovesDoNotCopySecretKey) {
+    const std::string alg = sig_for_secret_key_tests();
+    if (alg.empty())
+        GTEST_SKIP() << "No enabled signature algorithms";
+    SCOPED_TRACE(alg);
+
+    oqs::Signature source{alg};
+    source.generate_keypair();
+    oqs::Signature target{alg};
+
+    // Moves are noexcept, so copying the key there would terminate the
+    // process if the allocation failed.
+    alloc_hooks::AllocationCounter key_allocations{
+        source.get_details().length_secret_key};
+    oqs::Signature moved{std::move(source)};
+    EXPECT_EQ(key_allocations.count(), 0u) << "move construction";
+    target = std::move(moved);
+    EXPECT_EQ(key_allocations.count(), 0u) << "move assignment";
+}
+
+TEST(oqs_Signature, FailedCopyAssignmentKeepsDestination) {
+    // The source key is larger than the destination's, so copying it always
+    // allocates, even if the destination's storage were reused.
+    const std::string small_alg = "ML-DSA-44";
+    const std::string large_alg = "ML-DSA-65";
+    if (!oqs::Sigs::is_sig_enabled(small_alg) ||
+        !oqs::Sigs::is_sig_enabled(large_alg))
+        GTEST_SKIP() << small_alg << " and " << large_alg
+                     << " must both be enabled";
+
+    oqs::Signature target{small_alg};
+    target.generate_keypair();
+    const TestSecret target_key{target.export_secret_key()};
+    oqs::Signature source{large_alg};
+    source.generate_keypair();
+
+    // Fail each allocation made by the assignment in turn, until it succeeds.
+    std::size_t failures = 0;
+    for (std::size_t n = 1; n <= 100; ++n) {
+        bool threw = false;
+        {
+            alloc_hooks::AllocationFailure fail{n};
+            try {
+                target = source;
+            } catch (const std::bad_alloc&) {
+                threw = true;
+            }
+        }
+        if (!threw)
+            break;
+        ++failures;
+        EXPECT_EQ(target.get_details().name, small_alg) << "allocation " << n;
+        EXPECT_TRUE(TestSecret{target.export_secret_key()}.get() ==
+                    target_key.get())
+            << "allocation " << n;
+    }
+    EXPECT_GT(failures, 0u);
+    EXPECT_EQ(target.get_details().name, large_alg);
 }

@@ -209,7 +209,7 @@ class KeyEncapsulation {
     // throwing metadata copies before copying any secret bytes.
     bytes secret_key_{}; ///< secret key
 
-    void swap(KeyEncapsulation& other) noexcept {
+    void swap_state(KeyEncapsulation& other) noexcept {
         kem_.swap(other.kem_);
         using std::swap;
         swap(alg_details_, other.alg_details_);
@@ -266,7 +266,7 @@ class KeyEncapsulation {
     KeyEncapsulation& operator=(const KeyEncapsulation& rhs) {
         if (this != &rhs) {
             KeyEncapsulation replacement{rhs};
-            swap(replacement);
+            swap_state(replacement);
             // replacement now owns and cleanses our previous secret key.
         }
         return *this;
@@ -291,7 +291,7 @@ class KeyEncapsulation {
     KeyEncapsulation& operator=(KeyEncapsulation&& rhs) noexcept {
         if (this != &rhs) {
             KeyEncapsulation replacement{std::move(rhs)};
-            swap(replacement);
+            swap_state(replacement);
         }
         return *this;
     }
@@ -545,7 +545,7 @@ class Signature {
     // throwing metadata copies before copying any secret bytes.
     bytes secret_key_{}; ///< secret key
 
-    void swap(Signature& other) noexcept {
+    void swap_state(Signature& other) noexcept {
         sig_.swap(other.sig_);
         using std::swap;
         swap(alg_details_, other.alg_details_);
@@ -601,7 +601,7 @@ class Signature {
     Signature& operator=(const Signature& rhs) {
         if (this != &rhs) {
             Signature replacement{rhs};
-            swap(replacement);
+            swap_state(replacement);
             // replacement now owns and cleanses our previous secret key.
         }
         return *this;
@@ -626,7 +626,7 @@ class Signature {
     Signature& operator=(Signature&& rhs) noexcept {
         if (this != &rhs) {
             Signature replacement{std::move(rhs)};
-            swap(replacement);
+            swap_state(replacement);
         }
         return *this;
     }
