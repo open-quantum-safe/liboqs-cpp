@@ -6,6 +6,19 @@ oqs::version(const std::string& version)` - Returns a tuple containing the
     (major, minor, patch) versions
 - A warning is issued only if the liboqs-cpp version's major and minor numbers
   differ from those of liboqs, ignoring the patch version
+- Made secret-key handling in `oqs::KeyEncapsulation` and `oqs::Signature`
+  exception-safe, see https://github.com/open-quantum-safe/liboqs-cpp/pull/29
+  - A secret key passed to a constructor is cleansed if construction throws
+  - Copy assignment, move assignment and `generate_keypair()` cleanse the key
+    they replace. If copy assignment or `generate_keypair()` throws, the object
+    keeps its previous algorithm and key
+  - Moves transfer the secret key's storage instead of copying the key and
+    zeroing the source, so a move can no longer terminate the program by
+    failing to allocate
+  - The constructors throw `std::bad_alloc` if liboqs fails to create the
+    mechanism object (`OQS_KEM_new()` or `OQS_SIG_new()` returns `NULL`)
+  - The private data layout of both classes changed, so rebuild all code that
+    includes `<oqs_cpp.hpp>`
 
 # Version 0.12.0 - January 15, 2025
 
